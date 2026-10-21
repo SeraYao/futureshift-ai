@@ -68,23 +68,35 @@ moderate 与 fast disruption 是趋势权重不同的探索性情景，不能解
 
 `coverage_i = min(user_i / required_i, 1)`
 
-`S = 100 × sum(importance_i × coverage_i) / sum(importance_i)`
+`S_skills = 100 × sum(importance_i × coverage_i) / sum(importance_i)`
 
-`required_i = 0` 的项目不参与覆盖分的分子或分母；超出要求不增加超过 100% 的覆盖。S 为 0–100。没有有效技能或有效权重和为 0 时，S 为不可计算，不能补为 0。
+`required_i = 0` 的项目不参与覆盖分的分子或分母；超出要求不增加超过 100% 的覆盖。S_skills 为 0–100。没有有效技能或有效权重和为 0 时，S_skills 为不可计算，不能补为 0。
 
 `gap_i = importance_i × max(required_i − user_i, 0)`
 
 按 gap_i 从高到低展示 skills-gap breakdown，正缺口用于学习计划；并列按稳定技能 ID 排序。零要求项目的缺口为 0。所有输入、映射和转换版本固定后，结果必须确定且可复现。
 
+### 知识覆盖与能力分
+
+K_knowledge 使用与 S_skills 相同的用户值 `/4`、O*NET 要求归一化、importance weighting 和封顶 coverage 逻辑：
+
+`K_knowledge = 100 × sum(knowledge_importance_j × min(user_knowledge_j / required_knowledge_j, 1)) / sum(knowledge_importance_j)`
+
+仅对 required_knowledge_j > 0 的已验证核心知识项求和；分母为 0 或必要数据缺失时不可计算，不补零或静默调整组件权重。
+
+`S_capability = 0.75 × S_skills + 0.25 × K_knowledge`
+
+0.75 / 0.25 为待验证原型参数。知识缺口为 `knowledge_gap_j = knowledge_importance_j × max(required_knowledge_j − user_knowledge_j, 0)`。分别显示 **Skills gaps** 与 **Knowledge gaps**，各按 gap 降序、稳定元素 ID 打破并列。专业名称不能直接转换为能力分。职业核心字段仅从问卷已询问且可追溯到 O*NET 的项目中预先选择，披露覆盖局限。
+
 ### RIASEC 兴趣分与个人适配
 
-使用顺序固定为 Realistic、Investigative、Artistic、Social、Enterprising、Conventional 的六维非负向量。用户向量来自短问卷，职业向量来自 O*NET；保存问卷计分规则及职业字段来源，具体题项和字段待验证。
+使用顺序固定为 Realistic、Investigative、Artistic、Social、Enterprising、Conventional 的六维非负向量。用户向量来自短问卷，职业向量来自 O*NET；保存问卷计分规则及职业字段来源，原创题项及用户计分见 [QUESTIONNAIRE.md](QUESTIONNAIRE.md)，职业字段待验证。
 
 `I = 100 × dot(user_RIASEC, role_RIASEC) / (norm(user_RIASEC) × norm(role_RIASEC))`
 
-I 为 cosine similarity × 100，范围 0–100。任一维缺失、数值无效或任一向量范数为 0 时，显示具体原因；用户可补全问卷，职业数据可补核验。降级仅展示可计算的 S 和技能缺口，不计算 I、P 或情景总分，也不让该职业进入完整情景排名；不静默用零、均值或重新分配权重。S 缺失时同样停止该职业完整评分。
+I 为 cosine similarity × 100，范围 0–100。任一维缺失、数值无效或任一向量范数为 0 时，显示具体原因；用户可补全问卷，职业数据可补核验。降级仅展示可计算的 S_skills、K_knowledge 和两组缺口，不计算 I、P 或情景总分，也不让该职业进入完整情景排名；不静默用零、均值或重新分配权重。S_skills 或 K_knowledge 缺失时同样停止该职业完整评分。
 
-`P = 0.70 × S + 0.30 × I`
+`P = 0.70 × S_capability + 0.30 × I`
 
 个人适配 P 范围为 0–100，权重为已确定的预赛原型设计，其有效性仍待验证。
 
@@ -119,7 +131,7 @@ Recent_k 为最近 90 天新建公开仓库数，Previous_k 为此前 90 天新�
 
 SDG 在预赛版本中不进入匹配总分。独立展示职业、技能、SDG 映射依据及贡献解释，可用于筛选或比较，不能无证据加分。筛选只改变显示集合，不改变原始分数；情景敏感性保留统一候选集合的排名口径。
 
-大模型不得计算、覆盖或“优化”S、I、P、T、gap、情景分数及排名；只读取规则引擎的结果和来源生成受约束解释。界面追溯原始输入、归一化值、coverage、importance、gap、RIASEC 向量、主题计数和 T_k、聚合 T、P、lambda 及总分。规则引擎按固定 ID 顺序聚合，使用版本化数值精度策略；排序使用未作展示舍入的分数，舍入仅用于显示，确保同输入和同快照完全复现。
+大模型不得计算、覆盖或“优化”S_skills、K_knowledge、S_capability、I、P、T、gap、情景分数及排名；只读取规则引擎的结果和来源生成受约束解释。界面追溯原始输入、归一化值、coverage、importance、gap、RIASEC 向量、主题计数和 T_k、聚合 T、S_skills、K_knowledge、S_capability、P、lambda 及总分。规则引擎按固定 ID 顺序聚合，使用版本化数值精度策略；排序使用未作展示舍入的分数，舍入仅用于显示，确保同输入和同快照完全复现。
 
 ## 后续范围与边界
 
@@ -147,3 +159,19 @@ SDG 在预赛版本中不进入匹配总分。独立展示职业、技能、SDG 
 ## SDG 对齐
 
 以联合国官方目标与具体 targets 为定义依据，重点解释 SDG 4 的技能与学习机会（4.3、4.4）及 SDG 8 的创新生产力与体面就业（8.2、8.5）。每个职业与技能分别保存 SDG、具体贡献机制、来源和人工审查状态。关联应表达“该技能如何支持某项工作活动并可能贡献目标”，不能仅贴图标或承诺就业、收入及可持续影响。
+
+## 问卷、职业池与输入契约
+
+六页问卷见 [QUESTIONNAIRE.md](QUESTIONNAIRE.md)，十个正式职业及来源见 [CAREER_POOL.md](CAREER_POOL.md)。页面依次为背景、11 项技能、7 项知识、12 条原创 RIASEC 题、学习约束与 SDG、画像确认，目标 3–5 分钟（待试填）。不收集姓名、年龄、性别、联系方式或真实 CV。
+
+用户评分输入仅来自技能、知识、兴趣题。确认页展示原值、归一化值和六维向量，允许返回修改，确认后才匹配。开放文本不直接计分，仅经用户逐项确认结构化修改并重新确认画像后影响已有评分字段。背景只调整学习说明；时间、周数、预算、语言和 SDG 只用于学习计划、展示或主动筛选，均标记不计分。语言偏好不表示多语言界面已实现。
+
+修改后生成新画像版本。相同确认画像在相同外部快照和规则下结果一致，趋势更新另行追溯。职业池只是多领域样本，不是全球未来职业榜；不能改正式名称制造 AI 职位，每种情景只推荐最高分五项。GitHub topics 和 SDG 未验证前不能作为最终数据。
+
+### 补充验收标准（待执行）
+
+- 每个用户计分输入有问卷题目来源，外部计分输入有 O*NET、GitHub 或规则版本来源，无隐藏背景加分。
+- 展示但不计分的字段有明确标签和用途，不询问未使用的个人信息。
+- 用户能查看、修改全部用户评分字段；未确认不计算，缺失不静默补值。
+- S_skills、K_knowledge、S_capability、I、P、T 和两情景总分均可复算，缺口分两组显示；其他趋势公式及情景权重不变。
+- 相同确认画像、快照和版本结果一致；只修改不计分字段不能改变分数。职业名称、代码、官方来源可追溯，候选映射不能冒充最终数据。
