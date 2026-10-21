@@ -81,6 +81,7 @@ class VisitorPresentationTests(unittest.TestCase):
         with patch('src.github_trends.shared_client',return_value=client), \
              patch('urllib.request.urlopen',side_effect=AssertionError('Real HTTP forbidden')):
             page=AppTest.from_file(str(app.ROOT/'app.py')).run(timeout=30)
+            page.radio(key='page_mode').set_value('Synthetic simulation').run(timeout=30)
             self.assertFalse(page.exception)
             self.assertTrue(any('GitHub activity scores are not hiring demand' in info.value for info in page.info))
             page.checkbox(key='simulation_confirm').check()

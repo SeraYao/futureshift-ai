@@ -131,6 +131,7 @@ class StreamlitModeTests(unittest.TestCase):
         client_patch.start()
         self.addCleanup(client_patch.stop)
         page = AppTest.from_file(str(app.ROOT/'app.py')).run(timeout=30)
+        page.radio(key='page_mode').set_value('Synthetic simulation').run(timeout=30)
         self.assertFalse(page.exception)
         page.checkbox(key='simulation_confirm').check()
         page.button[0].click().run(timeout=30)

@@ -10,6 +10,8 @@ from src.scoring import (
     FAST_LAMBDA, MODERATE_LAMBDA, SCORING_VERSION, Score, github_trend, rank_roles,
 )
 
+from src.pathway import render_pathway
+
 from src.github_trends import (
     GitHubTrends, MAPPING_RECORDED_ON, MAPPING_STATUS, ROLE_TOPICS, evidence_score, shared_client,
 )
@@ -181,7 +183,7 @@ def render_topic(st: Any, topic: dict) -> None:
         st.json(snapshot, expanded=False)
 
 
-def render_role(st: Any, row: dict, role: dict) -> None:
+def render_role(st: Any, row: dict, role: dict, profile: dict | None = None) -> None:
     """Explain the engine output using templates and its exact calculation trace."""
     st.caption(f"O*NET occupation identity: {row['code']} · Synthetic requirements and trends")
     cols = st.columns(3)
@@ -210,7 +212,7 @@ def render_role(st: Any, row: dict, role: dict) -> None:
     st.markdown('#### Interest profile')
     st.table([{'Dimension': name, 'Your confirmed interest': user,
                'Synthetic role interest': target}
-              for name, user, target in zip(RIASEC, st.session_state.simulation_profile['riasec'], role['riasec'])])
+              for name, user, target in zip(RIASEC, (profile if profile is not None else st.session_state.simulation_profile)['riasec'], role['riasec'])])
     st.markdown('#### Trend evidence · synthetic')
     for topic in row['trend']['topics']:
         render_topic(st, topic)
@@ -247,13 +249,15 @@ def main() -> None:
     st.title('FutureShift AI')
     st.markdown('### Navigate change. Shape your future.')
     st.write('Explore how your capabilities and interests connect to different career pathways.')
-    st.info('Start with Synthetic simulation to edit a demo profile and compare two career scenarios. '
+    st.info('Start with Career pathway prototype for the guided student questionnaire. Use Synthetic simulation to edit a demo profile and compare two career scenarios. '
             'Use O*NET data audit to inspect official occupational data and GitHub activity evidence. '
             'GitHub activity scores are not hiring demand or employment-growth forecasts.')
-    mode = st.radio('Mode', ('Synthetic simulation', 'O*NET data audit'),
+    mode = st.radio('Mode', ('Career pathway prototype', 'Synthetic simulation', 'O*NET data audit'),
                     horizontal=True, key='page_mode')
     try:
-        if mode == 'Synthetic simulation':
+        if mode == 'Career pathway prototype':
+            render_pathway(st, LABELS, LEVELS, load_demo, render_role)
+        elif mode == 'Synthetic simulation':
             render_simulation(st)
         else:
             render_audit(st)
