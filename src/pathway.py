@@ -2,6 +2,7 @@
 from copy import deepcopy
 from typing import Any, Callable
 
+from src.learning_plan import render_learning_plan
 from src.scoring import SCORING_VERSION, normalize_0_4, rank_roles
 
 INTERESTS = (
@@ -126,8 +127,8 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
         for key, statement in INTERESTS:
             field(key, tuple(range(1, 6)), statement)
     elif step == 5:
-        st.caption('Not scored. Preferences are shown alongside your results; learning plans and SDG filtering '
-                   'are planned, not implemented. Language preference does not change the interface.')
+        st.caption('Not scored. Weekly time can initialize a four-week practice plan after matching. '
+                   'Longer plans and SDG filtering are planned. Language preference does not change the interface.')
         for name, options in PREFERENCES.items():
             field(name, options)
         field('SDG preferences', tuple(f'{i+1}. {name}' for i, name in enumerate(SDGS)), kind='multi')
@@ -156,7 +157,8 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
                       for key, value in ((key, draft.get(key)) for key in
                        (*BACKGROUND, 'Optional career goal', *PREFERENCES, 'SDG preferences'))])
             st.caption('Open text, background, SDGs and learning preferences never add points. '
-                       'No learning plan is generated yet. These preferences provide context only.')
+                       'Weekly time can initialize the practice plan; it never changes matching scores. '
+                       'Only four-week plans are currently available, regardless of target plan length.')
             st.info('This small synthetic pool uses only Critical Thinking, Mathematics and Programming skills, '
                     'plus Computers and Electronics and Mathematics knowledge. Other answers are retained for review '
                     'but have no requirement in these fixtures and cannot change current scores. '
@@ -193,6 +195,7 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
             for row in rows:
                 with st.expander(row['title'] + ' · Why this match?'):
                     render_role(st, row, by_code[row['code']], profile=profile)
+            render_learning_plan(st, rows, by_code, labels, draft.get('Weekly learning time'))
             with st.expander('Technical details', expanded=False):
                 st.json(profile, expanded=False)
     left, right = st.columns(2)
