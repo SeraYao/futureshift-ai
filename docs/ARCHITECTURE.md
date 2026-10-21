@@ -2,7 +2,7 @@
 
 ## 状态与最简方案
 
-当前仅有文档，无应用功能，未下载数据或部署。预赛数据方案已确定为 O*NET 31.0 官方 CSV + GitHub REST Repository Search API。当前建议技术栈收敛为 **Python + Streamlit + CSV/JSON**：一个进程完成界面、数据获取、规则评分及可选模型调用。没有账户系统或长期用户数据，预赛暂不使用 SQLite；CSV 保存小型目录，JSON 保存趋势快照和计算元数据。适合单人短期验证完整计算链，运行环境仍待验证。
+当前已有标准库评分引擎及 synthetic 测试，尚无网页或真实数据接入。本轮已核实 O*NET 31.0 官方 CSV，但没有接入评分或部署。预赛数据方案已确定为 O*NET 31.0 官方 CSV + GitHub REST Repository Search API。当前建议技术栈收敛为 **Python + Streamlit + CSV/JSON**：一个进程完成界面、数据获取、规则评分及可选模型调用。没有账户系统或长期用户数据，预赛暂不使用 SQLite；CSV 保存小型目录，JSON 保存趋势快照和计算元数据。适合单人短期验证完整计算链，运行环境仍待验证。
 
 ## 前端
 
@@ -24,7 +24,7 @@ arXiv API 是后续或备用研究趋势信号，传统接口按最多每 3 秒�
 
 ## 匹配引擎
 
-以下为已确定的预赛原型评分设计，尚未实现或完成有效性验证。
+以下公式已在评分引擎中实现并用 synthetic 数据测试；真实数据适配与有效性验证尚未完成。
 
 ### 用户技能与职业要求
 
@@ -38,7 +38,7 @@ arXiv API 是后续或备用研究趋势信号，传统接口按最多每 3 秒�
 | 3 | independently applied |
 | 4 | advanced |
 
-用户值按 `user_i = raw_user_i / 4` 转换到 0–1。每个职业只使用已选定且可追溯到 O*NET 31.0 的核心技能；职业要求转换到 0–1，按所选 O*NET 字段官方量表的上下界进行线性归一化，保存字段、原值、上下界和转换规则。具体字段及量表语义待验证，不能假定用户自评与职业要求天然等价。importance_i 使用非负的 O*NET 重要性权重，保存原字段和归一化规则，不以缺失值代替 0。
+用户值按 `user_i = raw_user_i / 4` 转换到 0–1。每个职业只使用已选定且可追溯到 O*NET 31.0 的核心技能；职业要求转换到 0–1，按所选 O*NET 字段官方量表的上下界进行线性归一化，保存字段、原值、上下界和转换规则。官方字段与量表已核实：建议取 IM（1–5）作重要性，importance=(IM−1)/4；取 LV（0–7）作职业要求，required=LV/7。用户仍用 response/4，不能对 O*NET 原值调用 normalize_0_4。保存原字段、数值、质量标记及转换版本；不以缺失值代替 0。该转换是未校准的项目建议，两个测量体系数值归一化不代表能力语义等价。
 
 ### 技能覆盖分与缺口
 
@@ -66,7 +66,7 @@ K_knowledge 使用与 S_skills 相同的用户值 `/4`、O*NET 要求归一化�
 
 ### RIASEC 兴趣分与个人适配
 
-使用顺序固定为 Realistic、Investigative、Artistic、Social、Enterprising、Conventional 的六维非负向量。用户向量来自短问卷，职业向量来自 O*NET；保存问卷计分规则及职业字段来源，原创题项及用户计分见 [QUESTIONNAIRE.md](QUESTIONNAIRE.md)，职业字段待验证。
+使用顺序固定为 Realistic、Investigative、Artistic、Social、Enterprising、Conventional 的六维非负向量。用户向量来自短问卷，职业向量来自 O*NET；保存问卷计分规则及职业字段来源，原创题项及用户计分见 [QUESTIONNAIRE.md](QUESTIONNAIRE.md)，职业端字段已核实为 Career Interest Types 的 OI（1–7），按 (OI−1)/6 转换；只取 R/I/A/S/E/C 六维，不使用 IH 高点代码。跨问卷有效性仍待验证。
 
 `I = 100 × dot(user_RIASEC, role_RIASEC) / (norm(user_RIASEC) × norm(role_RIASEC))`
 
@@ -141,7 +141,7 @@ GitHub 快照保存查询词、查询时间（UTC）、两个相邻且不重叠�
 ## 编码前待验证
 
 - 具体 GitHub 查询主题、主题到职业技能的映射、计数完整性及特征归一化。
-- 已固定十个职业的 O*NET 31.0 CSV、Skills/Knowledge/Interests 字段，以及发布日期和许可记录。
+- 十个职业与问卷 18 个元素的精确映射、31.0 CSV、IM/LV/OI 量表和许可已核实，详见 DATA_SOURCES.md；仍需选择核心子集并审查质量标记、验证转换校准。
 - 已确定的 75/25 技能知识权重、70/30 个人适配权重、0.15/0.35 情景权重和平滑参数 20 的有效性；它们不是待选数值，而是待验证的原型假设。
 - GitHub REST Repository Search API 在 Replit 中的连通性、匿名限流行为与缓存策略。
 
@@ -168,3 +168,13 @@ GitHub 快照保存查询词、查询时间（UTC）、两个相邻且不重叠�
 - 用户能查看、修改全部用户评分字段；未确认不计算，缺失不静默补值。
 - S_skills、K_knowledge、S_capability、I、P、T 和两情景总分均可复算，缺口分两组显示；其他趋势公式及情景权重不变。
 - 相同确认画像、快照和版本结果一致；只修改不计分字段不能改变分数。职业名称、代码、官方来源可追溯，候选映射不能冒充最终数据。
+
+## 真实数据导入边界（2026-10-21 核验）
+
+完整证据、访问日期、下载大小、哈希和元素映射见 [DATA_SOURCES.md](DATA_SOURCES.md)。实际技能输入文件是 essential_skills.csv 和 transferable_skills.csv，知识为 knowledge.csv，兴趣为 career_interest_types.csv；不能假定存在名为 Skills.csv 或 Interests.csv 的当前文件。职业身份来自 occupation_data.csv，元素与量表分别关联 content_model_reference.csv、scales_reference.csv。
+
+未来的导入层位于 CSV 原始行与纯评分函数之间，当前未实现：按职业代码/Element ID/Scale ID 配对 IM 与 LV，检查唯一性、数值范围和质量标记，执行上述转换，并保留来源行、Date、Domain Source、版本与转换规则。技能与知识都采用 IM/LV 转换；不是将 O*NET 原值除以 4。职业兴趣固定六个 OI 元素 ID 1.B.1.a 至 1.B.1.f，问卷按每维两题均值后 (mean−1)/4 转换。
+
+建议任何选定核心字段的缺失、冲突、越界、Suppress=Y 或 Not Relevant=Y 先阻止对应完整组件评分并显示原因，人工审查后冻结可用子集；不临时丢行或造零值。来源空白标记保留未知，不能自动当作质量通过。LV=0 只有在实际值与质量确认后才使用现有零要求处理。RIASEC 六维缺失或零向量继续按既定规则降级。现有评分模块不读取原始质量标记，未来导入层必须先完成拦截，不能声称当前已具备真实数据质量防护。
+
+原始数据文件只暂存 /tmp，不放进现有 synthetic JSON；O*NET 31.0 数据按 CC BY 4.0 署名 USDOL/ETA、链接版本和许可，并说明筛选、归一化及评分改编。数据库许可不自动涵盖官方职业兴趣测试题。本轮未修改评分公式、代码或产品范围。
