@@ -5,7 +5,7 @@
 | Source | Purpose | Data Type | Access Method | Reliability | Update Frequency | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 职业技能：O*NET 31.0 官方 CSV | 少量真实职业及技能基准 | 职业标识、技能及选定要求字段 | 官方 31.0 CSV 已下载检查；见下方实际文件与字段 | 主要反映美国职业体系，不能声称代表马来西亚就业预测 | 固定 31.0；官方发布月份为 2026-08 | 文件、字段、量表及职业存在性已核实；转换校准待验证 |
-| 动态 AI 趋势：GitHub REST Repository Search API | 比较 AI 技能主题的新建公开仓库活动 | 两个连续 90 天窗口的返回计数与查询元数据 | Repository Search API；匿名搜索按最多 10 次/分钟设计，使用缓存 | 仅表示开源技术活动动量，不代表职位需求、工资或就业增长 | 按缓存策略刷新；查询主题与缓存有效期待验证 | 方案已确定；未接入，Replit 连通性待验证 |
+| 动态 AI 趋势：GitHub REST Repository Search API | 比较 AI 技能主题的新建公开仓库活动 | 两个连续 90 天窗口的返回计数与查询元数据 | Repository Search API；匿名搜索按最多 10 次/分钟设计，使用缓存 | 仅表示开源技术活动动量，不代表职位需求、工资或就业增长 | 按缓存策略刷新；查询主题与缓存有效期待验证 | 客户端及显式 Refresh 已接入；三职业映射为原型假设，尚待验证；Replit 连通性待验证 |
 | 备用研究趋势：arXiv API | 后续或备用研究活动信号 | 研究元数据、日期及主题 | 传统接口按最多每 3 秒一次请求设计 | 研究活动不等于就业增长；质量及技能映射待验证 | 按需；不进入预赛核心依赖 | 备用方案；未接入 |
 | 学习资源：高校开放课程、提供方官方课程目录、HRD Corp 项目目录候选 | 为缺口匹配免费或低价资源 | 课程名、技能、先修、时长、费用及资格条件 | 待验证：官方页面/可用目录、引用和保存条件 | 待验证：链接、费用、课程有效性及可报名条件 | 待验证：提供方更新节奏；保存核验日期 | 待验证 |
 | SDG 定义：联合国官方 SDG 目标与 targets | 定义 17 个目标并支持贡献解释 | SDG 编号、target、官方描述 | 待验证：官方页面/文件和复用许可 | 待验证：版本及具体 target 对应；职业技能映射需人工审查 | 待验证：版本日期、变更及复查周期 | 待验证 |
@@ -27,6 +27,29 @@ O*NET 主要反映美国职业体系；它提供职业技能基准，不是马�
 匿名搜索调用按每分钟最多 10 次设计；每个主题至少有两次窗口查询，须共享请求预算、复用缓存并避免频繁刷新。处理服务端限流响应；不能以本地预算替代服务端限制。API 失败时保留最后一次成功快照，界面明确显示 `cached`、原查询时间和缓存时间，并显示失败状态；无成功快照则标记不可用。失败不得覆盖成功快照时间，也不能模拟实时刷新。
 
 指标仅表示开源技术活动动量，不等同于职位需求、工资或就业增长。仓库数量受查询覆盖、重复/低质量仓库、平台人群及可见性变化影响；不能推断马来西亚市场需求。主题到职业技能的映射和信号归一化需人工审查。
+
+### 已确认并启用的三职业 GitHub topic 映射
+
+记录与官方文档访问日期：**2026-10-21**。以下范围经用户确认，状态统一为 **“原型假设，尚待验证”**；确认只授权实现这些查询，不代表主题覆盖、职业任务关联或预测有效性已经验证。尚未进行真实 API 抓取；实际数据访问时间以每个查询的 fetched_at 为准。
+
+| O*NET code | Exact occupation title | GitHub topic（职业内权重） | 选择理由（项目假设） | 状态 |
+| --- | --- | --- | --- | --- |
+| 15-2051.00 | Data Scientists | machine-learning（0.5）、data-science（0.5） | 用机器学习和数据科学主题观察与建模、分析实践相关的开源活动；不是该职业全部任务或岗位需求的代表样本 | 原型假设，尚待验证 |
+| 15-2031.00 | Operations Research Analysts | operations-research（0.5）、optimization（0.5） | 用运筹和优化主题观察与定量决策方法相关的开源活动；不能据此推断运筹职位增长 | 原型假设，尚待验证 |
+| 15-1252.00 | Software Developers | code-generation（0.5）、software-testing（0.5） | 用代码生成和软件测试主题观察部分开发工具活动；只覆盖软件工作的一部分，也不能等同于全部 AI 活动 | 原型假设，尚待验证 |
+
+查询与执行契约：
+
+- 每个主题独立精确查询 `topic:<slug> visibility:public fork:false created:<start>..<inclusive_end>`，通过 GitHub REST Repository Search API 的 `q` 参数编码；不自动扩词、不新增其他职业映射。其余七个职业不查询、不借用这三个职业的结果。
+- UTC 参考日 D 不纳入尚未完整的一天：最近窗口 `[D−90, D)`，此前窗口 `[D−180, D−90)`。GitHub 创建日期过滤使用包含端点的日期区间，因此查询结束日期为 end_exclusive 减一天。每个结果保留完整查询、来源 URL、两个窗口边界、total_count、incomplete_results、HTTP 状态及抓取时间。
+- 每个职业只有两个主题，每次成功且不命中缓存的显式 **Refresh** 发出 **4 次搜索请求**（两个主题 × 两个窗口），不会刷新其他职业。缓存仍有效时不请求；任何请求失败或限流时提前停止，不强行凑满四次，也不自动重试。
+- 职业内两个 T_k 等权聚合，沿用现有趋势公式及平滑参数 20。主题可能重叠，分数是主题分数平均，不把两个主题计数求和称为不同仓库总数。
+- 匿名搜索按每滚动分钟最多 10 次设计，进程内所有页面会话共享预算；同时遵守服务端 Retry-After / X-RateLimit-Reset。点击后四次请求需全部成功且 incomplete_results=false，才原子替换该职业成功快照；失败不能变为 0，也不能拼接新旧窗口。
+- 成功快照缓存 15 分钟；UTC 日期变化也使窗口过期。失败时显示错误和最后完整成功缓存的原始日期、cached/expired 状态；没有缓存则明确不可用。缓存保存在本地 data/cache/github_trends.json，已精确忽略，不写入 demo JSON。
+- 页面明确标记映射状态及解释边界：**GitHub 仓库活动只是开源活动代理指标，不等于招聘数量、工资或就业增长预测。** 平台用户、主题标注覆盖、检索范围和仓库质量均会造成偏差；返回计数是 API 报告值，不是完整活动普查。
+- 趋势证据只在 O*NET data audit 中展示；O*NET 质量阻断仍保留，即使 T 可算也不生成个人适配总分、情景总分或职业排名。Synthetic simulation 继续仅使用三个 demo JSON。
+
+官方语法与限制依据：[Repository Search API](https://docs.github.com/en/rest/search/search#search-repositories)、[repository topic 搜索](https://docs.github.com/en/search-github/searching-on-github/searching-for-repositories#search-by-topic)、[REST API 限流](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api)。文档访问不等于已经获取实际仓库计数；真实连通性、样本质量和职业关联仍待验证。
 
 ### arXiv 备用
 

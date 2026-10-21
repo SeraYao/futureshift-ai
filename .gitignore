@@ -138,3 +138,6 @@ dist
 .venv/
 __pycache__/
 *.py[cod]
+
+/data/cache/github_trends.json
+/data/cache/github_trends.tmp

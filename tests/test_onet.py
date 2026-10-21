@@ -1,4 +1,4 @@
-"""Offline official-data extraction and mixed-source application tests."""
+"""Offline official-data extraction and audit integration tests."""
 from copy import deepcopy
 import csv
 import hashlib
@@ -7,12 +7,11 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from app import ROOT, load_app_data, load_demo, profile_from_edits
+from app import ROOT, audit_role, load_onet
 from scripts.prepare_onet import (
     FILES, SCALES, build_dataset, extract_rating, normalized_value,
     questionnaire_mapping, read_sources,
 )
-from src.scoring import rank_roles
 
 
 def sample_row(scale: str, value: object, **flags: str) -> dict:
@@ -177,47 +176,29 @@ class OnetConversionTests(unittest.TestCase):
 
 
 class OnetAppTests(unittest.TestCase):
-    """Check the actual loader, quality gates and unchanged score integration."""
+    """Official audits preserve quality decisions without creating match scores."""
 
-    def test_official_requirements_replace_only_role_data(self) -> None:
-        """Original profile/trends stay synthetic; seven topic mappings stay missing."""
-        original, demo_roles, demo_trends = load_demo()
-        profile, official, trends = load_app_data()
-        self.assertEqual(trends, demo_trends)
-        for group in ('skills', 'knowledge'):
-            for key, value in original[group].items():
-                self.assertEqual(profile[group][key], value)
-        self.assertEqual(len(profile['skills']), 11)
-        self.assertEqual(len(profile['knowledge']), 7)
-        self.assertIsNone(profile['skills']['skill_02'])
-        self.assertEqual(sum(not role['topics'] for role in official['roles']), 7)
-        ds = next(role for role in official['roles'] if role['code'] == '15-2051.00')
-        self.assertEqual(ds['topics'], demo_roles['roles'][0]['topics'])
-        self.assertIsNone(ds['skills']['skill_04']['required'])  # suppressed LV
-        self.assertEqual(ds['skills']['skill_01']['importance'],
-                         (float(ds['skills']['skill_01']['sources']['IM']['source_rows'][0]['raw']['Data Value'])-1)/4)
+    def test_audit_uses_official_values_and_quality_gates(self) -> None:
+        """Suppressed programming remains blocked while its raw conversion remains visible."""
+        dataset = load_onet()
+        ds = next(role for role in dataset['roles'] if role['code'] == '15-2051.00')
+        audit = audit_role(ds)
+        programming = [row for row in audit['rows']['skills']
+                       if row['Field ID'] == 'skill_04' and row['Scale'] == 'LV'][0]
+        self.assertEqual(programming['Recommend Suppress'], 'Y')
+        self.assertIsNone(programming['Usable converted value'])
+        self.assertIsNotNone(programming['Converted (before quality gate)'])
+        self.assertIn('Recommend Suppress=Y', programming['Blockers'])
+        self.assertEqual(audit['riasec_vector'], ds['riasec'])
+        self.assertTrue(all('Not calculated' in status
+                            for status in audit['personal_component_status'].values()))
 
-    def test_missing_profile_and_official_quality_block_ranking(self) -> None:
-        """Engine preserves available scores without fabricating missing requirements or trends."""
-        profile, official, trends = load_app_data()
-        rows = rank_roles(profile, official['roles'], trends['topics'])
-        self.assertTrue(all(row['moderate_rank'] is None for row in rows))
-        self.assertTrue(all(row['I'].value is not None for row in rows))
-        complete = profile_from_edits(profile, {key:3 for key in profile['skills']},
-                                      {key:3 for key in profile['knowledge']}, profile['riasec'])
-        scored = rank_roles(complete, official['roles'], trends['topics'])
-        self.assertEqual(scored, rank_roles(complete, official['roles'], trends['topics']))
-        ds = next(row for row in scored if row['code'] == '15-2051.00')
-        self.assertIsNone(ds['skills']['score'].value)
-        self.assertIsNotNone(ds['trend']['score'].value)
-        bio = next(row for row in scored if row['code'] == '19-1029.01')
-        self.assertIsNotNone(bio['knowledge']['score'].value)
-        self.assertIsNone(bio['trend']['score'].value)
-
-    def test_loader_does_not_modify_files(self) -> None:
-        """Loading and editing a session leave every stored data file unchanged."""
-        files = list((ROOT/'data').glob('*.json'))
-        before = {p:p.read_bytes() for p in files}
-        profile, official, trends = load_app_data()
-        rank_roles(profile, official['roles'], trends['topics'])
-        self.assertEqual(before, {p:p.read_bytes() for p in files})
+    def test_audit_does_not_mutate_official_data(self) -> None:
+        """Computing source availability leaves the official artifact unchanged."""
+        dataset = load_onet()
+        original = deepcopy(dataset)
+        for role in dataset['roles']:
+            audit = audit_role(role)
+            self.assertEqual(audit, audit_role(role))
+            self.assertFalse({'moderate', 'fast', 'rank', 'trend', 'profile'} & audit.keys())
+        self.assertEqual(dataset, original)
