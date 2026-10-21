@@ -1,4 +1,4 @@
-"""Local synthetic-data Streamlit demo. Run: python3 -m streamlit run app.py."""
+"""Local O*NET requirements with synthetic profile/trend Streamlit demo. Run: python3 -m streamlit run app.py."""
 from copy import deepcopy
 from dataclasses import asdict
 import hashlib
@@ -44,6 +44,31 @@ def load_demo(directory: Path = ROOT / 'data') -> tuple[dict, dict, dict]:
     return documents
 
 
+def load_app_data(directory: Path = ROOT / 'data') -> tuple[dict, dict, dict]:
+    """Use official requirements and only existing synthetic topic mappings by exact code."""
+    profile, demo_roles, trends = load_demo(directory)
+    official = json.loads((directory / 'onet_roles.json').read_text(encoding='utf-8'))
+    if official.get('database_version') != '31.0' or official.get('data_status') != 'official_derived':
+        raise ValueError('Expected O*NET 31.0 official-derived role data')
+    synthetic_by_code = {role['code']: role for role in demo_roles['roles']}
+    result = deepcopy(official)
+    for role in result['roles']:
+        demo = synthetic_by_code.get(role['code'])
+        if demo is not None and demo['title'] != role['title']:
+            raise ValueError('Synthetic topic mapping title/code mismatch')
+        role['topics'] = deepcopy(demo['topics']) if demo else {}
+        role['trend_mapping_status'] = 'synthetic' if demo else 'missing'
+        role['trend_mapping_source'] = 'data/demo_roles.json' if demo else None
+        if not demo:
+            role['data_issues'].append('No existing synthetic trend mapping for this occupation')
+    # New questionnaire fields are unanswered, not fabricated demo abilities.
+    expanded = deepcopy(profile)
+    for key in result['questionnaire_fields']:
+        group = 'knowledge' if key.startswith('knowledge') else 'skills'
+        expanded[group].setdefault(key, None)
+    return expanded, result, trends
+
+
 def profile_from_edits(original: dict, skills: dict, knowledge: dict,
                        riasec: list[float]) -> dict:
     """Build a new in-memory synthetic profile without modifying fixture data."""
@@ -73,13 +98,13 @@ def render_breakdown(st: Any, heading: str, breakdown: dict) -> None:
     st.table([{
         'Item': LABELS.get(item['id'], item['id']),
         'Your level (0–1)': item['user'],
-        'Synthetic requirement': item['required'],
+        'O*NET requirement (0–1)': item['required'],
         'Importance': item['importance'],
         'Coverage': item['coverage'],
         'Weighted gap': item['gap'],
     } for item in breakdown['gaps']])
     st.caption('Sorted by weighted gap, then stable item ID. Coverage is capped at 100%. '
-               'A zero gap means no gap within this limited synthetic assessment.')
+               'A zero gap means no gap within this limited, uncalibrated assessment.')
 
 
 def render_topic(st: Any, topic: dict) -> None:
@@ -114,7 +139,7 @@ def render_topic(st: Any, topic: dict) -> None:
 
 def render_role(st: Any, row: dict, role: dict) -> None:
     """Explain the engine output using templates and its exact calculation trace."""
-    st.caption(f"O*NET occupation identity: {row['code']} · Synthetic requirements and trends")
+    st.caption(f"O*NET occupation identity: {row['code']} · O*NET® 31.0 requirements · Synthetic trends")
     cols = st.columns(3)
     cols[0].metric('Skills coverage', display_score(row['skills']['score']))
     cols[1].metric('Knowledge coverage', display_score(row['knowledge']['score']))
@@ -140,9 +165,15 @@ def render_role(st: Any, row: dict, role: dict) -> None:
     render_breakdown(st, 'Knowledge gaps', row['knowledge'])
     st.markdown('#### Interest profile')
     st.table([{'Dimension': name, 'Your confirmed interest': user,
-               'Synthetic role interest': target}
+               'O*NET interest (0–1)': target}
               for name, user, target in zip(RIASEC, st.session_state.confirmed_profile['riasec'], role['riasec'])])
+    st.markdown('#### O*NET source quality & unavailable items')
+    for issue in role['data_issues']:
+        st.warning(issue)
+    st.caption('All 18 questionnaire items are retained. Flagged values are blocked, not silently dropped.')
     st.markdown('#### Trend evidence · synthetic')
+    if not row['trend']['topics']:
+        st.info('No existing synthetic topic mapping. Trend and scenario totals are unavailable.')
     for topic in row['trend']['topics']:
         render_topic(st, topic)
     st.markdown('#### SDG contribution')
@@ -150,8 +181,10 @@ def render_role(st: Any, row: dict, role: dict) -> None:
             'is present in these fixtures. SDG is not included in the score.')
     st.markdown('#### Sources & calculation trace')
     st.markdown(f"[Official occupation identity]({role['identity_source_url']})")
-    st.caption('This link identifies the real title and code only. Requirements, importance, '
-               'RIASEC values and topic mappings shown here are synthetic, not O*NET ratings.')
+    st.caption('Requirements, importance and career interests are derived from O*NET® 31.0. '
+               'The profile and GitHub trend mappings/counts remain synthetic. '
+               'Source rows, quality flags and conversions are available below.')
+    st.json(role, expanded=False)
     st.json(asdict(row['S_capability']))
     st.json(json.dumps(row, default=asdict), expanded=False)
 
@@ -176,15 +209,23 @@ def main() -> None:
     st.title('FutureShift AI')
     st.markdown('### Navigate change. Shape your future.')
     st.write('Explore how your capabilities and interests connect to different career pathways.')
-    st.warning('演示数据为合成数据，不代表真实劳动力市场预测')
-    st.caption('SYNTHETIC DEMO · All requirements, interests and repository counts are test values. '
-               'No live data, model calls or employment predictions.')
+    st.warning('用户画像和趋势演示数据为合成数据，不代表真实劳动力市场预测。职业要求来自 O*NET® 31.0。')
+    st.caption('MIXED-SOURCE DEMO · Official U.S. occupational requirements and career interests; '
+               'synthetic user profile, topic mappings and repository counts. No live data or employment predictions.')
     try:
-        original, role_file, trend_file = load_demo()
+        original, role_file, trend_file = load_app_data()
     except (OSError, ValueError, KeyError, TypeError) as exc:
-        st.error(f'Unable to load the local synthetic fixtures: {exc}')
+        st.error(f'Unable to load the local data: {exc}')
         st.stop()
     roles, trends = role_file['roles'], trend_file['topics']
+    with st.expander('Data sources, license & conversion limits'):
+        st.write(role_file['license']['attribution'])
+        st.markdown('[O*NET® 31.0 Database](https://www.onetcenter.org/database.html) · '
+                    '[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)')
+        st.write(role_file['license']['modifications'])
+        st.caption(f"Official source access date: {role_file['accessed_on']} · Release: {role_file['released']}")
+        st.json(role_file['transformations'])
+        st.json(role_file['sources'], expanded=False)
     with st.sidebar:
         st.markdown('## Explore your options')
         st.write('01 · Edit your demo profile')
@@ -196,8 +237,9 @@ def main() -> None:
         st.caption(f'Scoring: {SCORING_VERSION}')
         st.caption(f'Data snapshot: {fingerprint((role_file, trend_file))}')
     st.subheader('01 / Your demo profile')
-    st.caption('Only the fields present in the local demo are shown: three skills, two knowledge '
-               'areas and six normalized interest dimensions. This is a limited assessment.')
+    st.caption('11 skills, 7 knowledge areas and 6 interest dimensions. Existing demo values are prefilled; '
+               'new fields start unanswered. Select levels for this synthetic profile before confirming. '
+               'Missing answers never become zero.')
     with st.form('profile_editor'):
         columns = st.columns(3)
         edits: dict[str, dict] = {'skills': {}, 'knowledge': {}}
@@ -205,9 +247,11 @@ def main() -> None:
             with column:
                 st.markdown(f'#### {title}')
                 for key, value in sorted(original[group].items()):
-                    edits[group][key] = st.select_slider(
-                        LABELS.get(key, key), options=list(range(5)), value=value,
-                        format_func=lambda n: f'{n} · {LEVELS[n]}', key=f'edit_{key}')
+                    edits[group][key] = st.selectbox(
+                        LABELS.get(key, key), options=[None, 0, 1, 2, 3, 4],
+                        index=0 if value is None else value + 1,
+                        format_func=lambda n: 'Unanswered' if n is None else f'{n} · {LEVELS[n]}',
+                        key=f'onet_edit_{key}')
                     st.caption(f'Normalized value = selected level / 4 · {key}')
         with columns[2]:
             st.markdown('#### Interests · RIASEC')
@@ -235,8 +279,16 @@ def main() -> None:
     rows = rank_roles(profile, roles, trends)
     eligible = [row for row in rows if row['moderate_rank'] is not None]
     st.subheader('02 / Two scenarios. More perspective.')
-    st.write('Both scenarios use the same confirmed profile and synthetic data. Only the trend '
+    st.write('Both scenarios use the same confirmed profile, official requirements and synthetic trends. Only the trend '
              'weight changes. Scores describe prototype fit, not career outlook probabilities.')
+    st.caption('Source quality flags or unanswered fields block affected components. '
+               'Seven occupations have no existing synthetic trend mapping; no mappings are invented.')
+    with st.expander('All occupations · component availability', expanded=not eligible):
+        st.table([{'Occupation': r['title'], 'Skills': display_score(r['skills']['score']),
+                   'Knowledge': display_score(r['knowledge']['score']), 'Interests': display_score(r['I']),
+                   'Personal fit': display_score(r['P']), 'Trend': display_score(r['trend']['score']),
+                   'Moderate': display_score(r['moderate']), 'Fast': display_score(r['fast'])}
+                  for r in rows])
     if len(eligible) < 5:
         st.info(f'{len(eligible)} of {len(roles)} demo roles can be ranked; showing all available '
                 'results rather than inventing five recommendations.')
@@ -271,8 +323,10 @@ def main() -> None:
                  'Self-ratings and occupational requirements are different measurement systems; '
                  'normalization does not validate their equivalence. Scenario sensitivity is not '
                  'statistical confidence. Missing inputs block complete ranking; no values are imputed.')
-        st.write('Only local demo_profile.json, demo_roles.json and demo_trends.json are read. '
-                 'No trend refresh or real-data ingestion is implemented. Career choices remain yours.')
+        st.write('Local onet_roles.json supplies official occupational ratings. demo_profile.json '
+                 'supplies the synthetic starting profile; demo_roles.json supplies only the existing '
+                 'synthetic topic mappings; demo_trends.json supplies synthetic counts. '
+                 'No model, API call or live refresh is used. Career choices remain yours.')
 
 
 if __name__ == '__main__':
