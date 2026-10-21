@@ -1,0 +1,132 @@
+{
+  "data_status": "synthetic",
+  "notice": "Development fixture only. All requirements, importance, RIASEC, topic mappings and repository counts are synthetic test values, not O*NET measurements or real market data. Only career titles/codes identify real occupations.",
+  "roles": [
+    {
+      "data_status": "synthetic",
+      "notice": "Development fixture only. All requirements, importance, RIASEC, topic mappings and repository counts are synthetic test values, not O*NET measurements or real market data. Only career titles/codes identify real occupations.",
+      "code": "15-2051.00",
+      "title": "Data Scientists",
+      "identity_source_url": "https://www.onetonline.org/link/summary/15-2051.00",
+      "skills": {
+        "skill_01": {
+          "required": 0.8,
+          "importance": 0.7
+        },
+        "skill_03": {
+          "required": 0.6,
+          "importance": 0.5
+        },
+        "skill_04": {
+          "required": 0.8,
+          "importance": 0.8
+        }
+      },
+      "knowledge": {
+        "knowledge_01": {
+          "required": 0.8,
+          "importance": 0.8
+        },
+        "knowledge_02": {
+          "required": 0.6,
+          "importance": 0.5
+        }
+      },
+      "riasec": [
+        0.3,
+        0.9,
+        0.2,
+        0.2,
+        0.3,
+        0.6
+      ],
+      "topics": {
+        "synthetic-data-science": 1.0
+      }
+    },
+    {
+      "data_status": "synthetic",
+      "notice": "Development fixture only. All requirements, importance, RIASEC, topic mappings and repository counts are synthetic test values, not O*NET measurements or real market data. Only career titles/codes identify real occupations.",
+      "code": "15-2031.00",
+      "title": "Operations Research Analysts",
+      "identity_source_url": "https://www.onetonline.org/link/summary/15-2031.00",
+      "skills": {
+        "skill_01": {
+          "required": 0.6,
+          "importance": 0.7
+        },
+        "skill_03": {
+          "required": 0.6,
+          "importance": 0.5
+        },
+        "skill_04": {
+          "required": 0.6,
+          "importance": 0.8
+        }
+      },
+      "knowledge": {
+        "knowledge_01": {
+          "required": 0.6,
+          "importance": 0.8
+        },
+        "knowledge_02": {
+          "required": 0.6,
+          "importance": 0.5
+        }
+      },
+      "riasec": [
+        0.3,
+        0.9,
+        0.2,
+        0.2,
+        0.3,
+        0.6
+      ],
+      "topics": {
+        "synthetic-optimization": 1.0
+      }
+    },
+    {
+      "data_status": "synthetic",
+      "notice": "Development fixture only. All requirements, importance, RIASEC, topic mappings and repository counts are synthetic test values, not O*NET measurements or real market data. Only career titles/codes identify real occupations.",
+      "code": "15-1252.00",
+      "title": "Software Developers",
+      "identity_source_url": "https://www.onetonline.org/link/summary/15-1252.00",
+      "skills": {
+        "skill_01": {
+          "required": 0.7,
+          "importance": 0.7
+        },
+        "skill_03": {
+          "required": 0.6,
+          "importance": 0.5
+        },
+        "skill_04": {
+          "required": 0.7,
+          "importance": 0.8
+        }
+      },
+      "knowledge": {
+        "knowledge_01": {
+          "required": 0.7,
+          "importance": 0.8
+        },
+        "knowledge_02": {
+          "required": 0.6,
+          "importance": 0.5
+        }
+      },
+      "riasec": [
+        0.3,
+        0.9,
+        0.2,
+        0.2,
+        0.3,
+        0.6
+      ],
+      "topics": {
+        "synthetic-software": 1.0
+      }
+    }
+  ]
+}

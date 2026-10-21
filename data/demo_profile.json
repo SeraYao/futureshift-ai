@@ -1,0 +1,20 @@
+{
+  "data_status": "synthetic",
+  "notice": "Development fixture only. All requirements, importance, RIASEC, topic mappings and repository counts are synthetic test values, not O*NET measurements or real market data. Only career titles/codes identify real occupations.",
+  "skills": {
+    "skill_01": 3,
+    "skill_03": 2,
+    "skill_04": 2
+  },
+  "knowledge": {
+    "knowledge_01": 3,
+    "knowledge_02": 2
+  },
+    0.25,
+    1,
+    0.25,
+    0.5,
+    0.25,
+    0.75
+  ]
+}
