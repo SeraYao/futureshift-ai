@@ -157,7 +157,7 @@ class StreamlitModeTests(unittest.TestCase):
         self.assertFalse(page.exception)
         self.assertFalse(page.error)
         self.assertEqual(len(page.get('progress')), 0)
-        self.assertEqual(len(page.selectbox), 0)
+        self.assertEqual([box.key for box in page.selectbox], ['ui_language'])
         self.assertEqual(len(page.dataframe), 30)
         self.assertTrue(any('unknown' in warning.value for warning in page.warning))
         self.assertTrue(any('Recommend Suppress=Y' in warning.value for warning in page.warning))

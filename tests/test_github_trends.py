@@ -350,8 +350,8 @@ class ConfirmedMappingTests(unittest.TestCase):
         snapshots=[args[0] for method,args,_ in ui.calls if method=='json']
         self.assertEqual(len(snapshots),1)
         self.assertEqual(snapshots[0]['role_code'],'15-2031.00')
-        self.assertTrue(any(gh.MAPPING_STATUS in str(args) for _,args,_ in ui.calls))
-        self.assertTrue(any('不等于招聘数量' in str(args) for _,args,_ in ui.calls))
+        self.assertTrue(any('Prototype hypothesis, not yet validated' in str(args) for _,args,_ in ui.calls))
+        self.assertTrue(any('not hiring counts' in str(args) for _,args,_ in ui.calls))
 
 
 class TrendCountDisplayTests(unittest.TestCase):

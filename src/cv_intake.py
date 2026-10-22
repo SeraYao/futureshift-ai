@@ -1,4 +1,5 @@
 """Transient PDF intake, evidence review and explicit mapping to the existing questionnaire."""
+from src.i18n import tr, display_text, translated_options, translate_error
 from copy import deepcopy
 import hashlib
 import re
@@ -11,17 +12,17 @@ from src.scoring import normalize_0_4
 
 def render_cv_error(st: Any, message: str) -> None:
     """Keep the safe client diagnosis visible across reruns, with collapsed details."""
-    st.warning(message)
-    with st.expander('Technical error details', expanded=False):
+    st.warning(translate_error(message))
+    with st.expander(tr('Technical error details'), expanded=False):
         status = re.search(r'AI HTTP error (\d{3})\.', message)
         if status:
-            st.text('HTTP status: ' + status[1])
+            st.text(tr('HTTP status: ') + status[1])
         else:
             category = next((label for token, label in (
                 ('SSL error', 'SSL'), ('timeout error', 'timeout'),
                 ('connection error', 'connection'), ('configur', 'configuration'),
                 ('response format', 'response format')) if token in message), 'validation')
-            st.text('Error category: ' + category)
+            st.text(tr('Error category: ') + display_text(category))
         for detail in re.findall(r'(?:type|code): [a-z_]+\.|Request ID: [a-zA-Z0-9_-]+\.', message):
             st.text(detail)
 
@@ -84,30 +85,26 @@ def render_cv_context(st: Any, context: dict | None, labels: dict) -> None:
     """Expose confirmed evidence and non-scored experience notes, never an entire CV."""
     if not context:
         return
-    with st.expander('CV-supported context · not an ability assessment', expanded=False):
-        st.caption('Only your explicit 0–4 self-ratings affect ability scoring. CV excerpts and experience '
-                   'notes do not add points. Interest questions must still be answered. These notes are not exported with plans.')
+    with st.expander(tr('CV-supported context · not an ability assessment'), expanded=False):
+        st.caption(tr('Only your explicit 0–4 self-ratings affect ability scoring. CV excerpts and experience notes do not add points. Interest questions must still be answered. These notes are not exported with plans.'))
         for group in ('education', 'skills', 'knowledge'):
             for item in context[group]:
-                st.write(labels.get(item['field'], item['field']) + ' · Evidence: ' + item['evidence'])
+                st.write(display_text(labels.get(item['field'], item['field'])) + tr(' · Evidence: ') + item['evidence'])
         for item in context['experience']:
-            st.write('Experience note: ' + item['summary'])
-            st.caption('Original evidence: ' + item['evidence'])
+            st.write(tr('Experience note: ') + item['summary'])
+            st.caption(tr('Original evidence: ') + item['evidence'])
 
 
 def render_cv_intake(st: Any, labels: dict, levels: tuple) -> None:
     """Offer PDF upload and a consent-gated AI action on student entry/background pages."""
-    with st.expander('Upload a PDF CV', expanded=False):
-        st.caption('Optional · selectable-text PDF only · up to 3 MB and 5 pages · no OCR. '
-                   'Keep using the questionnaire if parsing or AI is unavailable. '
-                   'No CV file is written to disk or logs. Uploads use temporary server memory; '
-                   'only reviewed structured fields and short evidence excerpts remain in this session.')
+    with st.expander(tr('Upload a PDF CV'), expanded=False):
+        st.caption(tr('Optional · selectable-text PDF only · up to 3 MB and 5 pages · no OCR. Keep using the questionnaire if parsing or AI is unavailable. No CV file is written to disk or logs. Uploads use temporary server memory; only reviewed structured fields and short evidence excerpts remain in this session.'))
         if st.session_state.get('cv_notice'):
             render_cv_error(st, st.session_state['cv_notice'])
         review = st.session_state.get('cv_review')
         if review is None:
             generation = st.session_state.get('cv_upload_generation', 0)
-            uploaded = st.file_uploader('Choose a PDF CV', type=['pdf'], key=f'cv_pdf_upload_{generation}',
+            uploaded = st.file_uploader(tr('Choose a PDF CV'), type=['pdf'], key=f'cv_pdf_upload_{generation}',
                                         max_upload_size=3)
             if uploaded is None:
                 return
@@ -121,34 +118,31 @@ def render_cv_intake(st: Any, labels: dict, levels: tuple) -> None:
                 ctx = get_script_run_ctx()
                 if ctx:
                     st.session_state['cv_upload_ref'] = (ctx.session_id, uploaded.file_id)
-            if st.button('Cancel CV upload', key='cv_cancel_upload'):
+            if st.button(tr('Cancel CV upload'), key='cv_cancel_upload'):
                 clear_cv_review(st.session_state)
                 st.rerun()
             try:
                 text = extract_pdf(getattr(uploaded, 'name', ''), uploaded.getvalue())
             except CVError as exc:
-                st.error(str(exc))
+                st.error(translate_error(str(exc)))
                 release_cv_upload(st.session_state)
                 return
             sanitized = redact_text(text)
             del text
-            with st.expander('Review text that would be sent', expanded=False):
+            with st.expander(tr('Review text that would be sent'), expanded=False):
                 st.text(sanitized)
-            st.caption('Local removal of common emails, phone numbers, URLs and address lines is best effort. '
-                       'Names or identifying details may remain: review the text before consenting. '
-                       'Only the first 8,000 redacted characters are sent. No raw PDF is sent to AI.')
+            st.caption(tr('Local removal of common emails, phone numbers, URLs and address lines is best effort. Names or identifying details may remain: review the text before consenting. Only the first 8,000 redacted characters are sent. No raw PDF is sent to AI.'))
             try:
                 AIConfig.from_env()
                 configured = True
             except CVError as exc:
                 configured = False
-                st.info(str(exc) + ' Continue with Fill in my profile; no profile was changed.')
+                st.info(translate_error(str(exc) + tr(' Continue with Fill in my profile; no profile was changed.')))
                 render_cv_error(st, str(exc))
-            consent = st.checkbox('I agree to send the extracted, locally redacted CV text to the configured AI service for processing.',
+            consent = st.checkbox(tr('I agree to send the extracted, locally redacted CV text to the configured AI service for processing.'),
                                   key=f'cv_consent_{generation}', value=False)
-            st.caption('The provider may retain requests under its own policy. Do not continue unless you accept that policy. '
-                       'Nothing is sent by uploading or checking consent alone: the next button sends the request.')
-            if st.button('Extract supported fields with AI', key='cv_extract', disabled=not (consent and configured)):
+            st.caption(tr('The provider may retain requests under its own policy. Do not continue unless you accept that policy. Nothing is sent by uploading or checking consent alone: the next button sends the request.'))
+            if st.button(tr('Extract supported fields with AI'), key='cv_extract', disabled=not (consent and configured)):
                 try:
                     st.session_state['cv_review'] = extract_with_ai(sanitized, consent, labels)
                 except CVError as exc:
@@ -156,45 +150,42 @@ def render_cv_intake(st: Any, labels: dict, levels: tuple) -> None:
                 release_cv_upload(st.session_state)
                 st.rerun()
             return
-        st.subheader('Review CV-supported fields')
-        st.caption('Edit supported categories and enter your own ability ratings. A CV mention is not a skill score. '
-                   'Missing fields remain unanswered; existing manual answers are retained unless you explicitly replace them.')
+        st.subheader(tr('Review CV-supported fields'))
+        st.caption(tr('Evidence and quoted source text are shown in their original language.'))
+        st.caption(tr('Edit supported categories and enter your own ability ratings. A CV mention is not a skill score. Missing fields remain unanswered; existing manual answers are retained unless you explicitly replace them.'))
         if review.get('unverified_fields'):
-            st.warning('Unable to verify these AI fields; they were excluded: ' + ', '.join(
-                labels.get(key, key) for key in review['unverified_fields']) +
-                '. Fill them in manually in the questionnaire.')
+            st.warning(translate_error(tr('Unable to verify these AI fields; they were excluded: ') + ', '.join((display_text(labels.get(key, key)) for key in review['unverified_fields'])) + tr('. Fill them in manually in the questionnaire.')))
         education, ratings, summaries = {}, {}, []
         from src.pathway import BACKGROUND
         for item in review['education']:
             key = item['field']
-            st.write(key + ' · Evidence: ' + item['evidence'])
+            st.write(display_text(key) + tr(' · Evidence: ') + item['evidence'])
             options = (None, *BACKGROUND[key])
-            education[key] = st.selectbox(key + ' · CV review', options, index=options.index(item['value']),
-                                          key='cv_edit_' + key, format_func=lambda value: value or 'Do not apply')
+            education[key] = st.selectbox(display_text(key) + tr(' · CV review'), options, index=options.index(item['value']),
+                                          key='cv_edit_' + key, format_func=translated_options(lambda value: value or 'Do not apply'))
         for group in ('skills', 'knowledge'):
             for item in review[group]:
                 key = item['field']
-                st.write(labels[key] + ' · Evidence: ' + item['evidence'])
-                ratings[key] = st.selectbox('Your self-rating · ' + labels[key] + ' (' + group + ')',
+                st.write(display_text(labels[key]) + tr(' · Evidence: ') + item['evidence'])
+                ratings[key] = st.selectbox(tr('Your self-rating · ') + display_text(labels[key]) + ' (' + display_text(group) + ')',
                     tuple(range(5)), index=None, key='cv_rating_' + key,
-                    format_func=lambda value: f'{value} — {levels[value]}')
+                    format_func=translated_options(lambda value: f'{value} — {levels[value]}'))
         for index, item in enumerate(review['experience']):
-            st.caption('Original experience evidence: ' + item['evidence'])
-            summaries.append(st.text_area('Experience note · not scored', value=item['summary'],
+            st.caption(tr('Original experience evidence: ') + item['evidence'])
+            summaries.append(st.text_area(tr('Experience note · not scored'), value=item['summary'],
                                            max_chars=160, key=f'cv_edit_experience_{index}'))
-        st.write('Still unconfirmed — answer in the questionnaire: ' + ', '.join(
-            labels.get(key, key) for key in review['unconfirmed_fields']))
-        confirm = st.checkbox('I confirm the reviewed fields and my own self-ratings.', key='cv_review_confirm')
-        if st.button('Apply confirmed fields and continue questionnaire', disabled=not confirm, key='cv_apply'):
+        st.write(tr('Still unconfirmed — answer in the questionnaire: ') + ', '.join((display_text(labels.get(key, key)) for key in review['unconfirmed_fields'])))
+        confirm = st.checkbox(tr('I confirm the reviewed fields and my own self-ratings.'), key='cv_review_confirm')
+        if st.button(tr('Apply confirmed fields and continue questionnaire'), disabled=not confirm, key='cv_apply'):
             try:
                 apply_cv_fields(st.session_state, review, education, ratings, summaries, confirm)
             except CVError as exc:
-                st.error(str(exc))
+                st.error(translate_error(str(exc)))
             else:
                 clear_cv_review(st.session_state)
                 st.session_state.pop('cv_review_confirm', None)
                 st.rerun()
-        if st.button('Cancel CV review', key='cv_cancel_review'):
+        if st.button(tr('Cancel CV review'), key='cv_cancel_review'):
             clear_cv_review(st.session_state)
             st.session_state.pop('cv_review_confirm', None)
             st.rerun()

@@ -94,7 +94,7 @@ class GuidedUITests(unittest.TestCase):
             page.selectbox(key='pathway_Identity').set_value('Recent graduate').run()
             page.text_area(key='pathway_Optional career goal').set_value('Explore technology').run()
             page.button(key='pathway_next').click().run()
-            self.assertTrue(all(box.value is None for box in page.selectbox))
+            self.assertTrue(all(box.value is None for box in page.selectbox if box.key.startswith('pathway_')))
             page.selectbox(key='pathway_skill_01').set_value(3).run()
             page.button(key='pathway_back').click().run()
             self.assertEqual(page.text_area(key='pathway_Optional career goal').value, 'Explore technology')

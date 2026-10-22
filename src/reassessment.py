@@ -1,4 +1,5 @@
 """Session snapshots and deterministic before/after explanations; no score calculation."""
+from src.i18n import tr, display_text, table_text, translate_error
 from copy import deepcopy
 from typing import Any
 
@@ -71,15 +72,13 @@ def task_changes(before: dict, after: dict) -> dict[str, list[dict]]:
 def render_comparison(st: Any, previous: dict | None, current: dict, labels: dict) -> None:
     """Explain answer changes and all score components without model-generated claims."""
     if previous is None:
-        st.info('First assessment: no previous result to compare yet.')
+        st.info(tr('First assessment: no previous result to compare yet.'))
         return
-    st.subheader('What changed since your last assessment?')
-    st.caption('Prototype simulation. Changes are new minus previous; a negative rank difference means '
-               'moving higher. Unavailable scores remain unavailable, never zero. '
-               'Trend inputs are fixed synthetic snapshots, not evidence of labour-market change.')
+    st.subheader(tr('What changed since your last assessment?'))
+    st.caption(tr('Prototype simulation. Changes are new minus previous; a negative rank difference means moving higher. Unavailable scores remain unavailable, never zero. Trend inputs are fixed synthetic snapshots, not evidence of labour-market change.'))
     changes = changed_answers(previous['answers'], current['answers'])
     if not changes:
-        st.info('No questionnaire answers changed. Identical inputs and snapshots produce identical results.')
+        st.info(tr('No questionnaire answers changed. Identical inputs and snapshots produce identical results.'))
     for change in changes:
         key = change['field']
         if key.startswith('skill_'):
@@ -90,15 +89,14 @@ def render_comparison(st: Any, previous: dict | None, current: dict, labels: dic
             effect = 'RIASEC dimension → interest similarity → personal fit.'
         else:
             effect = 'Not scored. Weekly learning time may change the plan; other preferences remain contextual.'
-        st.write(f"{labels.get(key, key)}: {change['before']} → {change['after']}. {effect}")
+        st.write(tr('{v0}: {v1} → {v2}. {v3}', v0=display_text(labels.get(key, key)), v1=change['before'], v2=change['after'], v3=display_text(effect)))
     for result in compare_results(previous['rows'], current['rows']):
-        with st.expander(result['title'] + ' · Before / after'):
+        with st.expander(result['title'] + tr(' · Before / after')):
             role = next(role for role in current['roles']['roles'] if role['code'] == result['code'])
-            used = [labels.get(change['field'], change['field']) for change in changes
+            used = [display_text(labels.get(change['field'], change['field'])) for change in changes
                     if change['field'] in role['skills'] or change['field'] in role['knowledge']]
-            st.caption('Changed ability inputs used by this role: ' + (', '.join(used) or 'None') +
-                       '. All six interest dimensions are used. Other ability answers have no requirement in this fixture.')
-            st.table([{'Measure': name, 'Previous': item['before'] if item['before'] is not None else 'Unavailable',
+            st.caption(tr('Changed ability inputs used by this role: ') + (', '.join(used) or tr('None')) + tr('. All six interest dimensions are used. Other ability answers have no requirement in this fixture.'))
+            st.table(table_text([{'Measure': name, 'Previous': item['before'] if item['before'] is not None else 'Unavailable',
                        'Current': item['after'] if item['after'] is not None else 'Unavailable',
                        'Change': item['delta'] if item['delta'] is not None else 'Unavailable',
-                       'Status': item['status']} for name, item in result['measures'].items()])
+                       'Status': item['status']} for name, item in result['measures'].items()]))

@@ -1,4 +1,5 @@
 """Versioned local plan transfer: allowlisted export and validate-before-confirm restore."""
+from src.i18n import tr, display_text, table_text, translate_error
 from copy import deepcopy
 from datetime import datetime, timezone
 import hashlib
@@ -135,26 +136,25 @@ def restore_saved_plan(state: Any, prepared: dict) -> None:
 
 def render_restore(st: Any, load_demo: Callable, labels: dict | None = None) -> None:
     """Validate an upload, show a readable preview, then ask for restore confirmation."""
-    with st.expander('Restore a saved plan', expanded=False):
-        st.caption('Upload your local FutureShift JSON file. Nothing changes until you confirm. '
-                   'Free text, background details and live GitHub evidence are not restored.')
-        uploaded = st.file_uploader('Restore a saved plan', type=['json'], key='restore_plan_upload')
+    with st.expander(tr('Restore a saved plan'), expanded=False):
+        st.caption(tr('Upload your local FutureShift JSON file. Nothing changes until you confirm. Free text, background details and live GitHub evidence are not restored.'))
+        uploaded = st.file_uploader(tr('Restore a saved plan'), type=['json'], key='restore_plan_upload')
         if uploaded is None:
             return
         try:
             prepared = validate_saved_plan(uploaded.getvalue(), load_demo)
         except ValueError as exc:
-            st.error('Cannot restore this file: ' + str(exc))
+            st.error(translate_error(tr('Cannot restore this file: ') + str(exc)))
             return
         document = prepared['document']
-        st.write(f"Career: {document['career']['title']} · 4 weeks · {document['weekly_hours']} hours/week")
-        st.write(f"Completed tasks: {sum(prepared['completion'].values())} / {len(prepared['completion'])}")
-        st.caption(document['notice'])
-        with st.expander('Review restored scoring answers', expanded=False):
+        st.write(tr('Career: {v0} · 4 weeks · {v1} hours/week', v0=document['career']['title'], v1=document['weekly_hours']))
+        st.write(tr('Completed tasks: {v0} / {v1}', v0=sum(prepared['completion'].values()), v1=len(prepared['completion'])))
+        st.caption(display_text(document['notice']))
+        with st.expander(tr('Review restored scoring answers'), expanded=False):
             from src.pathway import INTERESTS
             names = {**dict(INTERESTS), **(labels or {}), 'data_status': 'Profile data status'}
-            st.table([{'Question': names.get(key, key), 'Answer': value}
-                      for key, value in document['answers'].items()])
-        if st.button('Confirm restore and open my plan', key='restore_plan_confirm'):
+            st.table(table_text([{'Question': names.get(key, key), 'Answer': value}
+                      for key, value in document['answers'].items()]))
+        if st.button(tr('Confirm restore and open my plan'), key='restore_plan_confirm'):
             restore_saved_plan(st.session_state, prepared)
             st.rerun()

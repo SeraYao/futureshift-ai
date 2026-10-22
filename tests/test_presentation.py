@@ -23,8 +23,12 @@ class DisclosureStructureTests(unittest.TestCase):
                     call=item.context_expr
                     if (isinstance(call,ast.Call) and isinstance(call.func,ast.Attribute)
                             and call.func.attr=='expander' and call.args
-                            and isinstance(call.args[0],ast.Constant)
-                            and call.args[0].value=='Technical details'):
+                            and ((isinstance(call.args[0],ast.Constant) and call.args[0].value=='Technical details')
+                                 or (isinstance(call.args[0],ast.Call)
+                                     and isinstance(call.args[0].func,ast.Name)
+                                     and call.args[0].func.id=='tr'
+                                     and isinstance(call.args[0].args[0],ast.Constant)
+                                     and call.args[0].args[0].value=='Technical details'))):
                         self.assertTrue(any(k.arg=='expanded' and isinstance(k.value,ast.Constant)
                                             and k.value.value is False for k in call.keywords))
                         technical=True
@@ -89,7 +93,7 @@ class VisitorPresentationTests(unittest.TestCase):
             self.assertFalse(page.exception)
             simulation=self.check_disclosures(page)
             self.assertEqual(len(page.get('progress')),6)
-            self.assertTrue(any('合成演示数据' in warning.value for warning in page.warning))
+            self.assertTrue(any('synthetic demonstration data' in warning.value for warning in page.warning))
             self.assertFalse(any('Fixture snapshot:' in str(getattr(node,'value','')) for node in simulation))
             page.radio(key='page_mode').set_value('O*NET data audit').run(timeout=30)
             self.assertFalse(page.exception)

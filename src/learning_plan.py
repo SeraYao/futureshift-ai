@@ -1,4 +1,5 @@
 """Deterministic four-week practice suggestions from available match gaps only."""
+from src.i18n import tr, display_text, translated_options, translate_error
 from copy import deepcopy
 import hashlib
 import json
@@ -82,27 +83,25 @@ def render_learning_plan(st: Any, rows: list[dict], roles: dict, labels: dict,
                          preferred_time: str | None = None, assessment: dict | None = None,
                          previous: dict | None = None) -> None:
     """Offer occupation selection, a budgeted plan and session-only completion checks."""
-    st.subheader('Your four-week practice plan')
-    st.warning('Prototype suggestion — no employment outcome is guaranteed. Occupational gaps here are synthetic.')
-    st.info('Verified learning resources are not connected yet. These are authored practice exercises, '
-            'not course recommendations. Completion does not change your matching scores or prove skill mastery.')
+    st.subheader(tr('Your four-week practice plan'))
+    st.warning(tr('Prototype suggestion — no employment outcome is guaranteed. Occupational gaps here are synthetic.'))
+    st.info(tr('Verified learning resources are not connected yet. These are authored practice exercises, not course recommendations. Completion does not change your matching scores or prove skill mastery.'))
     codes = [row['code'] for row in rows]
     if assessment is not None and 'learning_role' not in st.session_state:
         st.session_state['learning_role'] = assessment.get('selected_role')
-    code = st.selectbox('Choose a career to plan for', codes, index=None,
-                        format_func=lambda value: roles[value]['title'], key='learning_role')
+    code = st.selectbox(tr('Choose a career to plan for'), codes, index=None,
+                        format_func=translated_options(lambda value: roles[value]['title']), key='learning_role')
     if code is None:
-        st.caption('Select one of your match results to build a plan.')
+        st.caption(tr('Select one of your match results to build a plan.'))
         return
     options = (3, 5, 8, 10)
     initial = {'3 hours': 3, '5 hours': 5, '8 hours': 8, '10+ hours': 10}.get(preferred_time, 3)
     if assessment is not None and 'learning_hours' not in st.session_state:
         st.session_state['learning_hours'] = assessment.get('selected_hours') or initial
-    hours = st.selectbox('Weekly practice time', options, index=options.index(initial),
-                         format_func=lambda value: '10+ hours (planned as 10)' if value == 10 else f'{value} hours',
+    hours = st.selectbox(tr('Weekly practice time'), options, index=options.index(initial),
+                         format_func=translated_options(lambda value: '10+ hours (planned as 10)' if value == 10 else f'{value} hours'),
                          key='learning_hours')
-    st.caption('Four weeks only. Budget, language and SDG resource filtering are not implemented. '
-               'Time estimates are scheduling assumptions, not measured completion times.')
+    st.caption(tr('Four weeks only. Budget, language and SDG resource filtering are not implemented. Time estimates are scheduling assumptions, not measured completion times.'))
     row = next(row for row in rows if row['code'] == code)
     plan = build_plan(row, roles[code], hours)
     if assessment is not None:
@@ -113,58 +112,45 @@ def render_learning_plan(st: Any, rows: list[dict], roles: dict, labels: dict,
     old_plan = previous.get('plans', {}).get(code) if previous else None
     if old_plan is not None:
         changes = task_changes(old_plan['plan'], plan)
-        st.markdown('#### Plan changes since the previous assessment')
-        st.caption(f"Weekly hours: {old_plan['plan']['weekly_hours']} → {hours}. "
-                   'Adjusted means the gap, time allocation or exercise prescription changed. '
-                   'New plan progress is separate; completing tasks does not prove ability improvement.')
+        st.markdown(tr('#### Plan changes since the previous assessment'))
+        st.caption(tr('Weekly hours: {v0} → {v1}. Adjusted means the gap, time allocation or exercise prescription changed. New plan progress is separate; completing tasks does not prove ability improvement.', v0=old_plan['plan']['weekly_hours'], v1=hours))
         for kind, tasks in changes.items():
-            st.write(f'{kind.title()}: {len(tasks)} tasks')
+            st.write(tr('{v0}: {v1} tasks', v0=display_text(kind.title()), v1=len(tasks)))
             for task in tasks:
-                st.caption(f"Week {task['week']} · {labels.get(task['area'], task['area'])}")
+                st.caption(tr('Week {v0} · {v1}', v0=task['week'], v1=display_text(labels.get(task['area'], task['area']))))
         if not any(changes.values()):
-            st.info('Plan tasks unchanged.')
+            st.info(tr('Plan tasks unchanged.'))
     elif previous is not None:
-        st.caption('No previous plan was selected for this occupation; this is its first plan snapshot.')
-    st.caption('Rule: exclude unavailable components and blocked items; order positive weighted gaps by severity '
-               'then stable item ID. Focus on up to floor(weekly hours / 2) areas. Divide each week equally '
-               'between them; progress from exploration to practice, application and review. '
-               'Each practice round is a suggested 30-minute block; use remaining time to record evidence.')
+        st.caption(tr('No previous plan was selected for this occupation; this is its first plan snapshot.'))
+    st.caption(tr('Rule: exclude unavailable components and blocked items; order positive weighted gaps by severity then stable item ID. Focus on up to floor(weekly hours / 2) areas. Divide each week equally between them; progress from exploration to practice, application and review. Each practice round is a suggested 30-minute block; use remaining time to record evidence.'))
     if not plan['tasks']:
-        st.info('A plan cannot be generated: no usable positive skills or knowledge gaps with authored exercises. '
-                'This may mean coverage meets this limited synthetic sample, or required data is unavailable. '
-                'No additional tasks have been invented.')
+        st.info(tr('A plan cannot be generated: no usable positive skills or knowledge gaps with authored exercises. This may mean coverage meets this limited synthetic sample, or required data is unavailable. No additional tasks have been invented.'))
     for reason in plan['excluded']:
-        st.caption('Excluded: ' + reason)
+        st.caption(tr('Excluded: ') + translate_error(reason))
     if not plan['tasks']:
         return
     if plan['deferred']:
-        st.caption('Not covered within this budget: ' + ', '.join(labels.get(key, key) for key in plan['deferred']))
-    st.caption('Progress is held only in this Streamlit session. Refreshing or closing the page may lose it; '
-               'download your plan to keep a local copy and restore it later. There is no cloud storage. '
-               'A changed gap or time budget creates a separate plan.')
+        st.caption(tr('Not covered within this budget: ') + ', '.join((display_text(labels.get(key, key)) for key in plan['deferred'])))
+    st.caption(tr('Progress is held only in this Streamlit session. Refreshing or closing the page may lose it; download your plan to keep a local copy and restore it later. There is no cloud storage. A changed gap or time budget creates a separate plan.'))
     st.session_state.setdefault('learning_progress', {})
     saved = st.session_state.learning_progress.setdefault(plan['id'], {})
     completed = sum(bool(saved.get(task['id'])) for task in plan['tasks'])
-    st.progress(completed / len(plan['tasks']), text=f'{completed} / {len(plan["tasks"])} tasks completed')
+    st.progress(completed / len(plan['tasks']), text=tr('{v0} / {v1} tasks completed', v0=completed, v1=len(plan['tasks'])))
     if assessment is not None:
         from src.plan_transfer import export_plan
-        st.download_button('Download my plan', data=export_plan(assessment, plan, saved),
+        st.download_button(tr('Download my plan'), data=export_plan(assessment, plan, saved),
                            file_name='futureshift-plan.json', mime='application/json', key='download_my_plan')
-        st.caption('The file contains scored answers, this plan and task progress. It excludes your name, contact '
-                   'details, free-text goal and GitHub responses. Keep it locally; download again after progress changes.')
+        st.caption(tr('The file contains scored answers, this plan and task progress. It excludes your name, contact details, free-text goal and GitHub responses. Keep it locally; download again after progress changes.'))
     for week, phase in enumerate(PHASES, 1):
-        with st.expander(f'Week {week} · {phase}', expanded=week == 1):
+        with st.expander(tr('Week {v0} · {v1}', v0=week, v1=display_text(phase)), expanded=week == 1):
             for task in (task for task in plan['tasks'] if task['week'] == week):
-                st.markdown(f"**{labels.get(task['area'], task['area'])} · {task['group']} · {task['minutes']} minutes**")
-                st.write(f"Action: {task['action']} Complete {task['practice_rounds']} practice rounds. "
-                         f"This week: {task['phase'].lower()}; retain earlier evidence for comparison.")
-                st.write('Completion evidence: ' + task['evidence'] + ' Keep a dated record of attempts, checks and revisions.')
+                st.markdown(tr('**{v0} · {v1} · {v2} minutes**', v0=display_text(labels.get(task['area'], task['area'])), v1=display_text(task['group']), v2=task['minutes']))
+                st.write(tr('Action: {v0} Complete {v1} practice rounds. This week: {v2}; retain earlier evidence for comparison.', v0=display_text(task['action']), v1=task['practice_rounds'], v2=display_text(task['phase'])))
+                st.write(tr('Completion evidence: ') + display_text(task['evidence']) + tr(' Keep a dated record of attempts, checks and revisions.'))
                 gap = task['gap']
-                st.caption(f"Career gap · {roles[code]['title']}: your normalized level {gap['user']:.2f}, "
-                           f"synthetic requirement {gap['required']:.2f}, importance {gap['importance']:.2f}, "
-                           f"weighted gap {gap['gap']:.3f}.")
+                st.caption(tr('Career gap · {v0}: your normalized level {v1:.2f}, synthetic requirement {v2:.2f}, importance {v3:.2f}, weighted gap {v4:.3f}.', v0=roles[code]['title'], v1=gap['user'], v2=gap['required'], v3=gap['importance'], v4=gap['gap']))
                 key = 'learning_check_' + plan['id'] + '_' + task['id']
                 if key not in st.session_state:
                     st.session_state[key] = saved.get(task['id'], False)
-                st.checkbox('Completed · ' + labels.get(task['area'], task['area']), key=key,
+                st.checkbox(tr('Completed · ') + display_text(labels.get(task['area'], task['area'])), key=key,
                             on_change=remember_task, args=(st.session_state, plan['id'], task['id'], key))

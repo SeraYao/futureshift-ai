@@ -1,4 +1,5 @@
 """Student questionnaire and session-only confirmation flow; no external data access."""
+from src.i18n import tr, display_text, table_text, translated_options, translate_error
 from copy import deepcopy
 from typing import Any, Callable
 
@@ -120,14 +121,12 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
     st.session_state.setdefault('pathway_draft', {})
     step = st.session_state.pathway_step
     draft = st.session_state.pathway_draft
-    st.warning('Prototype simulation — not a labour-market prediction')
-    st.caption('The questionnaire does not ask for names, age, gender or contact details. Optional PDF CV processing '
-               'has a separate consent step. Occupational requirements and trends used for matching remain synthetic.')
+    st.warning(tr('Prototype simulation — not a labour-market prediction'))
+    st.caption(tr('The questionnaire does not ask for names, age, gender or contact details. Optional PDF CV processing has a separate consent step. Occupational requirements and trends used for matching remain synthetic.'))
     if draft.get('data_status') == 'synthetic':
-        st.warning('SAMPLE PROFILE · Synthetic student answers, including any edits to this example. '
-                   'Not real personal data or a real employment prediction.')
-    st.progress(step / 7, text=f'Step {step + 1} of 8 · {STEPS[step]}')
-    st.subheader(STEPS[step])
+        st.warning(tr('SAMPLE PROFILE · Synthetic student answers, including any edits to this example. Not real personal data or a real employment prediction.'))
+    st.progress(step / 7, text=tr('Step {v0} of 8 · {v1}', v0=step + 1, v1=display_text(STEPS[step])))
+    st.subheader(display_text(STEPS[step]))
 
     def field(name: str, options: tuple | None = None, label: str | None = None,
               kind: str = 'select', **kwargs: Any) -> None:
@@ -137,21 +136,22 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
             st.session_state[key] = deepcopy(draft.get(name, [] if kind == 'multi' else '' if kind == 'text' else None))
         common = dict(key=key, on_change=save_answer, args=(st.session_state, name))
         if kind == 'text':
-            st.text_area(label or name, **common)
+            st.text_area(display_text(label or name), **common)
         elif kind == 'multi':
-            st.multiselect(label or name, options, max_selections=3, **common)
+            st.multiselect(display_text(label or name), options, max_selections=3, **common, format_func=translated_options())
         else:
-            st.selectbox(label or name, options, index=None, **common, **kwargs)
+            st.selectbox(display_text(label or name), options, index=None, **common,
+                         format_func=translated_options(kwargs.pop('format_func', None)), **kwargs)
 
     def sample_entry() -> None:
         """Expose the same isolated sample shortcut on identity and background pages."""
-        if st.button('Try with a sample profile', key='pathway_sample'):
+        if st.button(tr('Try with a sample profile'), key='pathway_sample'):
             switch_profile_workspace(st.session_state, 'sample')
             st.session_state.setdefault('pathway_draft', sample_answers())
             st.session_state.pathway_confirmed = confirmed_profile(st.session_state.pathway_draft)
             st.session_state.pathway_step = 7
             st.rerun()
-        st.caption('The sample is fictional, editable and kept separate from your own questionnaire answers.')
+        st.caption(tr('The sample is fictional, editable and kept separate from your own questionnaire answers.'))
 
     if step in (0, 1):
         render_cv_intake(st, labels, levels)
@@ -161,93 +161,82 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
     if step in (1, 6):
         render_cv_context(st, st.session_state.get('pathway_cv_context'), labels)
     if st.session_state.get('pathway_restored'):
-        st.caption('Restored from a local prototype plan file. Background and free-text answers were not exported; '
-                   'you may enter them again when reassessing. No live GitHub history was restored.')
+        st.caption(tr('Restored from a local prototype plan file. Background and free-text answers were not exported; you may enter them again when reassessing. No live GitHub history was restored.'))
     if step == 0:
-        st.write('Choose the pathway that fits your situation.')
-        st.markdown('#### Student or recent graduate')
-        if st.button('Fill in my profile', key='pathway_start'):
+        st.write(tr('Choose the pathway that fits your situation.'))
+        st.markdown(tr('#### Student or recent graduate'))
+        if st.button(tr('Fill in my profile'), key='pathway_start'):
             switch_profile_workspace(st.session_state, 'manual')
             st.session_state.pathway_step = 1
             st.rerun()
         sample_entry()
-        st.button('Working professional seeking upskilling or a career change · Planned', disabled=True)
-        st.button('Employer planning workforce development · Planned', disabled=True)
+        st.button(tr('Working professional seeking upskilling or a career change · Planned'), disabled=True)
+        st.button(tr('Employer planning workforce development · Planned'), disabled=True)
         return
     if step == 1:
-        st.info('Fill in your profile below, or skip the questionnaire using a complete synthetic sample.')
+        st.info(tr('Fill in your profile below, or skip the questionnaire using a complete synthetic sample.'))
         sample_entry()
-        st.caption('Background and optional career goal do not affect scores. No text parsing is enabled.')
+        st.caption(tr('Background and optional career goal do not affect scores. No text parsing is enabled.'))
         for name, options in BACKGROUND.items():
             field(name, options)
         field('Optional career goal', kind='text')
     elif step in (2, 3):
-        st.caption('0 = no exposure · 1 = basic awareness · 2 = applied with guidance · '
-                   '3 = independently applied · 4 = advanced. Unanswered is not zero.')
-        st.caption('Rate Mathematics separately as a skill and a knowledge area. Study field does not imply ability.')
+        st.caption(tr('0 = no exposure · 1 = basic awareness · 2 = applied with guidance · 3 = independently applied · 4 = advanced. Unanswered is not zero.'))
+        st.caption(tr('Rate Mathematics separately as a skill and a knowledge area. Study field does not imply ability.'))
         for key in SKILLS if step == 2 else KNOWLEDGE:
             field(key, tuple(range(5)), labels[key], format_func=lambda x: f'{x} — {levels[x]}')
     elif step == 4:
-        st.caption('Original exploration statements, not a diagnostic or validated interest test. '
-                   '1 = strongly disagree · 2 = disagree · 3 = neutral · 4 = agree · 5 = strongly agree.')
+        st.caption(tr('Original exploration statements, not a diagnostic or validated interest test. 1 = strongly disagree · 2 = disagree · 3 = neutral · 4 = agree · 5 = strongly agree.'))
         for key, statement in INTERESTS:
             field(key, tuple(range(1, 6)), statement)
     elif step == 5:
-        st.caption('Not scored. Weekly time can initialize a four-week practice plan after matching. '
-                   'Longer plans and SDG filtering are planned. Language preference does not change the interface.')
+        st.caption(tr('Not scored. Weekly time can initialize a four-week practice plan after matching. Longer plans and SDG filtering are planned. Language preference does not change the interface.'))
         for name, options in PREFERENCES.items():
             field(name, options)
         field('SDG preferences', tuple(f'{i+1}. {name}' for i, name in enumerate(SDGS)), kind='multi')
     elif step == 6:
         errors = scoring_errors(draft)
         if errors:
-            st.error('Complete scoring questions before confirming: ' + ', '.join(labels.get(k, k) for k in errors))
+            st.error(translate_error(tr('Complete scoring questions before confirming: ') + ', '.join((display_text(labels.get(k, k)) for k in errors))))
         else:
             profile = confirmed_profile(draft)
-            st.markdown('#### Scored answers · review and return to edit')
+            st.markdown(tr('#### Scored answers · review and return to edit'))
             for group, keys in (('Skills', SKILLS), ('Knowledge', KNOWLEDGE)):
-                st.markdown(f'#### {group} · strongest self-ratings first')
-                st.table([{'Area': labels[key], 'Your answer (0–4)': draft[key],
+                st.markdown(tr('#### {v0} · strongest self-ratings first', v0=display_text(group)))
+                st.table(table_text([{'Area': labels[key], 'Your answer (0–4)': draft[key],
                            'Normalized (0–1)': draft[key] / 4}
-                          for key in sorted(keys, key=lambda k: (-draft[k], k))])
-            st.markdown('#### RIASEC results · scored')
-            st.table([{'Dimension': name, 'First answer (1–5)': draft[INTERESTS[i*2][0]],
+                          for key in sorted(keys, key=lambda k: (-draft[k], k))]))
+            st.markdown(tr('#### RIASEC results · scored'))
+            st.table(table_text([{'Dimension': name, 'First answer (1–5)': draft[INTERESTS[i*2][0]],
                        'Second answer (1–5)': draft[INTERESTS[i*2+1][0]], 'Normalized': value}
-                      for i, (name, value) in enumerate(zip(DIMENSIONS, profile['riasec']))])
+                      for i, (name, value) in enumerate(zip(DIMENSIONS, profile['riasec']))]))
             if not any(profile['riasec']):
-                st.warning('All interest answers are 1: the zero vector prevents interest similarity and complete rankings. '
-                           'You may edit answers or confirm to inspect available coverage and gaps only.')
-            st.markdown('#### Goals, background & preferences · not scored')
-            st.table([{'Field': key, 'Answer': ', '.join(value) if isinstance(value, list) else str(value)
+                st.warning(tr('All interest answers are 1: the zero vector prevents interest similarity and complete rankings. You may edit answers or confirm to inspect available coverage and gaps only.'))
+            st.markdown(tr('#### Goals, background & preferences · not scored'))
+            st.table(table_text([{'Field': key, 'Answer': value if isinstance(value, list) else str(value)
                        if value is not None else 'Not answered'}
                       for key, value in ((key, draft.get(key)) for key in
-                       (*BACKGROUND, 'Optional career goal', *PREFERENCES, 'SDG preferences'))])
-            st.caption('Open text, background, SDGs and learning preferences never add points. '
-                       'Weekly time can initialize the practice plan; it never changes matching scores. '
-                       'Only four-week plans are currently available, regardless of target plan length.')
-            st.info('This small synthetic pool uses only Critical Thinking, Mathematics and Programming skills, '
-                    'plus Computers and Electronics and Mathematics knowledge. Other answers are retained for review '
-                    'but have no requirement in these fixtures and cannot change current scores. '
-                    'All six interest dimensions enter scoring. Requirements and trend snapshots are fixed synthetic inputs.')
-            with st.expander('Technical details', expanded=False):
+                       (*BACKGROUND, 'Optional career goal', *PREFERENCES, 'SDG preferences'))]))
+            st.caption(tr('Open text, background, SDGs and learning preferences never add points. Weekly time can initialize the practice plan; it never changes matching scores. Only four-week plans are currently available, regardless of target plan length.'))
+            st.info(tr('This small synthetic pool uses only Critical Thinking, Mathematics and Programming skills, plus Computers and Electronics and Mathematics knowledge. Other answers are retained for review but have no requirement in these fixtures and cannot change current scores. All six interest dimensions enter scoring. Requirements and trend snapshots are fixed synthetic inputs.'))
+            with st.expander(tr('Technical details'), expanded=False):
                 _, roles, trends = load_demo()
-                st.caption(f'Scoring rules: {SCORING_VERSION}. Fixed synthetic catalog and trend snapshot; no live refresh.')
+                st.caption(tr('Scoring rules: {v0}. Fixed synthetic catalog and trend snapshot; no live refresh.', v0=SCORING_VERSION))
                 st.json({'occupations': [{'code': role['code'], 'title': role['title'],
                          'topics': role['topics']} for role in roles['roles']],
                          'trend_snapshot': trends, 'confirmed_candidate': profile}, expanded=False)
-            if st.button('Confirm profile & view matches', key='pathway_confirm'):
+            if st.button(tr('Confirm profile & view matches'), key='pathway_confirm'):
                 st.session_state.pathway_confirmed = deepcopy(profile)
                 st.session_state.pathway_step = 7
                 st.rerun()
     elif step == 7:
         profile = st.session_state.get('pathway_confirmed')
         if profile is None:
-            st.warning('Review and confirm your profile before calculating matches.')
+            st.warning(tr('Review and confirm your profile before calculating matches.'))
         else:
             _, role_file, trend_file = load_demo()
-            st.caption('Your confirmed practice answers + demo_roles.json + demo_trends.json. '
-                       'No official requirements or real GitHub evidence are used. GitHub activity is not hiring demand.')
-            st.write('Career goal: ' + (draft.get('Optional career goal') or 'Not provided'))
+            st.caption(tr('Your confirmed practice answers + demo_roles.json + demo_trends.json. No official requirements or real GitHub evidence are used. GitHub activity is not hiring demand.'))
+            st.write(tr('Career goal: ') + (draft.get('Optional career goal') or tr('Not provided')))
             current = st.session_state.get('pathway_assessment')
             if current is None or current['profile'] != profile or current['answers'] != draft:
                 # Pin the synthetic inputs for a profile reassessment.
@@ -262,38 +251,38 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
                 rows = current['rows']
                 role_file, trend_file = current['roles'], current['trends']
             render_comparison(st, st.session_state.get('pathway_previous'), current, labels)
-            if st.button('Update my profile and reassess', key='pathway_reassess'):
+            if st.button(tr('Update my profile and reassess'), key='pathway_reassess'):
                 begin_reassessment(st.session_state)
                 st.rerun()
             for scenario, title in (('moderate', 'Moderate'), ('fast', 'Fast disruption')):
-                st.markdown(f'### {title}')
+                st.markdown(tr('### {v0}', v0=display_text(title)))
                 ranked = sorted((row for row in rows if row[scenario+'_rank'] is not None),
                                 key=lambda row: row[scenario+'_rank'])
                 if not ranked:
-                    st.info('No complete rankings available. Review the component reasons below.')
+                    st.info(tr('No complete rankings available. Review the component reasons below.'))
                 for row in ranked:
-                    st.write(f"{row[scenario+'_rank']}. {row['title']} · {row[scenario].value:.2f} / 100")
+                    st.write(tr('{v0}. {v1} · {v2:.2f} / 100', v0=row[scenario + '_rank'], v1=row['title'], v2=row[scenario].value))
             by_code = {role['code']: role for role in role_file['roles']}
             for row in rows:
-                with st.expander(row['title'] + ' · Why this match?'):
+                with st.expander(row['title'] + tr(' · Why this match?')):
                     render_role(st, row, by_code[row['code']], profile=profile)
             if official_loader is not None and client_factory is not None:
                 render_evidence_reassessment(st, current, official_loader, client_factory)
             render_learning_plan(st, rows, by_code, labels, draft.get('Weekly learning time'),
                                  current, st.session_state.get('pathway_previous'))
-            with st.expander('Technical details', expanded=False):
+            with st.expander(tr('Technical details'), expanded=False):
                 st.json(profile, expanded=False)
-    if st.button('Return to identity selection', key='pathway_identity'):
+    if st.button(tr('Return to identity selection'), key='pathway_identity'):
         st.session_state.pathway_step = 0
         st.rerun()
     left, right = st.columns(2)
-    if left.button('Back', key='pathway_back'):
+    if left.button(tr('Back'), key='pathway_back'):
         st.session_state.pathway_step = step - 1
         st.rerun()
-    if step < 6 and right.button('Review profile' if step == 5 else 'Next', key='pathway_next'):
+    if step < 6 and right.button(tr('Review profile') if step == 5 else tr('Next'), key='pathway_next'):
         errors = scoring_errors(draft) if step == 5 else []
         if errors:
-            st.error('Please answer these scoring questions: ' + ', '.join(labels.get(k, k) for k in errors))
+            st.error(translate_error(tr('Please answer these scoring questions: ') + ', '.join((display_text(labels.get(k, k)) for k in errors))))
         else:
             st.session_state.pathway_step = step + 1
             st.rerun()

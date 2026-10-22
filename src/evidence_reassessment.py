@@ -1,4 +1,5 @@
 """Explicit GitHub evidence refresh, isolated from the synthetic simulation baseline."""
+from src.i18n import tr, display_text, table_text, translated_options, translate_error
 from copy import deepcopy
 from typing import Any, Callable
 
@@ -83,99 +84,86 @@ def confirm_career_switch(state: Any, code: str) -> None:
 def render_evidence_reassessment(st: Any, assessment: dict, official_loader: Callable,
                                  client_factory: Callable) -> None:
     """Render an opt-in evidence experiment, never automatically querying GitHub."""
-    st.subheader('Refresh evidence and reassess')
-    st.warning('Prototype experiment: synthetic occupational requirements + real GitHub topic activity. '
-               'Not a recruitment-demand or employment-growth forecast. Original synthetic matches remain separate.')
-    st.caption(f'Mapping: {MAPPING_STATUS}. Refresh ONE occupation at a time: two topics × two 90-day windows, '
-               'four searches on a complete cache miss. Cache and shared limits still apply; no automatic refresh.')
+    st.subheader(tr('Refresh evidence and reassess'))
+    st.warning(tr('Prototype experiment: synthetic occupational requirements + real GitHub topic activity. Not a recruitment-demand or employment-growth forecast. Original synthetic matches remain separate.'))
+    st.caption(tr('Mapping: {v0}. Refresh ONE occupation at a time: two topics × two 90-day windows, four searches on a complete cache miss. Cache and shared limits still apply; no automatic refresh.', v0=display_text(MAPPING_STATUS)))
     state = st.session_state.setdefault('pathway_evidence', {})
     names = {role['code']: role['title'] for role in assessment['roles']['roles']}
-    code = st.selectbox('Occupation evidence to refresh', tuple(ROLE_TOPICS),
-                        format_func=lambda value: names.get(value, value), key='evidence_role')
-    if st.button('Refresh evidence and reassess', key='evidence_refresh'):
+    code = st.selectbox(tr('Occupation evidence to refresh'), tuple(ROLE_TOPICS),
+                        format_func=translated_options(lambda value: names.get(value, value)), key='evidence_role')
+    if st.button(tr('Refresh evidence and reassess'), key='evidence_refresh'):
         refresh_evidence(state, client_factory(), code)
     snapshots = state.get('snapshots', {})
     last_outcome = state.get('outcomes', {}).get(code, {})
     if last_outcome.get('error') and code not in snapshots:
-        st.warning('Refresh failed and no successful evidence is available for this occupation. '
-                   'No zero counts or scenario scores have been substituted.')
-        with st.expander('Technical details', expanded=False):
-            st.write(last_outcome['error'])
+        st.warning(tr('Refresh failed and no successful evidence is available for this occupation. No zero counts or scenario scores have been substituted.'))
+        with st.expander(tr('Technical details'), expanded=False):
+            st.write(translate_error(last_outcome['error']))
     if not snapshots:
-        st.info('No successful evidence loaded in this experiment. Click Refresh to fetch or reuse a valid cache.')
+        st.info(tr('No successful evidence loaded in this experiment. Click Refresh to fetch or reuse a valid cache.'))
         return
     for role_code, snapshot in snapshots.items():
-        with st.expander(names.get(role_code, role_code) + ' · Evidence changes'):
+        with st.expander(names.get(role_code, role_code) + tr(' · Evidence changes')):
             outcome = state.get('outcomes', {}).get(role_code, {})
             if outcome.get('error'):
-                st.warning('Refresh failed. Retaining the last successful evidence; no failed counts were used.')
-            st.caption(f"cached: {outcome.get('cached')} · expired: {outcome.get('expired')} · "
-                       f"Original fetched time: {snapshot['fetched_at']}")
+                st.warning(tr('Refresh failed. Retaining the last successful evidence; no failed counts were used.'))
+            st.caption(tr('cached: {v0} · expired: {v1} · Original fetched time: {v2}', v0=outcome.get('cached'), v1=outcome.get('expired'), v2=snapshot['fetched_at']))
             old = state.get('previous', {}).get(role_code)
-            st.table(snapshot_comparison(old, snapshot, role_code))
+            st.table(table_text(snapshot_comparison(old, snapshot, role_code)))
             current_score = evidence_score(snapshot, role_code).value
             if old is None:
-                st.write(f'Trend score T: {current_score:.2f}. No earlier successful snapshot for comparison.')
+                st.write(tr('Trend score T: {v0:.2f}. No earlier successful snapshot for comparison.', v0=current_score))
             else:
                 old_score = evidence_score(old, role_code).value
-                st.write(f'Trend score T: {old_score:.2f} → {current_score:.2f}; '
-                         f'change {current_score-old_score:+.2f}. '
-                         + ('Unchanged.' if old_score == current_score else 'Changed.'))
-            with st.expander('Technical details', expanded=False):
+                st.write(tr('Trend score T: {v0:.2f} → {v1:.2f}; change {v2:+.2f}. ', v0=old_score, v1=current_score, v2=current_score - old_score) + (tr('Unchanged.') if old_score == current_score else tr('Changed.')))
+            with st.expander(tr('Technical details'), expanded=False):
                 if outcome.get('error'):
-                    st.write(outcome['error'])
+                    st.write(translate_error(outcome['error']))
                 st.json({'previous': old, 'current': snapshot}, expanded=False)
     rows = evidence_ranking(assessment['profile'], assessment['roles']['roles'], snapshots)
-    st.markdown('#### Evidence-adjusted prototype scenarios')
+    st.markdown(tr('#### Evidence-adjusted prototype scenarios'))
     complete = len(rows) == 3 and all(row['moderate'].value is not None for row in rows)
     if not complete:
-        st.info('Full three-career ranking is unavailable until all three have usable evidence and personal components. '
-                'Missing evidence is not replaced by synthetic counts. Original synthetic rankings above are unchanged.')
+        st.info(tr('Full three-career ranking is unavailable until all three have usable evidence and personal components. Missing evidence is not replaced by synthetic counts. Original synthetic rankings above are unchanged.'))
     baseline = {row['code']: row for row in assessment['rows']}
     prior_snapshots = {key: state.get('previous', {}).get(key, value) for key, value in snapshots.items()}
     prior_rows = {row['code']: row for row in evidence_ranking(
         assessment['profile'], assessment['roles']['roles'], prior_snapshots)}
     prior_complete = len(prior_rows) == 3 and all(row['moderate'].value is not None for row in prior_rows.values())
     for row in rows:
-        with st.expander(row['title'] + ' · Scenario evidence impact'):
+        with st.expander(row['title'] + tr(' · Scenario evidence impact')):
             for scenario in ('moderate', 'fast'):
                 value = row[scenario].value
                 if value is None:
-                    st.warning(scenario.title() + ': unavailable. ' + '; '.join(row[scenario].issues))
+                    st.warning(translate_error(display_text(scenario.title()) + tr(': unavailable. ') + '; '.join(row[scenario].issues)))
                     continue
                 base = baseline[row['code']]
-                st.write(f"{scenario.title()} score: {value:.2f} · Original all-synthetic score: "
-                         f"{base[scenario].value:.2f}" if base[scenario].value is not None else
-                         f'{scenario.title()} score: {value:.2f} · Original score unavailable')
+                st.write(tr('{v0} score: {v1:.2f} · Original all-synthetic score: {v2:.2f}', v0=display_text(scenario.title()), v1=value, v2=base[scenario].value) if base[scenario].value is not None else tr('{v0} score: {v1:.2f} · Original score unavailable', v0=display_text(scenario.title()), v1=value))
                 if complete:
                     old_rank = base[scenario + '_rank']
                     rank = row[scenario + '_rank']
-                    st.write(f'Original synthetic rank: {old_rank} → evidence-adjusted rank: {rank}. '
-                             + ('Unchanged.' if old_rank == rank else 'Changed.'))
+                    st.write(tr('Original synthetic rank: {v0} → evidence-adjusted rank: {v1}. ', v0=old_rank, v1=rank) + (tr('Unchanged.') if old_rank == rank else tr('Changed.')))
                     if prior_complete:
                         prior = prior_rows[row['code']]
-                        st.caption(f"Previous-success comparison: score {prior[scenario].value:.2f} → {value:.2f}; "
-                                   f"rank {prior[scenario+'_rank']} → {rank}.")
+                        st.caption(tr('Previous-success comparison: score {v0:.2f} → {v1:.2f}; rank {v2} → {v3}.', v0=prior[scenario].value, v1=value, v2=prior[scenario + '_rank'], v3=rank))
     official = official_loader()
-    st.markdown('#### Official O*NET quality boundary')
+    st.markdown(tr('#### Official O*NET quality boundary'))
     for role in official['roles']:
         if role['code'] in ROLE_TOPICS:
             official_row = evidence_ranking(assessment['profile'], [role], snapshots)[0]
             reasons = tuple(dict.fromkeys((*role.get('data_issues', []), *official_row['moderate'].issues)))
             if reasons:
-                st.warning(role['title'] + ' · Official ranking blocked: ' + '; '.join(reasons))
+                st.warning(translate_error(role['title'] + tr(' · Official ranking blocked: ') + '; '.join(reasons)))
             else:
-                st.caption(role['title'] + ': components available; official ranking is not combined with this synthetic experiment.')
+                st.caption(role['title'] + tr(': components available; official ranking is not combined with this synthetic experiment.'))
     if complete:
-        scenario_label = st.selectbox('Scenario for career-switch suggestion', ('Moderate', 'Fast disruption'),
-                                      key='evidence_scenario')
+        scenario_label = st.selectbox(tr('Scenario for career-switch suggestion'), ('Moderate', 'Fast disruption'),
+                                      key='evidence_scenario', format_func=translated_options())
         scenario = 'moderate' if scenario_label == 'Moderate' else 'fast'
         top = min(rows, key=lambda row: row[scenario + '_rank'])['code']
         selected = st.session_state.get('learning_role') or assessment.get('selected_role')
         if selected and top != selected:
-            st.info(f"The evidence-adjusted {scenario_label} scenario favours {names[top]}. "
-                    'Your selected career and plan have not been changed. Switching uses that career’s synthetic gaps.')
-            if st.button('Confirm switch to ' + names[top], key='evidence_confirm_switch'):
+            st.info(translate_error(tr('The evidence-adjusted {v0} scenario favours {v1}. Your selected career and plan have not been changed. Switching uses that career’s synthetic gaps.', v0=display_text(scenario_label), v1=names[top])))
+            if st.button(tr('Confirm switch to ') + names[top], key='evidence_confirm_switch'):
                 confirm_career_switch(st.session_state, top)
-    st.caption('Evidence changes affect T and scenario scores, not skill gaps. Plans change only when you confirm '
-               'a different career or edit your profile/time budget. Equal or clipped counts may leave ranks unchanged.')
+    st.caption(tr('Evidence changes affect T and scenario scores, not skill gaps. Plans change only when you confirm a different career or edit your profile/time budget. Equal or clipped counts may leave ranks unchanged.'))
