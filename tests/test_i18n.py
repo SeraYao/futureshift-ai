@@ -164,7 +164,7 @@ class LanguagePageTests(unittest.TestCase):
                 self.healthy(page)
                 self.assertTrue(any(item.value == self.text(language, 'Background')
                                     for item in page.subheader))
-                page.selectbox(key='pathway_Identity').set_value('Recent graduate').run()
+                page.radio(key='pathway_Identity').set_value('Recent graduate').run()
                 draft = deepcopy(page.session_state['pathway_draft'])
                 for code in LANGUAGES:
                     self.switch(page, code)
@@ -208,13 +208,13 @@ class LanguagePageTests(unittest.TestCase):
                 self.healthy(page, allow_error=step == 6)
                 self.assertTrue(any(item.value == self.text(language, STEPS[step]) for item in page.subheader))
                 if step == 1:
-                    self.assertEqual(page.selectbox(key='pathway_Identity').label, self.text(language, 'Identity'))
-                    self.assertIn(self.text(language, 'Current student'), page.selectbox(key='pathway_Identity').options)
+                    self.assertEqual(page.radio(key='pathway_Identity').label, self.text(language, 'Identity'))
+                    self.assertIn(self.text(language, 'Current student'), page.radio(key='pathway_Identity').options)
                 elif step == 2:
-                    self.assertEqual(page.selectbox(key='pathway_skill_04').label, self.text(language, 'Programming'))
-                    self.assertIn('2 — ' + self.text(language, 'Applied with guidance'), page.selectbox(key='pathway_skill_04').options)
+                    self.assertEqual(page.radio(key='pathway_skill_04').label, self.text(language, 'Programming'))
+                    self.assertEqual(page.radio(key='pathway_skill_04').options, ['0', '1', '2', '3', '4'])
                 elif step == 4:
-                    self.assertEqual(page.selectbox(key='pathway_R1').label, self.text(language, INTERESTS[0][1]))
+                    self.assertEqual(page.radio(key='pathway_R1').label, self.text(language, INTERESTS[0][1]))
                 elif step == 6:
                     self.assertTrue(any(self.text(language, 'Complete scoring questions before confirming: ') in item.value
                                         for item in page.error))
@@ -248,21 +248,21 @@ class LanguagePageTests(unittest.TestCase):
     def test_answers_confirmation_and_raw_text_survive_switch(self):
         page = self.page()
         page.button(key='pathway_start').click().run()
-        page.selectbox(key='pathway_Identity').set_value('Recent graduate').run()
+        page.radio(key='pathway_Identity').set_value('Recent graduate').run()
         goal = 'Programming · 原文自由文本'
         page.text_area(key='pathway_Optional career goal').set_value(goal).run()
         draft = deepcopy(page.session_state['pathway_draft'])
         for code in ('zh', 'ms', 'en'):
             self.switch(page, code)
-            self.assertEqual(page.selectbox(key='pathway_Identity').value, 'Recent graduate')
+            self.assertEqual(page.radio(key='pathway_Identity').value, 'Recent graduate')
             self.assertEqual(page.text_area(key='pathway_Optional career goal').value, goal)
             self.assertEqual(page.session_state['pathway_draft'], draft)
         page.button(key='pathway_next').click().run()
-        page.selectbox(key='pathway_skill_04').set_value(3).run()
+        page.radio(key='pathway_skill_04').set_value(3).run()
         page.session_state['pathway_confirmed'] = {'preserved': True}
         for code in ('zh', 'ms', 'en'):
             self.switch(page, code)
-            self.assertEqual(page.selectbox(key='pathway_skill_04').value, 3)
+            self.assertEqual(page.radio(key='pathway_skill_04').value, 3)
             self.assertEqual(page.session_state['pathway_draft']['skill_04'], 3)
             self.assertEqual(page.session_state['pathway_confirmed'], {'preserved': True})
 

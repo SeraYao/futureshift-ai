@@ -143,6 +143,10 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
             st.text_area(display_text(label or name), **common)
         elif kind == 'multi':
             st.multiselect(display_text(label or name), options, max_selections=3, **common, format_func=translated_options())
+        elif kind == 'radio':
+            st.radio(display_text(label or name), options, index=None, horizontal=True,
+                     **common, format_func=translated_options(kwargs.pop('format_func', None)),
+                     **kwargs)
         else:
             st.selectbox(display_text(label or name), options, index=None, **common,
                          format_func=translated_options(kwargs.pop('format_func', None)), **kwargs)
@@ -189,25 +193,36 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
         sample_entry()
         st.caption(tr('Background and optional career goal do not affect scores. No text parsing is enabled.'))
         for name, options in BACKGROUND.items():
-            field(name, options)
+            field(name, options, kind='radio' if name in ('Identity', 'Practical exposure') else 'select')
         field('Optional career goal', kind='text')
     elif step in (2, 3):
         st.caption(tr('0 = no exposure · 1 = basic awareness · 2 = applied with guidance · 3 = independently applied · 4 = advanced. Unanswered is not zero.'))
         st.caption(tr('Rate Mathematics separately as a skill and a knowledge area. Study field does not imply ability.'))
         for key in SKILLS if step == 2 else KNOWLEDGE:
-            field(key, tuple(range(5)), labels[key], format_func=lambda x: f'{x} — {levels[x]}')
+            field(key, tuple(range(5)), labels[key], kind='radio',
+                  help=tr('0 = no exposure · 1 = basic awareness · 2 = applied with guidance · 3 = independently applied · 4 = advanced. Unanswered is not zero.'))
+            st.caption(tr('0 · No exposure → 4 · Advanced'))
+            if draft.get(key) is None:
+                st.caption(tr('Not answered'))
+            st.divider()
     elif step == 4:
         st.caption(tr('Original exploration statements, not a diagnostic or validated interest test. 1 = strongly disagree · 2 = disagree · 3 = neutral · 4 = agree · 5 = strongly agree.'))
         for key, statement in INTERESTS:
-            field(key, tuple(range(1, 6)), statement)
+            field(key, tuple(range(1, 6)), statement, kind='radio',
+                  help=tr('Original exploration statements, not a diagnostic or validated interest test. 1 = strongly disagree · 2 = disagree · 3 = neutral · 4 = agree · 5 = strongly agree.'))
+            st.caption(tr('1 · Strongly disagree → 5 · Strongly agree'))
+            if draft.get(key) is None:
+                st.caption(tr('Not answered'))
+            st.divider()
     elif step == 5:
         st.caption(tr('Not scored. Weekly time can initialize a four-week practice plan after matching. Longer plans and SDG filtering are planned. Language preference does not change the interface.'))
         for name, options in PREFERENCES.items():
-            field(name, options)
+            field(name, options, kind='radio')
         field('SDG preferences', tuple(f'{i+1}. {name}' for i, name in enumerate(SDGS)), kind='multi')
     elif step == 6:
         errors = scoring_errors(draft)
         if errors:
+            st.error(tr('{count} required questions remain unanswered.', count=len(errors)))
             st.error(translate_error(tr('Complete scoring questions before confirming: ') + ', '.join((display_text(labels.get(k, k)) for k in errors))))
         else:
             profile = confirmed_profile(draft)
@@ -294,6 +309,7 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
     if step < 6 and right.button(tr('Review profile') if step == 5 else tr('Next'), key='pathway_next'):
         errors = scoring_errors(draft) if step == 5 else []
         if errors:
+            st.error(tr('{count} required questions remain unanswered.', count=len(errors)))
             st.error(translate_error(tr('Please answer these scoring questions: ') + ', '.join((display_text(labels.get(k, k)) for k in errors))))
         else:
             st.session_state.pathway_step = step + 1

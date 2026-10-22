@@ -135,8 +135,8 @@ class PlanTransferUITests(unittest.TestCase):
             self.assertEqual(downloads[0].proto.label, 'Download my plan')
             page.button(key='pathway_reassess').click().run()
             page.button(key='pathway_next').click().run()
-            self.assertEqual(page.selectbox(key='pathway_skill_04').value, 2)
-            page.selectbox(key='pathway_skill_04').set_value(4).run()
+            self.assertEqual(page.radio(key='pathway_skill_04').value, 2)
+            page.radio(key='pathway_skill_04').set_value(4).run()
             page.session_state['pathway_step'] = 6
             page.run()
             page.button(key='pathway_confirm').click().run()

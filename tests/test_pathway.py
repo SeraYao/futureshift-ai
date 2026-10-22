@@ -53,6 +53,13 @@ class QuestionnaireTests(unittest.TestCase):
         self.assertEqual(state['pathway_draft'], {'skill_01': 4})
         self.assertNotIn('pathway_confirmed', state)
 
+    def test_all_interest_dimensions_keep_documented_positive_mapping(self):
+        draft = answers()
+        draft.update(zip((key for key, _ in INTERESTS),
+                         (1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 5)))
+        self.assertEqual(confirmed_profile(draft)['riasec'],
+                         [0, 0.25, 0.5, 0.75, 1, 0.5])
+
     def test_answer_changes_and_non_scored_fields(self) -> None:
         """Only documented scored answers change existing engine components."""
         _, roles, trends = app.load_demo()
@@ -92,19 +99,19 @@ class GuidedUITests(unittest.TestCase):
             self.assertEqual(len(planned), 0)
             self.assertTrue(all(button.disabled for button in planned))
             page.button(key='pathway_start').click().run()
-            page.selectbox(key='pathway_Identity').set_value('Recent graduate').run()
+            page.radio(key='pathway_Identity').set_value('Recent graduate').run()
             page.text_area(key='pathway_Optional career goal').set_value('Explore technology').run()
             page.button(key='pathway_next').click().run()
-            self.assertTrue(all(box.value is None for box in page.selectbox if box.key.startswith('pathway_')))
-            page.selectbox(key='pathway_skill_01').set_value(3).run()
+            self.assertTrue(all(box.value is None for box in page.radio if box.key.startswith('pathway_')))
+            page.radio(key='pathway_skill_01').set_value(3).run()
             page.button(key='pathway_back').click().run()
             self.assertEqual(page.text_area(key='pathway_Optional career goal').value, 'Explore technology')
             page.button(key='pathway_next').click().run()
-            self.assertEqual(page.selectbox(key='pathway_skill_01').value, 3)
+            self.assertEqual(page.radio(key='pathway_skill_01').value, 3)
             # Switching modes removes widgets but must preserve the durable questionnaire draft.
             page.radio(key='page_mode').set_value('Synthetic simulation').run()
             page.radio(key='page_mode').set_value('Career pathway prototype').run()
-            self.assertEqual(page.selectbox(key='pathway_skill_01').value, 3)
+            self.assertEqual(page.radio(key='pathway_skill_01').value, 3)
             page.session_state['pathway_step'] = 5
             page.run()
             page.button(key='pathway_next').click().run()
@@ -136,5 +143,70 @@ class GuidedUITests(unittest.TestCase):
             page.button(key='pathway_back').click().run()
             page.button(key='pathway_back').click().run()
             page.button(key='pathway_back').click().run()
-            page.selectbox(key='pathway_R1').set_value(5).run()
+            page.radio(key='pathway_R1').set_value(5).run()
+            self.assertNotIn('pathway_confirmed', page.session_state)
+
+    def test_complete_questionnaire_with_direct_choices_and_languages(self):
+        """Click every scored answer; localization/navigation never changes raw values."""
+        from streamlit.testing.v1 import AppTest
+        expected = {}
+        with patch('urllib.request.urlopen', side_effect=AssertionError('No real HTTP')):
+            page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
+            page.button(key='pathway_start').click().run()
+            self.assertIsNone(page.radio(key='pathway_Identity').value)
+            self.assertEqual(len([x for x in page.selectbox if x.key.startswith('pathway_')]), 2)
+            page.radio(key='pathway_Identity').set_value('Recent graduate').run()
+            page.button(key='pathway_next').click().run()
+            for keys, values in ((SKILLS, range(5)), (KNOWLEDGE, range(5)),
+                                 (tuple(key for key, _ in INTERESTS), range(1, 6))):
+                self.assertFalse([x for x in page.selectbox if x.key.startswith('pathway_')])
+                for i, key in enumerate(keys):
+                    widget = page.radio(key='pathway_' + key)
+                    self.assertIsNone(widget.value)
+                    self.assertTrue(widget.proto.horizontal)
+                    self.assertEqual(widget.options, list(map(str, values)))
+                    value = values[i % len(values)]
+                    page.radio(key='pathway_' + key).set_value(value).run()
+                    expected[key] = value
+                for language in ('zh', 'ms', 'en'):
+                    page.selectbox(key='ui_language').set_value(language).run()
+                    self.assertFalse(page.exception)
+                    for key in keys:
+                        self.assertEqual(page.radio(key='pathway_' + key).value, expected[key])
+                    self.assertEqual({k: page.session_state['pathway_draft'][k] for k in expected}, expected)
+                page.button(key='pathway_back').click().run()
+                page.button(key='pathway_next').click().run()
+                for key in keys:
+                    self.assertEqual(page.radio(key='pathway_' + key).value, expected[key])
+                page.button(key='pathway_next').click().run()
+            page.button(key='pathway_next').click().run()
+            self.assertEqual(page.session_state['pathway_step'], 6)
+            page.button(key='pathway_confirm').click().run()
+            self.assertFalse(page.exception)
+            self.assertEqual(page.session_state['pathway_step'], 7)
+            self.assertEqual(page.session_state['pathway_confirmed'], confirmed_profile(expected))
+            self.assertTrue(page.session_state['pathway_assessment']['rows'])
+            page.button(key='pathway_reassess').click().run()
+            page.button(key='pathway_next').click().run()
+            for key in SKILLS:
+                self.assertEqual(page.radio(key='pathway_' + key).value, expected[key])
+
+    def test_missing_count_and_untouched_scales_in_all_languages(self):
+        from streamlit.testing.v1 import AppTest
+        from src.i18n import CATALOGS
+        page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
+        page.button(key='pathway_start').click().run()
+        for step, keys in ((2, SKILLS), (3, KNOWLEDGE), (4, tuple(k for k, _ in INTERESTS))):
+            page.session_state['pathway_step'] = step
+            page.run()
+            self.assertTrue(all(page.radio(key='pathway_' + k).value is None for k in keys))
+        self.assertEqual(len(scoring_errors(page.session_state['pathway_draft'])), 30)
+        page.session_state['pathway_step'] = 5
+        page.run()
+        for language in ('en', 'zh', 'ms'):
+            page.selectbox(key='ui_language').set_value(language).run()
+            page.button(key='pathway_next').click().run()
+            self.assertEqual(page.session_state['pathway_step'], 5)
+            message = CATALOGS[language]['{count} required questions remain unanswered.'].format(count=30)
+            self.assertTrue(any(x.value == message for x in page.error))
             self.assertNotIn('pathway_confirmed', page.session_state)

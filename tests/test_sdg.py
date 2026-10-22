@@ -167,7 +167,7 @@ class SDGPageTests(unittest.TestCase):
     def test_language_switch_preserves_answers_results_plan_and_progress(self):
         page = self.page()
         page.button(key='pathway_start').click().run()
-        page.selectbox(key='pathway_Identity').set_value('Recent graduate').run()
+        page.radio(key='pathway_Identity').set_value('Recent graduate').run()
         draft = deepcopy(page.session_state['pathway_draft'])
         for language in LANGUAGES:
             page.selectbox(key='ui_language').set_value(language).run()

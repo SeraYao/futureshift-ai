@@ -632,5 +632,8 @@
   "Let us get to know you": "Let us get to know you",
   "Complete a CV questionnaire": "Complete a CV questionnaire",
   "Recognize a PDF CV with AI": "Recognize a PDF CV with AI",
-  "Try a virtual example": "Try a virtual example"
+  "Try a virtual example": "Try a virtual example",
+  "0 · No exposure → 4 · Advanced": "0 · No exposure → 4 · Advanced",
+  "1 · Strongly disagree → 5 · Strongly agree": "1 · Strongly disagree → 5 · Strongly agree",
+  "{count} required questions remain unanswered.": "{count} required questions remain unanswered."
 }

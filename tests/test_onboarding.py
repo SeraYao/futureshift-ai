@@ -112,7 +112,7 @@ class OnboardingTests(unittest.TestCase):
         self.assertTrue(page.button(key='profile_restore'))
         self.assertEqual(len(page.get('file_uploader')), 0)
         page.button(key='pathway_start').click().run()
-        page.selectbox(key='pathway_Identity').set_value('Recent graduate').run()
+        page.radio(key='pathway_Identity').set_value('Recent graduate').run()
         page.text_area(key='pathway_Optional career goal').set_value('Keep my goal').run()
         draft = deepcopy(page.session_state['pathway_draft'])
         page.button(key='onboarding_back').click().run()
