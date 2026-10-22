@@ -256,7 +256,7 @@ def main() -> None:
                     horizontal=True, key='page_mode')
     try:
         if mode == 'Career pathway prototype':
-            render_pathway(st, LABELS, LEVELS, load_demo, render_role)
+            render_pathway(st, LABELS, LEVELS, load_demo, render_role, load_onet, get_trend_client)
         elif mode == 'Synthetic simulation':
             render_simulation(st)
         else:

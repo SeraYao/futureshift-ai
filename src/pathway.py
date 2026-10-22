@@ -2,6 +2,7 @@
 from copy import deepcopy
 from typing import Any, Callable
 
+from src.evidence_reassessment import render_evidence_reassessment
 from src.learning_plan import render_learning_plan
 from src.reassessment import begin_reassessment, store_assessment, render_comparison
 from src.scoring import SCORING_VERSION, normalize_0_4, rank_roles
@@ -110,7 +111,8 @@ def save_answer(state: Any, name: str) -> None:
 
 
 def render_pathway(st: Any, labels: dict, levels: tuple,
-                   load_demo: Callable, render_role: Callable) -> None:
+                   load_demo: Callable, render_role: Callable,
+                   official_loader: Callable | None = None, client_factory: Callable | None = None) -> None:
     """Guide a student through intake, explicit confirmation and synthetic matches."""
     st.session_state.setdefault('pathway_step', 0)
     st.session_state.setdefault('pathway_draft', {})
@@ -263,6 +265,8 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
             for row in rows:
                 with st.expander(row['title'] + ' · Why this match?'):
                     render_role(st, row, by_code[row['code']], profile=profile)
+            if official_loader is not None and client_factory is not None:
+                render_evidence_reassessment(st, current, official_loader, client_factory)
             render_learning_plan(st, rows, by_code, labels, draft.get('Weekly learning time'),
                                  current, st.session_state.get('pathway_previous'))
             with st.expander('Technical details', expanded=False):

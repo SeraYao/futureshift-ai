@@ -47,7 +47,7 @@ O*NET 主要反映美国职业体系；它提供职业技能基准，不是马�
 - 匿名搜索按每滚动分钟最多 10 次设计，进程内所有页面会话共享预算；同时遵守服务端 Retry-After / X-RateLimit-Reset。点击后四次请求需全部成功且 incomplete_results=false，才原子替换该职业成功快照；失败不能变为 0，也不能拼接新旧窗口。
 - 成功快照缓存 15 分钟；UTC 日期变化也使窗口过期。失败时显示错误和最后完整成功缓存的原始日期、cached/expired 状态；没有缓存则明确不可用。缓存保存在本地 data/cache/github_trends.json，已精确忽略，不写入 demo JSON。
 - 页面明确标记映射状态及解释边界：**GitHub 仓库活动只是开源活动代理指标，不等于招聘数量、工资或就业增长预测。** 平台用户、主题标注覆盖、检索范围和仓库质量均会造成偏差；返回计数是 API 报告值，不是完整活动普查。
-- 趋势证据只在 O*NET data audit 中展示；O*NET 质量阻断仍保留，即使 T 可算也不生成个人适配总分、情景总分或职业排名。Synthetic simulation 继续仅使用三个 demo JSON。
+- 趋势证据在 O*NET data audit 及学生路径的独立证据重评区域展示；O*NET 质量阻断仍保留，即使 T 可算也不生成个人适配总分、情景总分或职业排名。Synthetic simulation 继续仅使用三个 demo JSON。
 
 官方语法与限制依据：[Repository Search API](https://docs.github.com/en/rest/search/search#search-repositories)、[repository topic 搜索](https://docs.github.com/en/search-github/searching-on-github/searching-for-repositories#search-by-topic)、[REST API 限流](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api)。文档访问不等于已经获取实际仓库计数；真实连通性、样本质量和职业关联仍待验证。
 
@@ -208,3 +208,12 @@ arXiv API 仅作为后续或备用研究趋势信号；传统接口按最多每 
 3. 已确定的评分参数有效性仍待验证，不再将数值列为待选；当前规则见上方“已确定的原型评分规则”。
 4. GitHub 接口在 Replit 中的连通性与匿名限流行为；缓存有效期及文件持久化方式。
 5. 学习资源和 SDG 映射；预赛暂不提供有独立证据支持的马来西亚劳动力市场预测。
+
+
+## 学生路径中的显式证据重评（2026-10-22）
+
+结果页的 **Refresh evidence and reassess** 每次只刷新用户选择的一个已配置职业，复用现有 GitHub 客户端、15 分钟缓存、滚动请求预算及失败降级，不自动请求，也不增加主题映射。会话保存各职业当前与前次成功快照；缓存复用不冒充新快照，失败不覆盖成功记录。主题表保留双窗口计数、日期、权重、主题分和抓取时间，技术折叠区提供完整查询与来源 URL。
+
+原有全合成排名保持独立。新增的证据驱动情景实验使用已确认画像、**合成职业要求**和该职业自己的真实 GitHub 主题快照；只用既定公式，不以 demo_trends 补缺。三个职业证据和个人分项都完整时才展示完整三职业情景排名，分别与原全合成结果及可比较的前次成功证据结果对照。部分证据仅显示可计算分数及原因。它不是 O*NET 真实职业匹配或就业预测；官方质量阻断单独显示，不绕过、不补值。Synthetic simulation 和 O*NET audit 原有边界保持不变。
+
+用户可选 Moderate 或 Fast 作为职业切换提示依据。新首位职业与已选职业不同时，只有点击确认才切换学习计划；证据本身不改变技能/知识缺口，也不代表完成学习或获得能力。计划仍使用所选职业的合成缺口，未接入已核实课程资源。快照与对比为会话状态，不是长期历史档案。
