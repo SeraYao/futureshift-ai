@@ -1,4 +1,5 @@
 """Data isolation, simulation sensitivity and visible audit evidence checks."""
+from ui_helpers import open_personal_profile
 from contextlib import nullcontext
 from copy import deepcopy
 import importlib.util
@@ -133,7 +134,7 @@ class StreamlitModeTests(unittest.TestCase):
         self.addCleanup(internal_patch.stop)
         client_patch.start()
         self.addCleanup(client_patch.stop)
-        page = AppTest.from_file(str(app.ROOT/'app.py')).run(timeout=30)
+        page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run(timeout=30))
         self.assertFalse(page.exception)
         self.assertEqual(page.radio(key='page_mode').options,
                          ['Career pathway prototype', 'Synthetic simulation'])

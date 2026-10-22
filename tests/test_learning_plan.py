@@ -1,4 +1,5 @@
 """Rule-generated practice plans and session-only completion; no real HTTP."""
+from ui_helpers import open_personal_profile
 from copy import deepcopy
 import importlib.util
 import unittest
@@ -86,7 +87,7 @@ class PlanUITests(unittest.TestCase):
         """Completion survives role switches; time changes create distinct plans, scores stay fixed."""
         from streamlit.testing.v1 import AppTest
         with patch('urllib.request.urlopen', side_effect=AssertionError('HTTP forbidden')):
-            page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+            page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
             draft = answers() | {'Weekly learning time': '5 hours'}
             page.session_state['pathway_draft'] = draft
             page.session_state['pathway_confirmed'] = confirmed_profile(draft)

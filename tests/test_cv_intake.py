@@ -1,4 +1,5 @@
 """PDF parsing, consent, fixed-schema AI extraction and real intake UI; all HTTP mocked."""
+from ui_helpers import open_personal_profile
 from copy import deepcopy
 from io import BytesIO
 import importlib.util
@@ -249,7 +250,7 @@ class CVPageTests(unittest.TestCase):
         """PDF upload is visible on identity and background; missing configuration leaves manual intake usable."""
         from streamlit.testing.v1 import AppTest
         with patch('urllib.request.urlopen', side_effect=AssertionError('No real HTTP')):
-            page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+            page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
             self.assertTrue(any(e.label == 'Upload a PDF CV' for e in page.expander))
             page.button(key='pathway_start').click().run()
             self.assertTrue(any(e.label == 'Upload a PDF CV' for e in page.expander))
@@ -261,7 +262,7 @@ class CVPageTests(unittest.TestCase):
              patch('src.cv_intake.extract_pdf', return_value=SOURCE), \
              patch('src.cv_intake.AIConfig.from_env', side_effect=CVError('AI is not configured. Set AI_BASE_URL, AI_MODEL and AI_API_KEY.')), \
              patch('src.cv_intake.extract_with_ai') as ai:
-            page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+            page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
             self.assertFalse(page.exception)
             self.assertTrue(page.button(key='cv_extract').disabled)
             self.assertTrue(any('AI is not configured' in info.value for info in page.info))
@@ -276,7 +277,7 @@ class CVPageTests(unittest.TestCase):
         with patch('streamlit.file_uploader', side_effect=upload), \
              patch('src.cv_intake.extract_pdf', side_effect=CVError('Damaged PDF; use the questionnaire')), \
              patch('src.cv_intake.extract_with_ai') as ai:
-            page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+            page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
             draft = {'skill_04': 1, 'Optional career goal': 'Existing goal'}
             page.session_state['pathway_draft'] = draft
             page.run()
@@ -297,7 +298,7 @@ class CVPageTests(unittest.TestCase):
              patch('src.cv_intake.extract_pdf', return_value=SOURCE), \
              patch('src.cv_intake.AIConfig.from_env', return_value=CONFIG), \
              patch('src.cv_intake.extract_with_ai') as ai:
-            page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+            page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
             next(box for box in page.checkbox if box.key.startswith('cv_consent_')).check().run()
             self.assertFalse(page.button(key='cv_extract').disabled)
             current[0] = BytesIO(b'%PDF-1.7 second')
@@ -341,7 +342,7 @@ class CVPageTests(unittest.TestCase):
                          patch('src.cv_intake.extract_pdf', return_value=SOURCE), \
                          patch('src.cv_intake.AIConfig.from_env', return_value=CONFIG), \
                          patch('urllib.request.OpenerDirector.open', side_effect=fail) as send:
-                        page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+                        page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
                         draft = {'skill_04': 1, 'Optional career goal': 'Existing'}
                         page.session_state['pathway_draft'] = deepcopy(draft)
                         page.session_state['pathway_confirmed'] = {'existing': True}
@@ -382,7 +383,7 @@ class CVPageTests(unittest.TestCase):
         document = extraction()
         document['skills'][0]['evidence'] = 'Invented Programming expert'
         review = validate_extraction(document, SOURCE, app.LABELS)
-        page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+        page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
         draft = {'skill_04': 1}
         page.session_state['pathway_draft'] = deepcopy(draft)
         page.session_state['cv_review'] = review
@@ -410,7 +411,7 @@ class CVPageTests(unittest.TestCase):
              patch('src.cv_intake.AIConfig.from_env', return_value=CONFIG), \
              patch('src.cv_intake.extract_with_ai', side_effect=extract) as ai, \
              patch('urllib.request.urlopen', side_effect=AssertionError('No real HTTP')):
-            page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+            page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
             self.assertFalse(page.exception)
             self.assertTrue(page.button(key='cv_extract').disabled)
             ai.assert_not_called()

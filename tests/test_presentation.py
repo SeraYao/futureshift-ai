@@ -1,4 +1,5 @@
 """Check visitor-facing information and closed technical disclosures; never use real HTTP."""
+from ui_helpers import open_personal_profile
 import ast
 from datetime import datetime, timezone
 import importlib.util
@@ -85,7 +86,7 @@ class VisitorPresentationTests(unittest.TestCase):
         with patch('app.shared_client',return_value=client), \
              patch('src.github_trends.shared_client',return_value=client), \
              patch('urllib.request.urlopen',side_effect=AssertionError('Real HTTP forbidden')):
-            page=AppTest.from_file(str(app.ROOT/'app.py')).run(timeout=30)
+            page=open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run(timeout=30))
             page.radio(key='page_mode').set_value('Synthetic simulation').run(timeout=30)
             self.assertFalse(page.exception)
             page.checkbox(key='simulation_confirm').check()

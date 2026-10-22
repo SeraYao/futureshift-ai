@@ -612,5 +612,21 @@
   "In hazardous-waste projects, documenting waste handling and disposal restrictions can support safer waste management under target 12.4; documentation alone does not demonstrate reduced pollution.": "在危险废物项目中，记录废物处理及处置限制可支持具体目标 12.4 所涉及的安全管理；仅有文件并不能证明污染已减少。",
   "In corporate sustainability work, tracking environmental indicators and reporting on initiatives can support sustainable practices and reporting under target 12.6.": "在企业可持续发展工作中，跟踪环境指标并报告举措成效，可支持具体目标 12.6 所涉及的可持续实践和报告。",
   "Scoring in this mode uses only the three demo JSON files. SDG associations are separate explanatory metadata and do not affect scores. All edits are local simulation inputs; the original fixtures are not overwritten. Career choices remain yours.": "此模式的评分仅使用三个演示 JSON 文件。SDG 关联是独立的解释性资料，不影响得分。所有修改均为本地模拟输入，不覆盖原始示例。职业选择由你决定。",
-  "How this pathway can contribute to the SDGs": "这条职业路径可能如何为 SDG 作出贡献"
+  "How this pathway can contribute to the SDGs": "这条职业路径可能如何为 SDG 作出贡献",
+  "Let's get started": "让我们开始吧",
+  "Choose the direction that best fits your current needs.": "选择最符合你当前需求的方向。",
+  "Explore career directions": "探索职业方向",
+  "A starting point for students and recent graduates": "在校学生、应届毕业生的起步助手",
+  "Build skills or explore a career change": "提升技能或探索转型",
+  "Grow in your current role or move into a new field": "在当前岗位继续成长，或更好地转向新领域",
+  "Develop team capabilities": "团队能力提升",
+  "Employee training, talent development or team planning": "员工培训、人才发展或团队规划",
+  "Back to use cases": "返回使用场景",
+  "Let us get to know you…": "让我们了解你……",
+  "Complete the questionnaire to create a profile": "填写问卷，创建个人画像",
+  "Coming soon": "即将开放",
+  "Professional profile questionnaire": "职场人士画像问卷",
+  "Try a professional sample profile": "试用职场人士示例画像",
+  "Enter team development needs": "输入团队能力提升需求",
+  "Batch upload": "批量上传"
 }

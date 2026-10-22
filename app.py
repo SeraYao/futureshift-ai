@@ -11,6 +11,7 @@ from src.scoring import (
     FAST_LAMBDA, MODERATE_LAMBDA, SCORING_VERSION, Score, github_trend, rank_roles,
 )
 
+from src.onboarding import render_onboarding
 from src.pathway import render_pathway
 from src.sdg import render_sdg_details, render_sdg_preview
 
@@ -248,7 +249,7 @@ def main() -> None:
         from src.cv_intake import clear_cv_review
         clear_cv_review(st.session_state)
     try:
-        if mode == 'Career pathway prototype':
+        if mode == 'Career pathway prototype' and render_onboarding(st):
             render_pathway(st, LABELS, LEVELS, load_demo, render_role, load_onet, get_trend_client)
         elif mode == 'Synthetic simulation':
             render_simulation(st)

@@ -122,11 +122,14 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
     st.session_state.setdefault('pathway_draft', {})
     step = st.session_state.pathway_step
     draft = st.session_state.pathway_draft
+    if step == 0:
+        st.header(tr('Let us get to know you…'))
     st.caption(tr('The questionnaire does not ask for names, age, gender or contact details. Optional PDF CV processing has a separate consent step. Occupational requirements and trends used for matching remain synthetic.'))
     if draft.get('data_status') == 'synthetic':
         st.warning(tr('SAMPLE PROFILE · Synthetic student answers, including any edits to this example. Not real personal data or a real employment prediction.'))
-    st.progress(step / 7, text=tr('Step {v0} of 8 · {v1}', v0=step + 1, v1=display_text(STEPS[step])))
-    st.subheader(display_text(STEPS[step]))
+    if step != 0:
+        st.progress(step / 7, text=tr('Step {v0} of 8 · {v1}', v0=step + 1, v1=display_text(STEPS[step])))
+        st.subheader(display_text(STEPS[step]))
 
     def field(name: str, options: tuple | None = None, label: str | None = None,
               kind: str = 'select', **kwargs: Any) -> None:
@@ -163,15 +166,11 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
     if st.session_state.get('pathway_restored'):
         st.caption(tr('Restored from a local prototype plan file. Background and free-text answers were not exported; you may enter them again when reassessing. No live GitHub history was restored.'))
     if step == 0:
-        st.write(tr('Choose the pathway that fits your situation.'))
-        st.markdown(tr('#### Student or recent graduate'))
-        if st.button(tr('Fill in my profile'), key='pathway_start'):
+        if st.button(tr('Complete the questionnaire to create a profile'), key='pathway_start'):
             switch_profile_workspace(st.session_state, 'manual')
             st.session_state.pathway_step = 1
             st.rerun()
         sample_entry()
-        st.button(tr('Working professional seeking upskilling or a career change · Planned'), disabled=True)
-        st.button(tr('Employer planning workforce development · Planned'), disabled=True)
         return
     if step == 1:
         st.info(tr('Fill in your profile below, or skip the questionnaire using a complete synthetic sample.'))

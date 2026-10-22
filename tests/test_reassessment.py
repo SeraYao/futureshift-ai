@@ -1,4 +1,5 @@
 """Immutable previous runs, exact component comparisons and the real reassessment journey."""
+from ui_helpers import open_personal_profile
 from copy import deepcopy
 import importlib.util
 import unittest
@@ -75,7 +76,7 @@ class ReassessmentUITests(unittest.TestCase):
         """Prefilled answers survive modes; only a new confirmation replaces the current result."""
         from streamlit.testing.v1 import AppTest
         with patch('urllib.request.urlopen', side_effect=AssertionError('No real HTTP')):
-            page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+            page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
             draft = answers()
             page.session_state['pathway_draft'] = draft
             page.session_state['pathway_step'] = 6

@@ -1,4 +1,5 @@
 """SDG evidence and rendering never enter matching or plan data; no external HTTP."""
+from ui_helpers import open_personal_profile
 from copy import deepcopy
 import unittest
 from unittest.mock import patch
@@ -71,7 +72,7 @@ class SDGPageTests(unittest.TestCase):
 
     def page(self):
         from streamlit.testing.v1 import AppTest
-        page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+        page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
         self.healthy(page)
         return page
 

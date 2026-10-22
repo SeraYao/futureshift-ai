@@ -1,4 +1,5 @@
 """One-click synthetic intake and separation from personal questionnaire drafts."""
+from ui_helpers import open_personal_profile
 from copy import deepcopy
 import importlib.util
 import unittest
@@ -53,14 +54,14 @@ class SampleUITests(unittest.TestCase):
         from streamlit.testing.v1 import AppTest
         for step in (0, 1):
             with self.subTest(step=step), patch('urllib.request.urlopen', side_effect=AssertionError('No HTTP')):
-                page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+                page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
                 if step == 1:
                     page.button(key='pathway_start').click().run()
                 button = page.button(key='pathway_sample')
                 self.assertEqual(button.label, 'Try with a sample profile')
                 self.assertFalse(button.disabled)
                 if step == 0:
-                    self.assertEqual(page.button(key='pathway_start').label, 'Fill in my profile')
+                    self.assertEqual(page.button(key='pathway_start').label, 'Complete the questionnaire to create a profile')
                 button.click().run()
                 self.assertFalse(page.exception)
                 self.assertEqual(page.session_state['pathway_step'], 7)
@@ -74,7 +75,7 @@ class SampleUITests(unittest.TestCase):
         """Sample ranks immediately, offers a plan, remains synthetic after editing, and restores manual input."""
         from streamlit.testing.v1 import AppTest
         with patch('urllib.request.urlopen', side_effect=AssertionError('No real HTTP')):
-            page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+            page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
             page.button(key='pathway_start').click().run()
             page.text_area(key='pathway_Optional career goal').set_value('My saved exploration goal').run()
             page.button(key='pathway_next').click().run()

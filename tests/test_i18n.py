@@ -1,4 +1,5 @@
 """Complete translation catalogs and real page interactions; all network is forbidden."""
+from ui_helpers import open_personal_profile
 import ast
 import importlib
 from copy import deepcopy
@@ -130,7 +131,7 @@ class LanguagePageTests(unittest.TestCase):
 
     def page(self):
         from streamlit.testing.v1 import AppTest
-        page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+        page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
         self.healthy(page)
         return page
 
@@ -157,8 +158,8 @@ class LanguagePageTests(unittest.TestCase):
                 self.switch(page, language)
                 page.radio(key='page_mode').set_value('Career pathway prototype').run()
                 self.healthy(page)
-                self.assertTrue(any(item.value == self.text(language, '#### Student or recent graduate')
-                                    for item in page.markdown))
+                self.assertTrue(any(item.value == self.text(language, 'Let us get to know you…')
+                                    for item in page.header))
                 page.button(key='pathway_start').click().run()
                 self.healthy(page)
                 self.assertTrue(any(item.value == self.text(language, 'Background')
@@ -194,12 +195,12 @@ class LanguagePageTests(unittest.TestCase):
     def test_default_and_all_questionnaire_pages(self):
         page = self.page()
         self.assertEqual(page.session_state['ui_language'], 'en')
-        self.assertEqual(page.button(key='pathway_start').label, 'Fill in my profile')
+        self.assertEqual(page.button(key='pathway_start').label, 'Complete the questionnaire to create a profile')
         for language in LANGUAGES:
             self.switch(page, language)
             self.assertTrue(any(self.text(language, '### Navigate change. Shape your future.') == item.value
                                 for item in page.markdown))
-            self.assertEqual(page.button(key='pathway_start').label, self.text(language, 'Fill in my profile'))
+            self.assertEqual(page.button(key='pathway_start').label, self.text(language, 'Complete the questionnaire to create a profile'))
             page.button(key='pathway_start').click().run()
             for step in range(1, 7):
                 page.session_state['pathway_step'] = step
@@ -421,7 +422,7 @@ class LanguagePageTests(unittest.TestCase):
             return BytesIO(b'{"format_version":"wrong"}') if kwargs.get('key') == 'restore_plan_upload' else None
         with patch('streamlit.file_uploader', side_effect=uploader):
             from streamlit.testing.v1 import AppTest
-            page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+            page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
             for code in ('zh', 'ms', 'en'):
                 self.switch(page, code, allow_error=True)
                 self.assertTrue(any(self.text(code, 'Cannot restore this file: ') + self.text(code, 'Unsupported plan format version') == item.value

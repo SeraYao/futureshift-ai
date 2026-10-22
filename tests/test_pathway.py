@@ -1,4 +1,5 @@
 """Questionnaire contracts and actual guided UI; real HTTP is forbidden."""
+from ui_helpers import open_personal_profile
 from copy import deepcopy
 import importlib.util
 import unittest
@@ -84,11 +85,11 @@ class GuidedUITests(unittest.TestCase):
         """Only the student entry works, draft survives navigation, confirmation calls engine."""
         from streamlit.testing.v1 import AppTest
         with patch('urllib.request.urlopen', side_effect=AssertionError('No real HTTP')):
-            page = AppTest.from_file(str(app.ROOT/'app.py')).run(timeout=30)
+            page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run(timeout=30))
             self.assertFalse(page.exception)
             self.assertEqual(page.radio(key='page_mode').value, 'Career pathway prototype')
             planned = [button for button in page.button if 'Planned' in button.label]
-            self.assertEqual(len(planned), 2)
+            self.assertEqual(len(planned), 0)
             self.assertTrue(all(button.disabled for button in planned))
             page.button(key='pathway_start').click().run()
             page.selectbox(key='pathway_Identity').set_value('Recent graduate').run()

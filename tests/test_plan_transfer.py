@@ -1,4 +1,5 @@
 """Local JSON export, validation and user-confirmed restoration; no external requests."""
+from ui_helpers import open_personal_profile
 from copy import deepcopy
 from io import BytesIO
 import importlib.util
@@ -120,7 +121,7 @@ class PlanTransferUITests(unittest.TestCase):
         upload = BytesIO(export_plan(assessment, plan, completion).encode())
         with patch('urllib.request.urlopen', side_effect=AssertionError('No real HTTP')), \
              patch('streamlit.file_uploader', return_value=upload):
-            page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+            page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
             self.assertFalse(page.exception)
             self.assertEqual(page.session_state['pathway_step'], 0)
             self.assertNotIn('pathway_confirmed', page.session_state)
@@ -147,7 +148,7 @@ class PlanTransferUITests(unittest.TestCase):
         from streamlit.testing.v1 import AppTest
         with patch('urllib.request.urlopen', side_effect=AssertionError('No real HTTP')), \
              patch('streamlit.file_uploader', return_value=BytesIO(b'{"format_version":"wrong"}')):
-            page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+            page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
             existing = {'skill_04': 3, 'Optional career goal': 'Existing goal'}
             page.session_state['pathway_draft'] = existing
             page.session_state['pathway_assessment'] = {'existing': True}

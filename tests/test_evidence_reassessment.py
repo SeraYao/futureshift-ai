@@ -1,4 +1,5 @@
 """Evidence reassessment with mock HTTP only and real Streamlit interactions."""
+from ui_helpers import open_personal_profile
 from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 import importlib.util
@@ -99,7 +100,7 @@ class EvidencePageTests(unittest.TestCase):
             client.snapshots[client._key(code)] = record
         with patch('src.github_trends.shared_client', return_value=client) as factory, \
              patch('urllib.request.urlopen', side_effect=AssertionError('Real HTTP forbidden')):
-            page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+            page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
             page.button(key='pathway_sample').click().run()
             self.assertFalse(page.exception)
             factory.assert_not_called()
