@@ -82,7 +82,8 @@ class VisitorPresentationTests(unittest.TestCase):
         client=GitHubTrends(opener=opener,
                            now=lambda:datetime(2026,10,21,12,tzinfo=timezone.utc))
         client.refresh('15-2051.00')  # Four mock responses; no real API request.
-        with patch('src.github_trends.shared_client',return_value=client), \
+        with patch('app.shared_client',return_value=client), \
+             patch('src.github_trends.shared_client',return_value=client), \
              patch('urllib.request.urlopen',side_effect=AssertionError('Real HTTP forbidden')):
             page=AppTest.from_file(str(app.ROOT/'app.py')).run(timeout=30)
             page.radio(key='page_mode').set_value('Synthetic simulation').run(timeout=30)
@@ -95,7 +96,7 @@ class VisitorPresentationTests(unittest.TestCase):
             self.assertEqual(len(page.get('progress')),6)
             self.assertTrue(any('synthetic demonstration data' in warning.value for warning in page.warning))
             self.assertFalse(any('Fixture snapshot:' in str(getattr(node,'value','')) for node in simulation))
-            page.radio(key='page_mode').set_value('O*NET data audit').run(timeout=30)
+            page=AppTest.from_file(str(app.ROOT/'scripts/onet_audit.py')).run(timeout=30)
             self.assertFalse(page.exception)
             self.assertFalse(page.error)
             audit=self.check_disclosures(page)

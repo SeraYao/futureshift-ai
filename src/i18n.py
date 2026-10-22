@@ -37,6 +37,7 @@ def validate_catalogs(catalogs: dict | None = None) -> None:
 
 def initialize_language(state: Any) -> str:
     """Use canonical codes, migrating old display names without touching other state."""
+    reload_catalogs()
     saved = state.get('ui_language')
     if not isinstance(saved, str) or saved not in LANGUAGE_OPTIONS:
         aliases = {label: code for code, label in LANGUAGES.items()}
@@ -46,6 +47,19 @@ def initialize_language(state: Any) -> str:
     code = state['ui_language']
     set_language(code)
     return code
+
+
+def reload_catalogs() -> None:
+    """Reload edited locale files on each page run, even if this module stays cached.
+
+    Validate a complete replacement before publishing it so concurrent sessions never
+    observe partially loaded catalogs. Missing keys remain errors, with no fallback.
+    """
+    global CATALOGS
+    catalogs = {code: json.loads((LOCALES_DIRECTORY / f'{code}.json').read_text(encoding='utf-8'))
+                for code in LANGUAGE_OPTIONS}
+    validate_catalogs(catalogs)
+    CATALOGS = catalogs
 
 
 def language_name(code: str) -> str:

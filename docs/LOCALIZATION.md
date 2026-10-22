@@ -24,10 +24,15 @@ This recovery never bypasses translation-catalog validation.
 
 `src/locales/en.json`, `zh.json`, and `ms.json` use the original interface message
 as a stable key. `src/i18n.py` validates equal key sets, nonempty values and matching
-format placeholders at import. `tr` raises for unknown keys. Add each new authored
+format placeholders at import and reloads/validates all three files before each page
+render, because Streamlit may keep imported modules cached after locale files change.
+The complete validated catalog replaces the old one atomically; invalid catalogs
+still fail without an English fallback. `tr` raises for unknown keys. Add each new authored
 message to all three catalogs; do not introduce a locale conditional in a page.
 Indirect labels (questionnaire enums, exercise templates and scales) are also
 checked by tests. All modules calling translation helpers must explicitly import them.
+The SDG detail heading uses the plain key `How this pathway can contribute to the SDGs`;
+the renderer adds `#### ` after translation so Markdown formatting is not part of the key.
 
 `tr` preserves interpolation values. `display_text` translates authored labels;
 `translated_options` translates their presentation while preserving typed option

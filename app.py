@@ -12,6 +12,7 @@ from src.scoring import (
 )
 
 from src.pathway import render_pathway
+from src.sdg import render_sdg_details, render_sdg_preview
 
 from src.github_trends import (
     GitHubTrends, MAPPING_RECORDED_ON, MAPPING_STATUS, ROLE_TOPICS, evidence_score, shared_client,
@@ -210,8 +211,7 @@ def render_role(st: Any, row: dict, role: dict, profile: dict | None = None) -> 
     st.markdown(tr('#### Trend evidence · synthetic'))
     for topic in row['trend']['topics']:
         render_topic(st, topic)
-    st.markdown(tr('#### SDG contribution'))
-    st.info(tr('待验证 · Pending validation. No reliable role / skill → SDG target mapping is present in these fixtures. SDG is not included in the score.'))
+    render_sdg_details(st, row['code'])
     st.markdown(tr('#### Source identity'))
     st.markdown(tr('[Official occupation identity]({v0})', v0=role['identity_source_url']))
     st.caption(tr('The linked page identifies only the official title and code. All requirements, importance, interests and trend counts used in this simulation are synthetic.'))
@@ -239,8 +239,12 @@ def main() -> None:
                      format_func=language_name, label_visibility='visible')
     st.markdown(tr('### Navigate change. Shape your future.'))
     st.write(tr('Explore how your capabilities and interests connect to different career pathways.'))
-    st.info(tr('Start with Career pathway prototype for the guided student questionnaire. Use Synthetic simulation to edit a demo profile and compare two career scenarios. Use O*NET data audit to inspect official occupational data and GitHub activity evidence. GitHub activity scores are not hiring demand or employment-growth forecasts.'))
-    mode = st.radio(tr('Mode'), ('Career pathway prototype', 'Synthetic simulation', 'O*NET data audit'),
+    st.info(tr('Start with Career pathway prototype for the guided student questionnaire. Use Synthetic simulation to edit a demo profile and compare two career scenarios. GitHub activity scores are not hiring demand or employment-growth forecasts.'))
+    public_modes = ('Career pathway prototype', 'Synthetic simulation')
+    # Recover sessions saved before the internal audit was removed from navigation.
+    if st.session_state.get('page_mode') not in public_modes:
+        st.session_state['page_mode'] = public_modes[0]
+    mode = st.radio(tr('Mode'), public_modes,
                     horizontal=True, key='page_mode', format_func=translated_options())
     if mode != 'Career pathway prototype':
         from src.cv_intake import clear_cv_review
@@ -250,8 +254,6 @@ def main() -> None:
             render_pathway(st, LABELS, LEVELS, load_demo, render_role, load_onet, get_trend_client)
         elif mode == 'Synthetic simulation':
             render_simulation(st)
-        else:
-            render_audit(st)
     except (OSError, ValueError, KeyError, TypeError) as exc:
         st.error(translate_error(tr('Unable to load or process this mode’s local data: {v0}', v0=exc)))
 
@@ -332,6 +334,7 @@ def render_simulation(st: Any) -> None:
                 st.markdown(tr('**{v0:02d} · {v1}**', v0=row[scenario + '_rank'], v1=row['title']))
                 st.progress(row[scenario].value / 100,
                             text=tr('{v0:.2f} / 100 · {v1}', v0=row[scenario].value, v1=row['code']))
+                render_sdg_preview(st, row['code'])
     st.subheader(tr('03 / Understand each match'))
     shown = {r['code'] for scenario in ('moderate', 'fast')
              for r in sorted(eligible, key=lambda r: r[scenario + '_rank'])[:5]}
@@ -350,7 +353,7 @@ def render_simulation(st: Any) -> None:
                 'Match = (1 − lambda) × P + lambda × T\n'
                 'Moderate: lambda = 0.15 | Fast disruption: lambda = 0.35')
         st.write(tr('These weights and smoothing parameter 20 are unvalidated prototype assumptions. Technical activity is not job demand, wages or employment growth. Self-ratings and occupational requirements are different measurement systems; normalization does not validate their equivalence. Scenario sensitivity is not statistical confidence. Missing inputs block complete ranking; no values are imputed.'))
-        st.write(tr('This mode reads only the three demo JSON files. All edits are local simulation inputs; the original fixtures are not overwritten. SDG mappings remain pending validation and do not affect scoring. Career choices remain yours.'))
+        st.write(tr('Scoring in this mode uses only the three demo JSON files. SDG associations are separate explanatory metadata and do not affect scores. All edits are local simulation inputs; the original fixtures are not overwritten. Career choices remain yours.'))
 
 
 def get_trend_client() -> GitHubTrends:
@@ -473,6 +476,8 @@ def render_audit(st: Any) -> None:
               for row in audits]))
     for role, audit in zip(official['roles'], audits):
         with st.expander(tr('{v0} · {v1}', v0=role['code'], v1=role['title'])):
+            render_sdg_preview(st, role['code'])
+            render_sdg_details(st, role['code'])
             st.markdown(tr('[Official occupation identity]({v0})', v0=role['identity_source_url']))
             st.markdown(tr('#### Available source components'))
             for group in ('skills', 'knowledge', 'riasec'):

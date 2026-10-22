@@ -123,7 +123,8 @@ class LanguagePageTests(unittest.TestCase):
         self.urlopen = patch('urllib.request.urlopen', side_effect=AssertionError('No GitHub HTTP'))
         self.client = GitHubTrends(opener=Mock(side_effect=AssertionError('No HTTP')))
         self.shared = patch('src.github_trends.shared_client', return_value=self.client)
-        for patcher in (self.network, self.urlopen, self.shared):
+        self.internal_shared = patch('app.shared_client', return_value=self.client)
+        for patcher in (self.network, self.urlopen, self.shared, self.internal_shared):
             patcher.start()
             self.addCleanup(patcher.stop)
 
@@ -315,16 +316,20 @@ class LanguagePageTests(unittest.TestCase):
         trends = deepcopy(page.session_state['simulation_trends'])
         for code in ('zh', 'ms', 'en'):
             self.switch(page, code)
+            self.assertEqual(len(page.radio(key='page_mode').options), 2)
+            self.assertFalse(any('O*NET' in item.value for item in page.info))
             self.assertEqual(page.session_state['simulation_profile'], profile)
             self.assertEqual(page.session_state['simulation_trends'], trends)
             self.assertEqual(len(page.get('progress')), 6)
             self.assertTrue(any(item.value == self.text(code, '01 / Your demo profile') for item in page.subheader))
-            page.radio(key='page_mode').set_value('O*NET data audit').run()
-            self.healthy(page)
-            self.assertTrue(any(item.value == self.text(code, 'Ten occupations · source component availability') for item in page.subheader))
-            self.assertEqual(len(page.dataframe), 30)
-            self.assertEqual(page.button(key='github_refresh_15-2051.00').label, self.text(code, 'Refresh'))
-            self.assertEqual(len(page.table[0].value), 10)
+            from streamlit.testing.v1 import AppTest
+            audit = AppTest.from_file(str(app.ROOT/'scripts/onet_audit.py')).run()
+            self.switch(audit, code)
+            self.healthy(audit)
+            self.assertTrue(any(item.value == self.text(code, 'Ten occupations · source component availability') for item in audit.subheader))
+            self.assertEqual(len(audit.dataframe), 30)
+            self.assertEqual(audit.button(key='github_refresh_15-2051.00').label, self.text(code, 'Refresh'))
+            self.assertEqual(len(audit.table[0].value), 10)
             page.radio(key='page_mode').set_value('Synthetic simulation').run()
 
     def test_successful_github_evidence_is_stable_in_all_languages(self):
@@ -342,10 +347,12 @@ class LanguagePageTests(unittest.TestCase):
             self.assertEqual(self.client.opener.call_count, 4)
             self.assertTrue(any(self.text(code, '#### Evidence-adjusted prototype scenarios') == item.value
                                 for item in page.markdown))
-            page.radio(key='page_mode').set_value('O*NET data audit').run()
-            self.healthy(page)
+            from streamlit.testing.v1 import AppTest
+            audit = AppTest.from_file(str(app.ROOT/'scripts/onet_audit.py')).run()
+            self.switch(audit, code)
+            self.healthy(audit)
             count_column = self.text(code, 'Repository count')
-            counts = [int(value) for table in page.table if count_column in table.value
+            counts = [int(value) for table in audit.table if count_column in table.value
                       for value in table.value[count_column]]
             self.assertEqual(counts, [19, 23, 5, 7])
             page.radio(key='page_mode').set_value('Career pathway prototype').run()

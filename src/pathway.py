@@ -1,5 +1,6 @@
 """Student questionnaire and session-only confirmation flow; no external data access."""
 from src.i18n import tr, display_text, table_text, translated_options, translate_error
+from src.sdg import render_sdg_preview
 from copy import deepcopy
 from typing import Any, Callable
 
@@ -262,6 +263,7 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
                     st.info(tr('No complete rankings available. Review the component reasons below.'))
                 for row in ranked:
                     st.write(tr('{v0}. {v1} · {v2:.2f} / 100', v0=row[scenario + '_rank'], v1=row['title'], v2=row[scenario].value))
+                    render_sdg_preview(st, row['code'])
             by_code = {role['code']: role for role in role_file['roles']}
             for row in rows:
                 with st.expander(row['title'] + tr(' · Why this match?')):

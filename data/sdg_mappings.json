@@ -1,0 +1,103 @@
+{
+  "version": "sdg-associations-v1",
+  "color_source": "https://www.un.org/sustainabledevelopment/wp-content/uploads/2023/09/E_SDG_Guidelines_Sep20238.pdf",
+  "goals": {
+    "6": {
+      "name": "Clean water and sanitation",
+      "color": "#26BDE2"
+    },
+    "7": {
+      "name": "Affordable and clean energy",
+      "color": "#FCC30B"
+    },
+    "12": {
+      "name": "Responsible consumption and production",
+      "color": "#BF8B2E"
+    }
+  },
+  "roles": {
+    "13-1199.05": {
+      "status": "source_checked",
+      "mappings": [
+        {
+          "sdg_id": "12",
+          "target_id": "12.6",
+          "relation_type": "Potential contribution",
+          "reason": "In corporate sustainability work, tracking environmental indicators and reporting on initiatives can support sustainable practices and reporting under target 12.6.",
+          "occupation_source": "https://www.onetonline.org/link/summary/13-1199.05#Tasks",
+          "target_source": "https://unstats.un.org/sdgs/metadata/?Target=12.6",
+          "source_checked_on": "2026-10-22",
+          "task_summary": "Develop reports or presentations to communicate the effectiveness of sustainability initiatives."
+        }
+      ]
+    },
+    "15-1211.00": {
+      "status": "pending_validation",
+      "mappings": []
+    },
+    "15-1212.00": {
+      "status": "pending_validation",
+      "mappings": []
+    },
+    "15-1252.00": {
+      "status": "pending_validation",
+      "mappings": []
+    },
+    "15-2031.00": {
+      "status": "pending_validation",
+      "mappings": []
+    },
+    "15-2051.00": {
+      "status": "pending_validation",
+      "mappings": []
+    },
+    "17-2081.00": {
+      "status": "source_checked",
+      "mappings": [
+        {
+          "sdg_id": "6",
+          "target_id": "6.3",
+          "relation_type": "Potential contribution",
+          "reason": "In water-quality projects, designing pollution-control or remediation systems can help reduce contaminated discharges, potentially supporting target 6.3.",
+          "occupation_source": "https://www.onetonline.org/link/summary/17-2081.00#Tasks",
+          "target_source": "https://sdgs.un.org/goals/goal6",
+          "source_checked_on": "2026-10-22",
+          "task_summary": "Design systems to control pollution and restore environmental quality, including water quality. (Project paraphrase.)"
+        },
+        {
+          "sdg_id": "12",
+          "target_id": "12.4",
+          "relation_type": "Potential contribution",
+          "reason": "In hazardous-waste projects, documenting waste handling and disposal restrictions can support safer waste management under target 12.4; documentation alone does not demonstrate reduced pollution.",
+          "occupation_source": "https://www.onetonline.org/link/summary/17-2081.00#Tasks",
+          "target_source": "https://unstats.un.org/sdgs/metadata/?Target=12.4",
+          "source_checked_on": "2026-10-22",
+          "task_summary": "Document hazardous-waste handling and constraints on land disposal. (Project paraphrase.)"
+        }
+      ]
+    },
+    "17-2199.03": {
+      "status": "source_checked",
+      "mappings": [
+        {
+          "sdg_id": "7",
+          "target_id": "7.3",
+          "relation_type": "Potential contribution",
+          "reason": "Energy audits and consumption analysis can identify efficiency improvements in buildings or industrial systems, potentially supporting target 7.3.",
+          "occupation_source": "https://www.onetonline.org/link/summary/17-2199.03#Tasks",
+          "target_source": "https://sdgs.un.org/goals/goal7",
+          "source_checked_on": "2026-10-22",
+          "task_summary": "Conduct energy audits to evaluate energy use and to identify conservation and cost reduction measures."
+        }
+      ]
+    },
+    "17-2199.08": {
+      "status": "pending_validation",
+      "mappings": []
+    },
+    "19-1029.01": {
+      "status": "pending_validation",
+      "mappings": []
+    }
+  }
+}

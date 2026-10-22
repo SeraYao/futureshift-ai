@@ -123,14 +123,27 @@ class StreamlitModeTests(unittest.TestCase):
     """Exercise real rendering with AppTest, without starting a web server."""
 
     def test_submit_edit_and_switch_modes(self) -> None:
-        """Simulation edits recalculate, then audit shows source evidence without totals."""
+        """Public modes work; the separate internal audit shows source evidence without totals."""
         from streamlit.testing.v1 import AppTest
         from src.github_trends import GitHubTrends
         empty_client = GitHubTrends(opener=Mock(side_effect=AssertionError('No HTTP in mode test')))
         client_patch = patch('src.github_trends.shared_client', return_value=empty_client)
+        internal_patch = patch('app.shared_client', return_value=empty_client)
+        internal_patch.start()
+        self.addCleanup(internal_patch.stop)
         client_patch.start()
         self.addCleanup(client_patch.stop)
         page = AppTest.from_file(str(app.ROOT/'app.py')).run(timeout=30)
+        self.assertFalse(page.exception)
+        self.assertEqual(page.radio(key='page_mode').options,
+                         ['Career pathway prototype', 'Synthetic simulation'])
+        self.assertFalse(any('O*NET data audit' in item.value for item in page.info))
+        # An old bookmarked session cannot restore the removed mode.
+        page = AppTest.from_file(str(app.ROOT/'app.py'))
+        page.session_state['page_mode'] = 'O*NET data audit'
+        page.run(timeout=30)
+        self.assertFalse(page.exception)
+        self.assertEqual(page.radio(key='page_mode').value, 'Career pathway prototype')
         page.radio(key='page_mode').set_value('Synthetic simulation').run(timeout=30)
         self.assertFalse(page.exception)
         page.checkbox(key='simulation_confirm').check()
@@ -152,7 +165,7 @@ class StreamlitModeTests(unittest.TestCase):
             return read_text(path, *args, **kwargs)
 
         with patch.object(Path, 'read_text', tracked_read):
-            page.radio(key='page_mode').set_value('O*NET data audit').run(timeout=30)
+            page = AppTest.from_file(str(app.ROOT/'scripts/onet_audit.py')).run(timeout=30)
         self.assertEqual(reads, ['onet_roles.json'])
         self.assertFalse(page.exception)
         self.assertFalse(page.error)

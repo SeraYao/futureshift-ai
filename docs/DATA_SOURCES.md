@@ -217,3 +217,38 @@ arXiv API 仅作为后续或备用研究趋势信号；传统接口按最多每 
 原有全合成排名保持独立。新增的证据驱动情景实验使用已确认画像、**合成职业要求**和该职业自己的真实 GitHub 主题快照；只用既定公式，不以 demo_trends 补缺。三个职业证据和个人分项都完整时才展示完整三职业情景排名，分别与原全合成结果及可比较的前次成功证据结果对照。部分证据仅显示可计算分数及原因。它不是 O*NET 真实职业匹配或就业预测；官方质量阻断单独显示，不绕过、不补值。Synthetic simulation 和 O*NET audit 原有边界保持不变。
 
 用户可选 Moderate 或 Fast 作为职业切换提示依据。新首位职业与已选职业不同时，只有点击确认才切换学习计划；证据本身不改变技能/知识缺口，也不代表完成学习或获得能力。计划仍使用所选职业的合成缺口，未接入已核实课程资源。快照与对比为会话状态，不是长期历史档案。
+
+## SDG 展示映射（2026-10-22）
+
+新增独立的 `data/sdg_mappings.json`，不修改 demo/正式职业记录。`src/sdg.py`
+只在展示层按原 O*NET code 读取它，评分、情景、查询、学习计划及导出均不读取它。
+原职业池表中的 SDG 是候选方向；本节记录本次有来源支持的子集，其余仍待验证。
+页面不自动联网：以下来源在开发时核对，运行时仅展示已记录链接。
+
+| 职业 | target | 任务与贡献判断 | 来源 |
+| --- | --- | --- | --- |
+| 17-2199.03 Energy Engineers, Except Wind and Solar | 7.3（主要） | 能源审计与用能分析可发现能效改进机会；仅适用于实际能效项目 | [O*NET Tasks](https://www.onetonline.org/link/summary/17-2199.03#Tasks)、[联合国 7.3](https://sdgs.un.org/goals/goal7) |
+| 17-2081.00 Environmental Engineers | 6.3（主要） | 水污染控制/修复系统设计可能减少受污染排放；仅适用于水质项目 | [O*NET Tasks](https://www.onetonline.org/link/summary/17-2081.00#Tasks)、[联合国 6.3](https://sdgs.un.org/goals/goal6) |
+| 17-2081.00 Environmental Engineers | 12.4（补充） | 危险废物处理/处置文件支持安全管理；文件本身不能证明污染减少 | [O*NET Tasks](https://www.onetonline.org/link/summary/17-2081.00#Tasks)、[联合国 12.4](https://unstats.un.org/sdgs/metadata/?Target=12.4) |
+| 13-1199.05 Sustainability Specialists | 12.6（主要） | 企业环境指标跟踪和举措报告可能支持可持续实践与报告；并非所有岗位均从事企业报告 | [O*NET Tasks](https://www.onetonline.org/link/summary/13-1199.05#Tasks)、[联合国 12.6](https://unstats.un.org/sdgs/metadata/?Target=12.6) |
+
+判断方式：逐项比较职业 Tasks 和联合国 target 定义，要求有可指出的工作活动及应用情境。
+JSON 记录原 code、sdg_id、target_id、任务摘录或标明为项目改写的任务摘要、贡献理由、
+关系类型、两类来源链接、来源核对日期和状态。数组顺序表示主要/补充关系，每个职业最多两项。
+`source_checked` 仅表示来源支持这条**项目推断的潜在关联**，不表示联合国或 O*NET
+发布/认可了此映射，不表示实证影响已验证，也不表示独立人工专家审查已完成。
+来源为访问时的 O*NET OnLine Tasks，不冒充锁定 31.0 CSV 的新增任务记录；职业评分仍使用原数据。
+任务描述保持原文或注明改写；贡献理由与状态使用 en/zh/ms 翻译目录。
+
+其余七个职业（15-2051.00、15-2031.00、15-1252.00、15-1211.00、15-1212.00、
+17-2199.08、19-1029.01）保存 `pending_validation` 和空映射。
+不展示原候选 target 为已建立关联，不编造理由、来源或“默认 SDG”。未知职业同样待验证。
+没有新增逐技能映射，也不将问卷 SDG 偏好视为职业证据。
+
+所有关联均依赖实际岗位和应用场景，不能证明目标已实现，不代表就业前景、职业质量或个人适配。
+SDG 不进入任何分数、排名、过滤或情景计算。合成模式仍展示合成评分，审计模式仍不进行个人评分。
+当前三个合成职业均待验证，因此其每张卡片显示明确状态；有来源关联可在审计模式相应职业折叠详情中查看。
+
+视觉使用 [联合国 SDG 色彩指南](https://www.un.org/sustainabledevelopment/wp-content/uploads/2023/09/E_SDG_Guidelines_Sep20238.pdf)
+的目标 6（#26BDE2）、7（#FCC30B）、12（#BF8B2E）颜色作为边框。
+这是项目文字标签，不是重绘官方图标或联合国背书标识。深色文字置于白底，编号、名称、主次和状态不依赖颜色传达。
