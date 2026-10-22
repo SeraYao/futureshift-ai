@@ -306,6 +306,41 @@ class LanguagePageTests(unittest.TestCase):
         self.assertEqual(export_plan(current, current['plans']['15-2051.00']['plan'],
                                      current['plans']['15-2051.00']['completion'], '2026-10-22T00:00:00+00:00'), baseline_export)
 
+    def test_removed_intro_elements_are_absent_in_all_public_modes_and_languages(self):
+        removed_keys = (
+            'Start with Career pathway prototype for the guided student questionnaire. Use Synthetic simulation to edit a demo profile and compare two career scenarios. GitHub activity scores are not hiring demand or employment-growth forecasts.',
+            'Prototype simulation — not a labour-market prediction',
+            '<div class="eyebrow">Students & Recent Graduates · Career exploration</div>',
+        )
+        removed_texts = [CATALOGS[code][key] for code in LANGUAGES for key in removed_keys]
+        # Also detect the eyebrow text if its HTML wrapper is changed.
+        removed_texts.extend(text.split('>', 1)[1].rsplit('<', 1)[0]
+                             for text in removed_texts[:] if text.startswith('<div'))
+
+        def assert_absent(page):
+            self.healthy(page)
+            text = '\n'.join(item.value for kind in ('markdown', 'info', 'warning', 'caption', 'text')
+                             for item in page.get(kind))
+            for removed in removed_texts:
+                self.assertNotIn(removed, text)
+
+        for code in LANGUAGES:
+            with self.subTest(language=code):
+                page = self.page()
+                self.switch(page, code)
+                page.radio(key='page_mode').set_value('Career pathway prototype').run()
+                assert_absent(page)
+                page.button(key='pathway_sample').click().run()
+                assert_absent(page)
+                self.assertTrue(page.session_state['pathway_assessment'])
+                page.radio(key='page_mode').set_value('Synthetic simulation').run()
+                assert_absent(page)
+                if 'simulation_profile' not in page.session_state:
+                    page.checkbox(key='simulation_confirm').check()
+                    page.button[0].click().run()
+                assert_absent(page)
+                self.assertEqual(len(page.get('progress')), 6)
+
     def test_simulation_and_audit_all_languages_without_requests(self):
         page = self.page()
         page.radio(key='page_mode').set_value('Synthetic simulation').run()

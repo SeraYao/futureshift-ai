@@ -129,7 +129,8 @@ class GuidedUITests(unittest.TestCase):
                 if disclosure.label == 'Technical details':
                     self.assertFalse(disclosure.proto.expanded)
             self.assertEqual(page.session_state['pathway_confirmed'], expected)
-            self.assertTrue(any('Prototype simulation' in warning.value for warning in page.warning))
+            self.assertFalse(any('Prototype simulation — not a labour-market prediction' in warning.value
+                                 for warning in page.warning))
             self.assertEqual(len([e for e in page.expander if 'Why this match?' in e.label]), 3)
             page.button(key='pathway_back').click().run()
             page.button(key='pathway_back').click().run()

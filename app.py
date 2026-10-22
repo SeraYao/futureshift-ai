@@ -230,7 +230,6 @@ def main() -> None:
 
     st.set_page_config(page_title='FutureShift AI', page_icon='↗', layout='wide')
     st.markdown('<style>\n    .stApp {background: linear-gradient(145deg, #f2f6fb, #fafbff 65%); color: #14283f;}\n    .block-container {max-width: 1240px; padding-top: 2.8rem;}\n    h1, h2, h3 {letter-spacing: -.035em; color: #14283f;}\n    [data-testid="stMetric"] {background: #fff; border: 1px solid #dce5ef;\n      border-radius: 14px; padding: 16px;}\n    [data-testid="stExpander"] {background: #fff; border-radius: 12px;}\n    [data-testid="stForm"] {background: #fff; border-radius: 16px;}\n    .eyebrow {color: #187c76; font-size: .8rem; font-weight: 700;\n      letter-spacing: .14em; text-transform: uppercase;}\n    </style>', unsafe_allow_html=True)
-    st.markdown(tr('<div class="eyebrow">Students & Recent Graduates · Career exploration</div>'), unsafe_allow_html=True)
     title_column, language_column = st.columns([5, 2])
     with title_column:
         st.title(tr('FutureShift AI'))
@@ -239,7 +238,6 @@ def main() -> None:
                      format_func=language_name, label_visibility='visible')
     st.markdown(tr('### Navigate change. Shape your future.'))
     st.write(tr('Explore how your capabilities and interests connect to different career pathways.'))
-    st.info(tr('Start with Career pathway prototype for the guided student questionnaire. Use Synthetic simulation to edit a demo profile and compare two career scenarios. GitHub activity scores are not hiring demand or employment-growth forecasts.'))
     public_modes = ('Career pathway prototype', 'Synthetic simulation')
     # Recover sessions saved before the internal audit was removed from navigation.
     if st.session_state.get('page_mode') not in public_modes:

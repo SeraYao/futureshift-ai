@@ -122,7 +122,6 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
     st.session_state.setdefault('pathway_draft', {})
     step = st.session_state.pathway_step
     draft = st.session_state.pathway_draft
-    st.warning(tr('Prototype simulation — not a labour-market prediction'))
     st.caption(tr('The questionnaire does not ask for names, age, gender or contact details. Optional PDF CV processing has a separate consent step. Occupational requirements and trends used for matching remain synthetic.'))
     if draft.get('data_status') == 'synthetic':
         st.warning(tr('SAMPLE PROFILE · Synthetic student answers, including any edits to this example. Not real personal data or a real employment prediction.'))

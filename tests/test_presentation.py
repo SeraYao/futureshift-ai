@@ -88,7 +88,6 @@ class VisitorPresentationTests(unittest.TestCase):
             page=AppTest.from_file(str(app.ROOT/'app.py')).run(timeout=30)
             page.radio(key='page_mode').set_value('Synthetic simulation').run(timeout=30)
             self.assertFalse(page.exception)
-            self.assertTrue(any('GitHub activity scores are not hiring demand' in info.value for info in page.info))
             page.checkbox(key='simulation_confirm').check()
             page.button[0].click().run(timeout=30)
             self.assertFalse(page.exception)
