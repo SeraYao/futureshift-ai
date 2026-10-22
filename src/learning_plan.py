@@ -1,8 +1,11 @@
 """Deterministic four-week practice suggestions from available match gaps only."""
+from copy import deepcopy
 import hashlib
 import json
 from math import isfinite
 from typing import Any
+
+from src.reassessment import task_changes
 
 # Authored practice prompts, not courses, verified resources or occupational evidence.
 PRACTICE = {
@@ -76,13 +79,16 @@ def remember_task(state: Any, plan_id: str, task_id: str, widget_key: str) -> No
 
 
 def render_learning_plan(st: Any, rows: list[dict], roles: dict, labels: dict,
-                         preferred_time: str | None = None) -> None:
+                         preferred_time: str | None = None, assessment: dict | None = None,
+                         previous: dict | None = None) -> None:
     """Offer occupation selection, a budgeted plan and session-only completion checks."""
     st.subheader('Your four-week practice plan')
     st.warning('Prototype suggestion — no employment outcome is guaranteed. Occupational gaps here are synthetic.')
     st.info('Verified learning resources are not connected yet. These are authored practice exercises, '
             'not course recommendations. Completion does not change your matching scores or prove skill mastery.')
     codes = [row['code'] for row in rows]
+    if assessment is not None and 'learning_role' not in st.session_state:
+        st.session_state['learning_role'] = assessment.get('selected_role')
     code = st.selectbox('Choose a career to plan for', codes, index=None,
                         format_func=lambda value: roles[value]['title'], key='learning_role')
     if code is None:
@@ -90,6 +96,8 @@ def render_learning_plan(st: Any, rows: list[dict], roles: dict, labels: dict,
         return
     options = (3, 5, 8, 10)
     initial = {'3 hours': 3, '5 hours': 5, '8 hours': 8, '10+ hours': 10}.get(preferred_time, 3)
+    if assessment is not None and 'learning_hours' not in st.session_state:
+        st.session_state['learning_hours'] = assessment.get('selected_hours') or initial
     hours = st.selectbox('Weekly practice time', options, index=options.index(initial),
                          format_func=lambda value: '10+ hours (planned as 10)' if value == 10 else f'{value} hours',
                          key='learning_hours')
@@ -97,6 +105,26 @@ def render_learning_plan(st: Any, rows: list[dict], roles: dict, labels: dict,
                'Time estimates are scheduling assumptions, not measured completion times.')
     row = next(row for row in rows if row['code'] == code)
     plan = build_plan(row, roles[code], hours)
+    if assessment is not None:
+        assessment['selected_role'] = code
+        assessment['selected_hours'] = hours
+        assessment['plans'][code] = deepcopy({'plan': plan, 'completion':
+            st.session_state.get('learning_progress', {}).get(plan['id'], {})})
+    old_plan = previous.get('plans', {}).get(code) if previous else None
+    if old_plan is not None:
+        changes = task_changes(old_plan['plan'], plan)
+        st.markdown('#### Plan changes since the previous assessment')
+        st.caption(f"Weekly hours: {old_plan['plan']['weekly_hours']} → {hours}. "
+                   'Adjusted means the gap, time allocation or exercise prescription changed. '
+                   'New plan progress is separate; completing tasks does not prove ability improvement.')
+        for kind, tasks in changes.items():
+            st.write(f'{kind.title()}: {len(tasks)} tasks')
+            for task in tasks:
+                st.caption(f"Week {task['week']} · {labels.get(task['area'], task['area'])}")
+        if not any(changes.values()):
+            st.info('Plan tasks unchanged.')
+    elif previous is not None:
+        st.caption('No previous plan was selected for this occupation; this is its first plan snapshot.')
     st.caption('Rule: exclude unavailable components and blocked items; order positive weighted gaps by severity '
                'then stable item ID. Focus on up to floor(weekly hours / 2) areas. Divide each week equally '
                'between them; progress from exploration to practice, application and review. '

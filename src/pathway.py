@@ -3,6 +3,7 @@ from copy import deepcopy
 from typing import Any, Callable
 
 from src.learning_plan import render_learning_plan
+from src.reassessment import begin_reassessment, store_assessment, render_comparison
 from src.scoring import SCORING_VERSION, normalize_0_4, rank_roles
 
 INTERESTS = (
@@ -62,11 +63,44 @@ def confirmed_profile(draft: dict) -> dict:
     errors = scoring_errors(draft)
     if errors:
         raise ValueError('Unanswered scoring questions: ' + ', '.join(errors))
-    return {'data_status': 'user_entered_prototype',
+    return {'data_status': 'synthetic' if draft.get('data_status') == 'synthetic' else 'user_entered_prototype',
             'skills': {key: draft[key] for key in SKILLS},
             'knowledge': {key: draft[key] for key in KNOWLEDGE},
             'riasec': [((draft[INTERESTS[i][0]] + draft[INTERESTS[i+1][0]]) / 2 - 1) / 4
                        for i in range(0, 12, 2)]}
+
+
+def sample_answers() -> dict:
+    """Create complete fictional student answers, including all 30 scored questions."""
+    return {'data_status': 'synthetic',
+            **dict(zip(SKILLS, (3, 2, 2, 2, 1, 2, 1, 2, 2, 3, 2))),
+            **dict(zip(KNOWLEDGE, (3, 2, 2, 1, 1, 1, 2))),
+            **dict(zip((key for key, _ in INTERESTS), (2, 3, 5, 4, 3, 2, 3, 3, 2, 3, 4, 4))),
+            'Identity': 'Current student', 'Current or completed field of study': 'Computing',
+            'Highest/current study level': "Bachelor's", 'Practical exposure': 'Coursework',
+            'Optional career goal': 'Fictional example: explore data and software careers.',
+            'Weekly learning time': '5 hours', 'Target plan length': '4 weeks',
+            'Budget': 'Free only', 'Preferred learning language': 'English',
+            'SDG preferences': ['4. Quality education']}
+
+
+def switch_profile_workspace(state: Any, target: str) -> None:
+    """Keep personal questionnaire drafts/results separate from the editable sample session."""
+    if target not in ('manual', 'sample'):
+        raise ValueError('Unknown profile workspace')
+    active = state.get('profile_workspace', 'manual')
+    if active == target:
+        return
+    workspaces = state.setdefault('profile_workspaces', {})
+    keys = [key for key in state if key.startswith(('pathway_', 'learning_'))]
+    buttons = {'pathway_start', 'pathway_sample', 'pathway_identity', 'pathway_back',
+               'pathway_next', 'pathway_confirm', 'pathway_reassess'}
+    workspaces[active] = deepcopy({key: state[key] for key in keys if key not in buttons})
+    for key in keys:
+        del state[key]
+    for key, value in deepcopy(workspaces.get(target, {})).items():
+        state[key] = value
+    state['profile_workspace'] = target
 
 
 def save_answer(state: Any, name: str) -> None:
@@ -85,6 +119,9 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
     st.warning('Prototype simulation — not a labour-market prediction')
     st.caption('Use fictional practice answers. Do not enter names, age, gender, contact details or a real CV. '
                'Answers stay in this session; occupational requirements and trends are synthetic.')
+    if draft.get('data_status') == 'synthetic':
+        st.warning('SAMPLE PROFILE · Synthetic student answers, including any edits to this example. '
+                   'Not real personal data or a real employment prediction.')
     st.progress(step / 7, text=f'Step {step + 1} of 8 · {STEPS[step]}')
     st.subheader(STEPS[step])
 
@@ -102,15 +139,30 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
         else:
             st.selectbox(label or name, options, index=None, **common, **kwargs)
 
+    def sample_entry() -> None:
+        """Expose the same isolated sample shortcut on identity and background pages."""
+        if st.button('Try with a sample profile', key='pathway_sample'):
+            switch_profile_workspace(st.session_state, 'sample')
+            st.session_state.setdefault('pathway_draft', sample_answers())
+            st.session_state.pathway_confirmed = confirmed_profile(st.session_state.pathway_draft)
+            st.session_state.pathway_step = 7
+            st.rerun()
+        st.caption('The sample is fictional, editable and kept separate from your own questionnaire answers.')
+
     if step == 0:
         st.write('Choose the pathway that fits your situation.')
-        if st.button('Student or recent graduate', key='pathway_start'):
+        st.markdown('#### Student or recent graduate')
+        if st.button('Fill in my profile', key='pathway_start'):
+            switch_profile_workspace(st.session_state, 'manual')
             st.session_state.pathway_step = 1
             st.rerun()
+        sample_entry()
         st.button('Working professional seeking upskilling or a career change · Planned', disabled=True)
         st.button('Employer planning workforce development · Planned', disabled=True)
         return
     if step == 1:
+        st.info('Fill in your profile below, or skip the questionnaire using a complete synthetic sample.')
+        sample_entry()
         st.caption('Background and optional career goal do not affect scores. No text parsing is enabled.')
         for name, options in BACKGROUND.items():
             field(name, options)
@@ -182,7 +234,23 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
             st.caption('Your confirmed practice answers + demo_roles.json + demo_trends.json. '
                        'No official requirements or real GitHub evidence are used. GitHub activity is not hiring demand.')
             st.write('Career goal: ' + (draft.get('Optional career goal') or 'Not provided'))
-            rows = rank_roles(profile, role_file['roles'], trend_file['topics'])
+            current = st.session_state.get('pathway_assessment')
+            if current is None or current['profile'] != profile or current['answers'] != draft:
+                # Pin the synthetic inputs for a profile reassessment.
+                if current is not None:
+                    role_file, trend_file = current['roles'], current['trends']
+                rows = rank_roles(profile, role_file['roles'], trend_file['topics'])
+                old_time = current['answers'].get('Weekly learning time') if current else None
+                current = store_assessment(st.session_state, profile, draft, rows, role_file, trend_file)
+                if old_time != draft.get('Weekly learning time'):
+                    st.session_state.pop('learning_hours', None)
+            else:
+                rows = current['rows']
+                role_file, trend_file = current['roles'], current['trends']
+            render_comparison(st, st.session_state.get('pathway_previous'), current, labels)
+            if st.button('Update my profile and reassess', key='pathway_reassess'):
+                begin_reassessment(st.session_state)
+                st.rerun()
             for scenario, title in (('moderate', 'Moderate'), ('fast', 'Fast disruption')):
                 st.markdown(f'### {title}')
                 ranked = sorted((row for row in rows if row[scenario+'_rank'] is not None),
@@ -195,9 +263,13 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
             for row in rows:
                 with st.expander(row['title'] + ' · Why this match?'):
                     render_role(st, row, by_code[row['code']], profile=profile)
-            render_learning_plan(st, rows, by_code, labels, draft.get('Weekly learning time'))
+            render_learning_plan(st, rows, by_code, labels, draft.get('Weekly learning time'),
+                                 current, st.session_state.get('pathway_previous'))
             with st.expander('Technical details', expanded=False):
                 st.json(profile, expanded=False)
+    if st.button('Return to identity selection', key='pathway_identity'):
+        st.session_state.pathway_step = 0
+        st.rerun()
     left, right = st.columns(2)
     if left.button('Back', key='pathway_back'):
         st.session_state.pathway_step = step - 1
