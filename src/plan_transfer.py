@@ -134,9 +134,9 @@ def restore_saved_plan(state: Any, prepared: dict) -> None:
     state['pathway_restored'] = True
 
 
-def render_restore(st: Any, load_demo: Callable, labels: dict | None = None) -> None:
+def render_restore(st: Any, load_demo: Callable, labels: dict | None = None, *, expanded: bool = False) -> None:
     """Validate an upload, show a readable preview, then ask for restore confirmation."""
-    with st.expander(tr('Restore a saved plan'), expanded=False):
+    with st.expander(tr('Restore a saved plan'), expanded=expanded):
         st.caption(tr('Upload your local FutureShift JSON file. Nothing changes until you confirm. Free text, background details and live GitHub evidence are not restored.'))
         uploaded = st.file_uploader(tr('Restore a saved plan'), type=['json'], key='restore_plan_upload')
         if uploaded is None:

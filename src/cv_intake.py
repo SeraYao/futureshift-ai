@@ -95,9 +95,9 @@ def render_cv_context(st: Any, context: dict | None, labels: dict) -> None:
             st.caption(tr('Original evidence: ') + item['evidence'])
 
 
-def render_cv_intake(st: Any, labels: dict, levels: tuple) -> None:
+def render_cv_intake(st: Any, labels: dict, levels: tuple, *, expanded: bool = False) -> None:
     """Offer PDF upload and a consent-gated AI action on student entry/background pages."""
-    with st.expander(tr('Upload a PDF CV'), expanded=False):
+    with st.expander(tr('Upload a PDF CV'), expanded=expanded):
         st.caption(tr('Optional · selectable-text PDF only · up to 3 MB and 5 pages · no OCR. Keep using the questionnaire if parsing or AI is unavailable. No CV file is written to disk or logs. Uploads use temporary server memory; only reviewed structured fields and short evidence excerpts remain in this session.'))
         if st.session_state.get('cv_notice'):
             render_cv_error(st, st.session_state['cv_notice'])

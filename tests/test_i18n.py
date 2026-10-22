@@ -158,7 +158,7 @@ class LanguagePageTests(unittest.TestCase):
                 self.switch(page, language)
                 page.radio(key='page_mode').set_value('Career pathway prototype').run()
                 self.healthy(page)
-                self.assertTrue(any(item.value == self.text(language, 'Let us get to know you…')
+                self.assertTrue(any(item.value == self.text(language, 'Let us get to know you')
                                     for item in page.header))
                 page.button(key='pathway_start').click().run()
                 self.healthy(page)
@@ -195,12 +195,12 @@ class LanguagePageTests(unittest.TestCase):
     def test_default_and_all_questionnaire_pages(self):
         page = self.page()
         self.assertEqual(page.session_state['ui_language'], 'en')
-        self.assertEqual(page.button(key='pathway_start').label, 'Complete the questionnaire to create a profile')
+        self.assertEqual(page.button(key='pathway_start').label, 'Complete a CV questionnaire')
         for language in LANGUAGES:
             self.switch(page, language)
             self.assertTrue(any(self.text(language, '### Navigate change. Shape your future.') == item.value
                                 for item in page.markdown))
-            self.assertEqual(page.button(key='pathway_start').label, self.text(language, 'Complete the questionnaire to create a profile'))
+            self.assertEqual(page.button(key='pathway_start').label, self.text(language, 'Complete a CV questionnaire'))
             page.button(key='pathway_start').click().run()
             for step in range(1, 7):
                 page.session_state['pathway_step'] = step
@@ -402,6 +402,7 @@ class LanguagePageTests(unittest.TestCase):
             return upload if kwargs.get('key') == 'restore_plan_upload' else None
         with patch('streamlit.file_uploader', side_effect=uploader):
             page = self.page()
+            page.button(key='profile_restore').click().run()
             for code in ('zh', 'ms', 'en'):
                 self.switch(page, code)
                 self.assertNotIn('pathway_confirmed', page.session_state)
@@ -422,7 +423,7 @@ class LanguagePageTests(unittest.TestCase):
             return BytesIO(b'{"format_version":"wrong"}') if kwargs.get('key') == 'restore_plan_upload' else None
         with patch('streamlit.file_uploader', side_effect=uploader):
             from streamlit.testing.v1 import AppTest
-            page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
+            page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run(), entry='restore')
             for code in ('zh', 'ms', 'en'):
                 self.switch(page, code, allow_error=True)
                 self.assertTrue(any(self.text(code, 'Cannot restore this file: ') + self.text(code, 'Unsupported plan format version') == item.value
@@ -438,6 +439,7 @@ class LanguagePageTests(unittest.TestCase):
              patch('src.cv_intake.extract_pdf', return_value=SOURCE), \
              patch('src.cv_intake.AIConfig.from_env', return_value=CONFIG):
             page = self.page()
+            page.button(key='profile_cv').click().run()
             consent_key = next(box.key for box in page.checkbox if box.key.startswith('cv_consent_'))
             page.checkbox(key=consent_key).check().run()
             for code in ('zh', 'ms', 'en'):
@@ -457,6 +459,7 @@ class LanguagePageTests(unittest.TestCase):
             self.assertEqual(payloads[0], payloads[2])
         review = validate_extraction(extraction(), SOURCE, app.LABELS)
         page = self.page()
+        page.button(key='profile_cv').click().run()
         page.session_state['cv_review'] = review
         page.run()
         page.selectbox(key='cv_rating_skill_04').set_value(2).run()

@@ -58,10 +58,10 @@ class SampleUITests(unittest.TestCase):
                 if step == 1:
                     page.button(key='pathway_start').click().run()
                 button = page.button(key='pathway_sample')
-                self.assertEqual(button.label, 'Try with a sample profile')
+                self.assertEqual(button.label, 'Try a virtual example' if step == 0 else 'Try with a sample profile')
                 self.assertFalse(button.disabled)
                 if step == 0:
-                    self.assertEqual(page.button(key='pathway_start').label, 'Complete the questionnaire to create a profile')
+                    self.assertEqual(page.button(key='pathway_start').label, 'Complete a CV questionnaire')
                 button.click().run()
                 self.assertFalse(page.exception)
                 self.assertEqual(page.session_state['pathway_step'], 7)

@@ -123,8 +123,9 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
     step = st.session_state.pathway_step
     draft = st.session_state.pathway_draft
     if step == 0:
-        st.header(tr('Let us get to know you…'))
-    st.caption(tr('The questionnaire does not ask for names, age, gender or contact details. Optional PDF CV processing has a separate consent step. Occupational requirements and trends used for matching remain synthetic.'))
+        st.header(tr('Let us get to know you'))
+    if step != 0:
+        st.caption(tr('The questionnaire does not ask for names, age, gender or contact details. Optional PDF CV processing has a separate consent step. Occupational requirements and trends used for matching remain synthetic.'))
     if draft.get('data_status') == 'synthetic':
         st.warning(tr('SAMPLE PROFILE · Synthetic student answers, including any edits to this example. Not real personal data or a real employment prediction.'))
     if step != 0:
@@ -146,31 +147,42 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
             st.selectbox(display_text(label or name), options, index=None, **common,
                          format_func=translated_options(kwargs.pop('format_func', None)), **kwargs)
 
-    def sample_entry() -> None:
+    def sample_entry(label: str = 'Try with a sample profile', *, describe: bool = True) -> None:
         """Expose the same isolated sample shortcut on identity and background pages."""
-        if st.button(tr('Try with a sample profile'), key='pathway_sample'):
+        if st.button(tr(label), key='pathway_sample'):
             switch_profile_workspace(st.session_state, 'sample')
             st.session_state.setdefault('pathway_draft', sample_answers())
             st.session_state.pathway_confirmed = confirmed_profile(st.session_state.pathway_draft)
             st.session_state.pathway_step = 7
             st.rerun()
-        st.caption(tr('The sample is fictional, editable and kept separate from your own questionnaire answers.'))
+        if describe:
+            st.caption(tr('The sample is fictional, editable and kept separate from your own questionnaire answers.'))
 
-    if step in (0, 1):
+    if step == 1:
         render_cv_intake(st, labels, levels)
         render_restore(st, load_demo, labels)
-    else:
+    elif step != 0:
         clear_cv_review(st.session_state)
     if step in (1, 6):
         render_cv_context(st, st.session_state.get('pathway_cv_context'), labels)
     if st.session_state.get('pathway_restored'):
         st.caption(tr('Restored from a local prototype plan file. Background and free-text answers were not exported; you may enter them again when reassessing. No live GitHub history was restored.'))
     if step == 0:
-        if st.button(tr('Complete the questionnaire to create a profile'), key='pathway_start'):
+        if st.button(tr('Complete a CV questionnaire'), key='pathway_start'):
             switch_profile_workspace(st.session_state, 'manual')
             st.session_state.pathway_step = 1
             st.rerun()
-        sample_entry()
+        if st.button(tr('Recognize a PDF CV with AI'), key='profile_cv'):
+            st.session_state['profile_entry'] = 'cv'
+        sample_entry('Try a virtual example', describe=False)
+        if st.button(tr('Restore a saved plan'), key='profile_restore'):
+            st.session_state['profile_entry'] = 'restore'
+        st.caption(tr('The questionnaire does not ask for names, age, gender or contact details. Optional PDF CV processing has a separate consent step. Occupational requirements and trends used for matching remain synthetic.'))
+        st.caption(tr('The sample is fictional, editable and kept separate from your own questionnaire answers.'))
+        if st.session_state.get('profile_entry') == 'cv':
+            render_cv_intake(st, labels, levels, expanded=True)
+        elif st.session_state.get('profile_entry') == 'restore':
+            render_restore(st, load_demo, labels, expanded=True)
         return
     if step == 1:
         st.info(tr('Fill in your profile below, or skip the questionnaire using a complete synthetic sample.'))

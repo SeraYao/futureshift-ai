@@ -62,23 +62,55 @@ class OnboardingTests(unittest.TestCase):
                 page.button(key='scenario_explore').click().run()
                 self.healthy(page)
                 catalog = CATALOGS[language]
-                self.assertEqual(page.header[0].value, catalog['Let us get to know you…'])
+                self.assertEqual(page.header[0].value, catalog['Let us get to know you'])
                 self.assertEqual(page.button(key='pathway_start').label,
-                                 catalog['Complete the questionnaire to create a profile'])
-                self.assertEqual(page.button(key='pathway_sample').label, catalog['Try with a sample profile'])
-                for label in ('Upload a PDF CV', 'Restore a saved plan'):
-                    self.assertTrue(any(e.label == catalog[label] for e in page.expander))
+                                 catalog['Complete a CV questionnaire'])
+                keys = ['pathway_start', 'profile_cv', 'pathway_sample', 'profile_restore']
+                buttons = [b for b in page.button if b.key in keys]
+                self.assertEqual([b.key for b in buttons], keys)
+                labels = ['Complete a CV questionnaire', 'Recognize a PDF CV with AI',
+                          'Try a virtual example', 'Restore a saved plan']
+                self.assertEqual([b.label for b in buttons], [catalog[label] for label in labels])
+                self.assertTrue(all(not b.disabled and b.proto.type == buttons[0].proto.type for b in buttons))
+                # All four buttons are direct siblings, rather than columns or disclosures.
+                parents = []
+                def walk(node):
+                    children = getattr(node, 'children', {})
+                    for child in children.values():
+                        if getattr(child, 'key', None) in keys:
+                            parents.append(id(node))
+                        walk(child)
+                walk(page._tree)
+                self.assertEqual(len(parents), 4)
+                self.assertEqual(len(set(parents)), 1)
+                self.assertEqual(len(page.get('file_uploader')), 0)
+                text = '\n'.join(item.value for kind in ('header', 'subheader', 'markdown', 'info', 'warning', 'caption')
+                                 for item in page.get(kind))
+                for code in LANGUAGES:
+                    for old in ('Choose your identity', '#### Student or recent graduate',
+                                'Prototype simulation — not a labour-market prediction'):
+                        self.assertNotIn(CATALOGS[code][old].removeprefix('#### '), text)
+                page.button(key='profile_cv').click().run()
+                self.healthy(page)
+                self.assertEqual(len(page.get('file_uploader')), 1)
+                self.assertTrue(page.expander[0].proto.expanded)
+                self.assertTrue(any(e.label == catalog['Upload a PDF CV'] for e in page.expander))
+                page.button(key='profile_restore').click().run()
+                self.healthy(page)
+                self.assertEqual(len(page.get('file_uploader')), 1)
+                self.assertTrue(page.expander[0].proto.expanded)
+                self.assertTrue(any(e.label == catalog['Restore a saved plan'] for e in page.expander))
 
     def test_personal_entries_and_navigation_preserve_drafts(self):
         page = self.page()
         page.button(key='scenario_explore').click().run()
         self.healthy(page)
-        self.assertEqual(page.header[0].value, CATALOGS['en']['Let us get to know you…'])
+        self.assertEqual(page.header[0].value, CATALOGS['en']['Let us get to know you'])
         self.assertTrue(page.button(key='pathway_start'))
         self.assertTrue(page.button(key='pathway_sample'))
-        self.assertTrue(any(e.label == CATALOGS['en']['Upload a PDF CV'] for e in page.expander))
-        self.assertTrue(any(e.label == CATALOGS['en']['Restore a saved plan'] for e in page.expander))
-        self.assertEqual(len(page.get('file_uploader')), 2)
+        self.assertTrue(page.button(key='profile_cv'))
+        self.assertTrue(page.button(key='profile_restore'))
+        self.assertEqual(len(page.get('file_uploader')), 0)
         page.button(key='pathway_start').click().run()
         page.selectbox(key='pathway_Identity').set_value('Recent graduate').run()
         page.text_area(key='pathway_Optional career goal').set_value('Keep my goal').run()
