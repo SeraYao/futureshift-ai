@@ -2,8 +2,10 @@
 from copy import deepcopy
 from typing import Any, Callable
 
+from src.cv_intake import render_cv_intake, render_cv_context, clear_cv_review
 from src.evidence_reassessment import render_evidence_reassessment
 from src.learning_plan import render_learning_plan
+from src.plan_transfer import render_restore
 from src.reassessment import begin_reassessment, store_assessment, render_comparison
 from src.scoring import SCORING_VERSION, normalize_0_4, rank_roles
 
@@ -119,8 +121,8 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
     step = st.session_state.pathway_step
     draft = st.session_state.pathway_draft
     st.warning('Prototype simulation — not a labour-market prediction')
-    st.caption('Use fictional practice answers. Do not enter names, age, gender, contact details or a real CV. '
-               'Answers stay in this session; occupational requirements and trends are synthetic.')
+    st.caption('The questionnaire does not ask for names, age, gender or contact details. Optional PDF CV processing '
+               'has a separate consent step. Occupational requirements and trends used for matching remain synthetic.')
     if draft.get('data_status') == 'synthetic':
         st.warning('SAMPLE PROFILE · Synthetic student answers, including any edits to this example. '
                    'Not real personal data or a real employment prediction.')
@@ -151,6 +153,16 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
             st.rerun()
         st.caption('The sample is fictional, editable and kept separate from your own questionnaire answers.')
 
+    if step in (0, 1):
+        render_cv_intake(st, labels, levels)
+        render_restore(st, load_demo, labels)
+    else:
+        clear_cv_review(st.session_state)
+    if step in (1, 6):
+        render_cv_context(st, st.session_state.get('pathway_cv_context'), labels)
+    if st.session_state.get('pathway_restored'):
+        st.caption('Restored from a local prototype plan file. Background and free-text answers were not exported; '
+                   'you may enter them again when reassessing. No live GitHub history was restored.')
     if step == 0:
         st.write('Choose the pathway that fits your situation.')
         st.markdown('#### Student or recent graduate')

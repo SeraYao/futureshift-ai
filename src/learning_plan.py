@@ -140,11 +140,18 @@ def render_learning_plan(st: Any, rows: list[dict], roles: dict, labels: dict,
     if plan['deferred']:
         st.caption('Not covered within this budget: ' + ', '.join(labels.get(key, key) for key in plan['deferred']))
     st.caption('Progress is held only in this Streamlit session. Refreshing or closing the page may lose it; '
-               'there is no long-term storage. A changed gap or time budget creates a separate plan.')
+               'download your plan to keep a local copy and restore it later. There is no cloud storage. '
+               'A changed gap or time budget creates a separate plan.')
     st.session_state.setdefault('learning_progress', {})
     saved = st.session_state.learning_progress.setdefault(plan['id'], {})
     completed = sum(bool(saved.get(task['id'])) for task in plan['tasks'])
     st.progress(completed / len(plan['tasks']), text=f'{completed} / {len(plan["tasks"])} tasks completed')
+    if assessment is not None:
+        from src.plan_transfer import export_plan
+        st.download_button('Download my plan', data=export_plan(assessment, plan, saved),
+                           file_name='futureshift-plan.json', mime='application/json', key='download_my_plan')
+        st.caption('The file contains scored answers, this plan and task progress. It excludes your name, contact '
+                   'details, free-text goal and GitHub responses. Keep it locally; download again after progress changes.')
     for week, phase in enumerate(PHASES, 1):
         with st.expander(f'Week {week} · {phase}', expanded=week == 1):
             for task in (task for task in plan['tasks'] if task['week'] == week):

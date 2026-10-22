@@ -254,6 +254,9 @@ def main() -> None:
             'GitHub activity scores are not hiring demand or employment-growth forecasts.')
     mode = st.radio('Mode', ('Career pathway prototype', 'Synthetic simulation', 'O*NET data audit'),
                     horizontal=True, key='page_mode')
+    if mode != 'Career pathway prototype':
+        from src.cv_intake import clear_cv_review
+        clear_cv_review(st.session_state)
     try:
         if mode == 'Career pathway prototype':
             render_pathway(st, LABELS, LEVELS, load_demo, render_role, load_onet, get_trend_client)
