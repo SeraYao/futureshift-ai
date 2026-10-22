@@ -1,11 +1,29 @@
 """Transient PDF intake, evidence review and explicit mapping to the existing questionnaire."""
 from copy import deepcopy
 import hashlib
+import re
 from typing import Any
 
 from src.cv_client import AIConfig, extract_with_ai, redact_text, supports_education
 from src.cv_pdf import CVError, extract_pdf
 from src.scoring import normalize_0_4
+
+
+def render_cv_error(st: Any, message: str) -> None:
+    """Keep the safe client diagnosis visible across reruns, with collapsed details."""
+    st.warning(message)
+    with st.expander('Technical error details', expanded=False):
+        status = re.search(r'AI HTTP error (\d{3})\.', message)
+        if status:
+            st.text('HTTP status: ' + status[1])
+        else:
+            category = next((label for token, label in (
+                ('SSL error', 'SSL'), ('timeout error', 'timeout'),
+                ('connection error', 'connection'), ('configur', 'configuration'),
+                ('response format', 'response format')) if token in message), 'validation')
+            st.text('Error category: ' + category)
+        for detail in re.findall(r'(?:type|code): [a-z_]+\.|Request ID: [a-zA-Z0-9_-]+\.', message):
+            st.text(detail)
 
 
 def release_cv_upload(state: Any) -> None:
@@ -85,7 +103,7 @@ def render_cv_intake(st: Any, labels: dict, levels: tuple) -> None:
                    'No CV file is written to disk or logs. Uploads use temporary server memory; '
                    'only reviewed structured fields and short evidence excerpts remain in this session.')
         if st.session_state.get('cv_notice'):
-            st.warning(st.session_state.pop('cv_notice'))
+            render_cv_error(st, st.session_state['cv_notice'])
         review = st.session_state.get('cv_review')
         if review is None:
             generation = st.session_state.get('cv_upload_generation', 0)
@@ -95,6 +113,7 @@ def render_cv_intake(st: Any, labels: dict, levels: tuple) -> None:
                 return
             digest = hashlib.sha256(uploaded.getvalue()).hexdigest()
             if st.session_state.get('cv_upload_hash') != digest:
+                st.session_state.pop('cv_notice', None)
                 st.session_state['cv_upload_hash'] = digest
                 st.session_state.pop(f'cv_consent_{generation}', None)
             if getattr(uploaded, 'file_id', None):
@@ -121,9 +140,10 @@ def render_cv_intake(st: Any, labels: dict, levels: tuple) -> None:
             try:
                 AIConfig.from_env()
                 configured = True
-            except CVError:
+            except CVError as exc:
                 configured = False
-                st.info('AI is not configured. Continue with Fill in my profile; the sample and saved-plan restore also work.')
+                st.info(str(exc) + ' Continue with Fill in my profile; no profile was changed.')
+                render_cv_error(st, str(exc))
             consent = st.checkbox('I agree to send the extracted, locally redacted CV text to the configured AI service for processing.',
                                   key=f'cv_consent_{generation}', value=False)
             st.caption('The provider may retain requests under its own policy. Do not continue unless you accept that policy. '
@@ -139,6 +159,10 @@ def render_cv_intake(st: Any, labels: dict, levels: tuple) -> None:
         st.subheader('Review CV-supported fields')
         st.caption('Edit supported categories and enter your own ability ratings. A CV mention is not a skill score. '
                    'Missing fields remain unanswered; existing manual answers are retained unless you explicitly replace them.')
+        if review.get('unverified_fields'):
+            st.warning('Unable to verify these AI fields; they were excluded: ' + ', '.join(
+                labels.get(key, key) for key in review['unverified_fields']) +
+                '. Fill them in manually in the questionnaire.')
         education, ratings, summaries = {}, {}, []
         from src.pathway import BACKGROUND
         for item in review['education']:
