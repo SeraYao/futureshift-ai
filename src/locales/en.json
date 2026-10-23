@@ -635,5 +635,16 @@
   "Try a virtual example": "Try a virtual example",
   "0 · No exposure → 4 · Advanced": "0 · No exposure → 4 · Advanced",
   "1 · Strongly disagree → 5 · Strongly agree": "1 · Strongly disagree → 5 · Strongly agree",
-  "{count} required questions remain unanswered.": "{count} required questions remain unanswered."
+  "{count} required questions remain unanswered.": "{count} required questions remain unanswered.",
+  "AI returned invalid JSON. Retry manually or use the questionnaire. No profile was changed.": "AI returned invalid JSON. Retry manually or use the questionnaire. No profile was changed.",
+  "AI service refused extraction. Use the questionnaire. No profile was changed.": "AI service refused extraction. Use the questionnaire. No profile was changed.",
+  "AI response was truncated. Use a shorter synthetic CV or the questionnaire. No profile was changed.": "AI response was truncated. Use a shorter synthetic CV or the questionnaire. No profile was changed.",
+  "AI response is missing Chat Completions fields. Check the endpoint configuration. No profile was changed.": "AI response is missing Chat Completions fields. Check the endpoint configuration. No profile was changed.",
+  "AI extraction is missing required fields. Retry manually or use the questionnaire. No profile was changed.": "AI extraction is missing required fields. Retry manually or use the questionnaire. No profile was changed.",
+  "evidence not found or outside quote limits": "evidence not found or outside quote limits",
+  "education category unsupported": "education category unsupported",
+  "summary not a literal excerpt": "summary not a literal excerpt",
+  "questionnaire name absent from evidence": "questionnaire name absent from evidence",
+  "AI timeout error. The AI service may still be cold starting. No profile was changed; please retry manually later.": "AI timeout error. The AI service may still be cold starting. No profile was changed; please retry manually later.",
+  "AI_TIMEOUT_SECONDS must be a positive integer from 1 to 3600. No profile was changed.": "AI_TIMEOUT_SECONDS must be a positive integer from 1 to 3600. No profile was changed."
 }

@@ -1,10 +1,13 @@
 """Consent-gated OpenAI-compatible JSON extraction; no scoring or persistence."""
 from dataclasses import dataclass, field
 import json
+import http.client
+import logging
 import os
 import re
 import ssl
 import unicodedata
+from time import monotonic
 from typing import Any, Callable, Mapping
 from urllib import request, error, parse
 
@@ -12,6 +15,29 @@ from src.cv_pdf import CVError
 
 MAX_INPUT_CHARS = 8_000
 MAX_RESPONSE_BYTES = 64_000
+DEFAULT_AI_TIMEOUT_SECONDS = 300
+MAX_AI_TIMEOUT_SECONDS = 3600
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+
+class _ObservedHTTPSConnection(http.client.HTTPSConnection):
+    """Log connection timing without URLs, headers, payloads or exception messages."""
+
+    def connect(self) -> None:
+        started = monotonic()
+        try:
+            super().connect()
+        except OSError as exc:
+            logger.warning('cv_ai stage=connect_tls elapsed_ms=%d exception=%s',
+                           (monotonic() - started) * 1000, type(exc).__name__)
+            raise
+        logger.info('cv_ai stage=connect_tls elapsed_ms=%d', (monotonic() - started) * 1000)
+
+
+class _ObservedHTTPSHandler(request.HTTPSHandler):
+    def https_open(self, req: Any) -> Any:
+        return self.do_open(_ObservedHTTPSConnection, req, context=self._context)
 
 
 def redact_text(text: str) -> str:
@@ -38,6 +64,13 @@ class AIConfig:
     model: str = field(repr=False)
     api_key: str = field(repr=False)
 
+    timeout_seconds: int = field(default=DEFAULT_AI_TIMEOUT_SECONDS, repr=False)
+
+    def __post_init__(self) -> None:
+        """Validate injected configurations as well as environment configurations."""
+        if type(self.timeout_seconds) is not int or not 1 <= self.timeout_seconds <= MAX_AI_TIMEOUT_SECONDS:
+            raise CVError('AI_TIMEOUT_SECONDS must be a positive integer from 1 to 3600. No profile was changed.')
+
     @classmethod
     def from_env(cls, environ: Mapping[str, str] | None = None) -> 'AIConfig':
         """Require explicit endpoint/model/key without exposing any value in errors."""
@@ -55,7 +88,10 @@ class AIConfig:
                 or parsed.query or parsed.fragment or
                 (parsed.scheme == 'http' and parsed.hostname not in ('localhost', '127.0.0.1', '::1'))):
             raise CVError('AI endpoint configuration is invalid. Use HTTPS, or a local HTTP service. Check AI_BASE_URL; use the questionnaire. No profile was changed.')
-        return cls(*values)
+        timeout = env.get('AI_TIMEOUT_SECONDS', str(DEFAULT_AI_TIMEOUT_SECONDS)).strip()
+        if not re.fullmatch(r'[0-9]{1,4}', timeout):
+            raise CVError('AI_TIMEOUT_SECONDS must be a positive integer from 1 to 3600. No profile was changed.')
+        return cls(*values, timeout_seconds=int(timeout))
 
 
 class _NoRedirect(request.HTTPRedirectHandler):
@@ -117,7 +153,7 @@ def _transport_failure(exc: BaseException) -> CVError:
     if isinstance(reason, ssl.SSLError):
         message = 'AI SSL error. Check the endpoint certificate and local trust configuration.'
     elif isinstance(reason, TimeoutError):
-        message = 'AI timeout error. Check connectivity and service availability; retry manually later.'
+        return CVError('AI timeout error. The AI service may still be cold starting. No profile was changed; please retry manually later.')
     else:
         message = 'AI connection error. Check network, DNS, proxy and endpoint availability.'
     return CVError(message + ' No profile was changed; use the questionnaire or retry manually.')
@@ -149,8 +185,10 @@ def supports_education(field_name: str, value: str, evidence: str) -> bool:
 
 def normalize_evidence(text: str) -> str:
     """Normalize typography, preserving words, case and punctuation for literal checks."""
-    text = unicodedata.normalize('NFKC', text).replace('\u00ad', '')
-    text = text.translate(str.maketrans({char: '-' for char in '‐‑‒–—−'}))
+    text = unicodedata.normalize('NFKC', text).replace('\u00ad', '').replace('\r\n', '\n').replace('\r', '\n')
+    text = text.translate(str.maketrans({**{char: '-' for char in '‐‑‒–—−'},
+                                        **{char: "'" for char in '‘’ʼ'},
+                                        **{char: '"' for char in '“”'}}))
     text = re.sub(r'(?<=\w)-[ \t]*\n[ \t]*(?=\w)', '', text)
     text = re.sub(r'(?m)^[ \t]*(?:[•●▪◦‣∙]|[-*](?=\s))[ \t]*', '', text)
     return re.sub(r'\s+', ' ', text).strip()
@@ -159,11 +197,14 @@ def normalize_evidence(text: str) -> str:
 def validate_extraction(document: Any, source: str, labels: dict) -> dict:
     """Reject invalid schemas; retain only fields supported by normalized literal evidence."""
     allowed = allowed_fields()
+    if isinstance(document, dict) and not {'education', 'skills', 'knowledge', 'experience', 'unconfirmed_fields'} <= document.keys():
+        raise CVError('AI extraction is missing required fields. Retry manually or use the questionnaire. No profile was changed.')
     if not isinstance(document, dict) or set(document) != {'education', 'skills', 'knowledge', 'experience', 'unconfirmed_fields'}:
         raise CVError('AI returned an invalid extraction schema. Please use the questionnaire or retry.')
     seen = set()
     verified = {group: [] for group in ('education', 'skills', 'knowledge', 'experience')}
     rejected = set()
+    failures = {}
     normalized_source = normalize_evidence(source)
     for group, limit in (('education', 2), ('skills', 11), ('knowledge', 7), ('experience', 4)):
         items = document[group]
@@ -183,6 +224,7 @@ def validate_extraction(document: Any, source: str, labels: dict) -> dict:
             supported = (3 <= len(quote) <= 240 and len(normalized_quote) >= 3
                          and normalized_quote in normalized_source
                          and '[REDACTED]' not in normalized_quote)
+            reason = 'evidence not found or outside quote limits' if not supported else ''
             if group == 'experience':
                 summary = normalize_evidence(item['summary'])
                 supported = (supported and 3 <= len(item['summary']) <= 160
@@ -190,11 +232,16 @@ def validate_extraction(document: Any, source: str, labels: dict) -> dict:
             elif group == 'education':
                 supported = supported and supports_education(key, item['value'], normalized_quote)
             else:
-                supported = supported and normalize_evidence(labels[key]) in normalized_quote
+                supported = supported and bool(re.search(
+                    r'(?<!\w)' + re.escape(normalize_evidence(labels[key]).casefold()) + r'(?!\w)',
+                    normalized_quote.casefold()))
             if supported:
                 verified[group].append(dict(item))
             else:
                 rejected.add(key)
+                failures[key] = reason or ('education category unsupported' if group == 'education' else
+                                          'summary not a literal excerpt' if group == 'experience' else
+                                          'questionnaire name absent from evidence')
     from src.pathway import INTERESTS
     known = {*allowed['education'], *allowed['skills'], *allowed['knowledge'], *(key for key, _ in INTERESTS)}
     unknown = document['unconfirmed_fields']
@@ -205,10 +252,40 @@ def validate_extraction(document: Any, source: str, labels: dict) -> dict:
                      for item in verified[group]}
     if not any(verified.values()):
         raise CVError('No CV fields could be verified against the redacted text. '
-                      'Please fill in your profile manually using the questionnaire. No profile was changed.')
+                      'Please fill in your profile manually using the questionnaire. No profile was changed.'
+                      + (' Verification: ' + '; '.join(key + ': ' + failures[key] for key in sorted(failures)) if failures else ''))
     verified['unconfirmed_fields'] = sorted(known - supported_ids)
     verified['unverified_fields'] = sorted(rejected)
+    verified['verification_failures'] = failures
     return verified
+
+
+def parse_response(raw: bytes) -> dict:
+    """Separate JSON, protocol, refusal and truncation errors without echoing provider data."""
+    try:
+        envelope = json.loads(raw)
+    except (ValueError, UnicodeError):
+        raise CVError('AI returned invalid JSON. Retry manually or use the questionnaire. No profile was changed.') from None
+    try:
+        choice = envelope['choices'][0]
+        message = choice['message']
+        if message.get('refusal') or choice.get('finish_reason') == 'content_filter':
+            raise CVError('AI service refused extraction. Use the questionnaire. No profile was changed.')
+        if choice.get('finish_reason') == 'length':
+            raise CVError('AI response was truncated. Use a shorter synthetic CV or the questionnaire. No profile was changed.')
+        content = message['content']
+        if not isinstance(content, str):
+            raise TypeError
+    except (KeyError, IndexError, TypeError, AttributeError):
+        raise CVError('AI response is missing Chat Completions fields. Check the endpoint configuration. No profile was changed.') from None
+    # Some compatible services wrap JSON in a single Markdown code fence.
+    fenced = re.fullmatch(r'\s*```(?:json)?\s*\n(.*?)\n```\s*', content, re.DOTALL)
+    if fenced:
+        content = fenced[1]
+    try:
+        return json.loads(content)
+    except ValueError:
+        raise CVError('AI returned invalid JSON. Retry manually or use the questionnaire. No profile was changed.') from None
 
 
 def extract_with_ai(text: str, consent: bool, labels: dict, *, config: AIConfig | None = None,
@@ -237,23 +314,39 @@ def extract_with_ai(text: str, consent: bool, labels: dict, *, config: AIConfig 
                             {'role': 'user', 'content': sanitized}], 'max_tokens': 2400}
     base = config.base_url.rstrip('/')
     url = base if base.endswith('/chat/completions') else base + '/chat/completions'
+    started = monotonic()
+    stage = 'request_open'
+    logger.info('cv_ai stage=request_start timeout_seconds=%d input_chars=%d max_tokens=%d',
+                config.timeout_seconds, len(sanitized), payload['max_tokens'])
     try:
         req = request.Request(url, data=json.dumps(payload).encode(), headers={
             'Content-Type': 'application/json', 'Authorization': 'Bearer ' + config.api_key}, method='POST')
-        send = opener or request.build_opener(_NoRedirect()).open
-        with send(req, timeout=30) as response:
+        send = opener or request.build_opener(_NoRedirect(), _ObservedHTTPSHandler()).open
+        with send(req, timeout=config.timeout_seconds) as response:
+            logger.info('cv_ai stage=response_headers elapsed_ms=%d http_status=%d',
+                        (monotonic() - started) * 1000, getattr(response, 'status', 200))
+            stage = 'body_read'
             if getattr(response, 'status', 200) != 200:
                 raise _http_failure(response.status, getattr(response, 'headers', None),
                                     response.read(MAX_RESPONSE_BYTES + 1), config.api_key, sanitized)
             raw = response.read(MAX_RESPONSE_BYTES + 1)
+            logger.info('cv_ai stage=body_read elapsed_ms=%d response_bytes=%d',
+                        (monotonic() - started) * 1000, len(raw))
             if len(raw) > MAX_RESPONSE_BYTES:
                 raise CVError('AI response was too large. Use the questionnaire or retry.')
-            result = json.loads(raw.decode())['choices'][0]['message']['content']
-            document = json.loads(result)
-        return validate_extraction(document, sanitized, labels)
+            stage = 'response_parse'
+            document = parse_response(raw)
+        stage = 'evidence_validation'
+        result = validate_extraction(document, sanitized, labels)
+        logger.info('cv_ai stage=complete elapsed_ms=%d', (monotonic() - started) * 1000)
+        return result
     except CVError:
+        logger.warning('cv_ai stage=%s elapsed_ms=%d exception=CVError',
+                       stage, (monotonic() - started) * 1000)
         raise
     except error.HTTPError as exc:
+        logger.warning('cv_ai stage=%s elapsed_ms=%d http_status=%d exception=HTTPError',
+                       stage, (monotonic() - started) * 1000, exc.code)
         try:
             try:
                 body = exc.read(MAX_RESPONSE_BYTES + 1)
@@ -264,6 +357,11 @@ def extract_with_ai(text: str, consent: bool, labels: dict, *, config: AIConfig 
             exc.close()
         raise failure from None
     except (error.URLError, OSError) as exc:
+        reason = exc.reason if isinstance(exc, error.URLError) else exc
+        logger.warning('cv_ai stage=%s elapsed_ms=%d exception=%s reason_type=%s',
+                       stage, (monotonic() - started) * 1000, type(exc).__name__, type(reason).__name__)
         raise _transport_failure(exc) from None
     except (ValueError, KeyError, IndexError, TypeError, UnicodeError):
+        logger.warning('cv_ai stage=%s elapsed_ms=%d exception=response_format',
+                       stage, (monotonic() - started) * 1000)
         raise CVError('AI response format error. The service returned invalid JSON or an unexpected structure. No profile was changed; use the questionnaire or retry.') from None

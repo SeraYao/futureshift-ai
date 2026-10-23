@@ -2,12 +2,17 @@
 from src.i18n import tr, display_text, translated_options, translate_error
 from copy import deepcopy
 import hashlib
+import logging
 import re
+from time import monotonic
 from typing import Any
 
 from src.cv_client import AIConfig, extract_with_ai, redact_text, supports_education
 from src.cv_pdf import CVError, extract_pdf
 from src.scoring import normalize_0_4
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 def render_cv_error(st: Any, message: str) -> None:
@@ -121,14 +126,18 @@ def render_cv_intake(st: Any, labels: dict, levels: tuple, *, expanded: bool = F
             if st.button(tr('Cancel CV upload'), key='cv_cancel_upload'):
                 clear_cv_review(st.session_state)
                 st.rerun()
+            parse_started = monotonic()
             try:
                 text = extract_pdf(getattr(uploaded, 'name', ''), uploaded.getvalue())
             except CVError as exc:
+                logger.warning('cv_intake stage=pdf_parse elapsed_ms=%d exception=CVError',
+                               (monotonic() - parse_started) * 1000)
                 st.error(translate_error(str(exc)))
                 release_cv_upload(st.session_state)
                 return
+            logger.info('cv_intake stage=pdf_parse elapsed_ms=%d text_chars=%d',
+                        (monotonic() - parse_started) * 1000, len(text))
             sanitized = redact_text(text)
-            del text
             with st.expander(tr('Review text that would be sent'), expanded=False):
                 st.text(sanitized)
             st.caption(tr('Local removal of common emails, phone numbers, URLs and address lines is best effort. Names or identifying details may remain: review the text before consenting. Only the first 8,000 redacted characters are sent. No raw PDF is sent to AI.'))
@@ -142,12 +151,23 @@ def render_cv_intake(st: Any, labels: dict, levels: tuple, *, expanded: bool = F
             consent = st.checkbox(tr('I agree to send the extracted, locally redacted CV text to the configured AI service for processing.'),
                                   key=f'cv_consent_{generation}', value=False)
             st.caption(tr('The provider may retain requests under its own policy. Do not continue unless you accept that policy. Nothing is sent by uploading or checking consent alone: the next button sends the request.'))
-            if st.button(tr('Extract supported fields with AI'), key='cv_extract', disabled=not (consent and configured)):
+            def begin_extraction() -> None:
+                st.session_state['cv_extract_pending'] = True
+                st.session_state['cv_extract_busy'] = True
+
+            st.button(tr('Extract supported fields with AI'), key='cv_extract',
+                      disabled=not (consent and configured) or st.session_state.get('cv_extract_busy', False),
+                      on_click=begin_extraction)
+            if st.session_state.pop('cv_extract_pending', False):
                 try:
-                    st.session_state['cv_review'] = extract_with_ai(sanitized, consent, labels)
+                    st.session_state.pop('cv_notice', None)
+                    st.session_state['cv_review'] = extract_with_ai(text, consent, labels)
                 except CVError as exc:
                     st.session_state['cv_notice'] = str(exc)
-                release_cv_upload(st.session_state)
+                else:
+                    release_cv_upload(st.session_state)
+                finally:
+                    st.session_state['cv_extract_busy'] = False
                 st.rerun()
             return
         st.subheader(tr('Review CV-supported fields'))
@@ -155,6 +175,8 @@ def render_cv_intake(st: Any, labels: dict, levels: tuple, *, expanded: bool = F
         st.caption(tr('Edit supported categories and enter your own ability ratings. A CV mention is not a skill score. Missing fields remain unanswered; existing manual answers are retained unless you explicitly replace them.'))
         if review.get('unverified_fields'):
             st.warning(translate_error(tr('Unable to verify these AI fields; they were excluded: ') + ', '.join((display_text(labels.get(key, key)) for key in review['unverified_fields'])) + tr('. Fill them in manually in the questionnaire.')))
+        for key, reason in review.get('verification_failures', {}).items():
+            st.text(key + ': ' + translate_error(reason))
         education, ratings, summaries = {}, {}, []
         from src.pathway import BACKGROUND
         for item in review['education']:

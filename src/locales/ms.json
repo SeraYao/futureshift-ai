@@ -635,5 +635,16 @@
   "Try a virtual example": "Cuba contoh maya",
   "0 · No exposure → 4 · Advanced": "0 · Tiada pendedahan → 4 · Lanjutan",
   "1 · Strongly disagree → 5 · Strongly agree": "1 · Sangat tidak setuju → 5 · Sangat setuju",
-  "{count} required questions remain unanswered.": "{count} soalan wajib masih belum dijawab."
+  "{count} required questions remain unanswered.": "{count} soalan wajib masih belum dijawab.",
+  "AI returned invalid JSON. Retry manually or use the questionnaire. No profile was changed.": "AI memulangkan JSON tidak sah. Cuba semula secara manual atau gunakan soal selidik. Profil tidak berubah.",
+  "AI service refused extraction. Use the questionnaire. No profile was changed.": "Perkhidmatan AI menolak pengekstrakan. Gunakan soal selidik. Profil tidak berubah.",
+  "AI response was truncated. Use a shorter synthetic CV or the questionnaire. No profile was changed.": "Respons AI terpotong. Gunakan CV sintetik yang lebih pendek atau soal selidik. Profil tidak berubah.",
+  "AI response is missing Chat Completions fields. Check the endpoint configuration. No profile was changed.": "Respons AI tiada medan Chat Completions. Semak konfigurasi titik akhir. Profil tidak berubah.",
+  "AI extraction is missing required fields. Retry manually or use the questionnaire. No profile was changed.": "Pengekstrakan AI tiada medan wajib. Cuba semula secara manual atau gunakan soal selidik. Profil tidak berubah.",
+  "evidence not found or outside quote limits": "bukti tidak ditemui atau melebihi had petikan",
+  "education category unsupported": "kategori pendidikan tidak disokong",
+  "summary not a literal excerpt": "ringkasan bukan petikan literal",
+  "questionnaire name absent from evidence": "nama kemahiran atau pengetahuan soal selidik tiada dalam bukti",
+  "AI timeout error. The AI service may still be cold starting. No profile was changed; please retry manually later.": "Perkhidmatan AI mungkin masih dalam proses permulaan sejuk. Profil tidak diubah; sila cuba semula secara manual kemudian.",
+  "AI_TIMEOUT_SECONDS must be a positive integer from 1 to 3600. No profile was changed.": "AI_TIMEOUT_SECONDS mesti integer positif dari 1 hingga 3600. Profil tidak diubah."
 }

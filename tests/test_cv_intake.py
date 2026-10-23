@@ -99,6 +99,68 @@ class PDFTests(unittest.TestCase):
 class AIClientTests(unittest.TestCase):
     """Consent enforced at the client boundary, with local redaction and strict evidence checks."""
 
+    def test_safe_stage_logs_and_body_read_timeout(self):
+        response = reply()
+        response.read.side_effect = TimeoutError('PRIVATE RESPONSE AND KEY')
+        with self.assertLogs('src.cv_client', level='INFO') as logs:
+            with self.assertRaisesRegex(CVError, 'timeout error'):
+                extract_with_ai(SOURCE, True, app.LABELS, config=CONFIG,
+                                opener=Mock(return_value=response))
+        records = '\n'.join(logs.output)
+        self.assertIn('stage=request_start timeout_seconds=300', records)
+        self.assertIn('stage=response_headers', records)
+        self.assertIn('http_status=200', records)
+        self.assertIn('stage=body_read', records)
+        self.assertIn('reason_type=TimeoutError', records)
+        for secret in (SOURCE, CONFIG.api_key, 'PRIVATE RESPONSE AND KEY', 'Authorization'):
+            self.assertNotIn(secret, records)
+
+    def test_connect_timeout_has_separate_stage_and_keeps_tls_defaults(self):
+        from src.cv_client import _ObservedHTTPSConnection
+        connection = _ObservedHTTPSConnection('example.invalid', timeout=1)
+        self.assertTrue(connection._context.check_hostname)
+        self.assertEqual(connection._context.verify_mode, ssl.CERT_REQUIRED)
+        with patch('http.client.HTTPSConnection.connect', side_effect=TimeoutError('PRIVATE')):
+            with self.assertLogs('src.cv_client', level='WARNING') as logs:
+                with self.assertRaises(TimeoutError):
+                    connection.connect()
+        self.assertIn('stage=connect_tls', logs.output[0])
+        self.assertIn('exception=TimeoutError', logs.output[0])
+        self.assertNotIn('PRIVATE', logs.output[0])
+
+    def test_default_timeout(self):
+        env = {'AI_BASE_URL': CONFIG.base_url, 'AI_MODEL': CONFIG.model, 'AI_API_KEY': CONFIG.api_key}
+        config = AIConfig.from_env(env)
+        self.assertEqual(config.timeout_seconds, 300)
+        send = Mock(return_value=reply())
+        extract_with_ai(SOURCE, True, app.LABELS, config=config, opener=send)
+        send.assert_called_once()
+        self.assertEqual(send.call_args.kwargs, {'timeout': 300})
+
+    def test_custom_timeout(self):
+        for seconds in ('1', ' 600 ', '3600'):
+            with self.subTest(seconds=seconds):
+                env = {'AI_BASE_URL': CONFIG.base_url, 'AI_MODEL': CONFIG.model,
+                       'AI_API_KEY': CONFIG.api_key, 'AI_TIMEOUT_SECONDS': seconds}
+                with patch.dict('os.environ', env, clear=True):
+                    send = Mock(return_value=reply())
+                    extract_with_ai(SOURCE, True, app.LABELS, opener=send)
+                send.assert_called_once()
+                self.assertEqual(send.call_args.kwargs, {'timeout': int(seconds)})
+
+    def test_invalid_timeout_configuration_sends_nothing(self):
+        for value in ('', ' ', '0', '-1', '1.5', 'nan', 'inf', '+300', '٣٠٠', '3601', '9' * 5000):
+            with self.subTest(value=value[:20]):
+                env = {'AI_BASE_URL': CONFIG.base_url, 'AI_MODEL': CONFIG.model,
+                       'AI_API_KEY': CONFIG.api_key, 'AI_TIMEOUT_SECONDS': value}
+                send = Mock()
+                with patch.dict('os.environ', env, clear=True), self.assertRaisesRegex(CVError, 'AI_TIMEOUT_SECONDS'):
+                    extract_with_ai(SOURCE, True, app.LABELS, opener=send)
+                send.assert_not_called()
+        for value in (0, -1, 3601, True, 300.0, '300'):
+            with self.subTest(value=value), self.assertRaises(CVError):
+                AIConfig(CONFIG.base_url, CONFIG.model, CONFIG.api_key, value)
+
     def test_no_consent_zero_requests_and_missing_config(self) -> None:
         """Even direct calls cannot send text without a literal True consent value."""
         opener = Mock()
@@ -246,6 +308,63 @@ class MappingTests(unittest.TestCase):
 class CVPageTests(unittest.TestCase):
     """Verify entry points, consent, review, cancel and confirm using Streamlit interactions."""
 
+    def test_upload_empty_profile_failure_retry_and_busy(self):
+        """Parse a real PDF and retry without uploading again or filling in a profile."""
+        from streamlit.testing.v1 import AppTest
+        import streamlit
+        from pypdf import PdfWriter
+        from pypdf.generic import DecodedStreamObject, DictionaryObject, NameObject
+        writer = PdfWriter()
+        pdf_page = writer.add_blank_page(width=612, height=792)
+        font = DictionaryObject({NameObject('/Type'): NameObject('/Font'),
+                                 NameObject('/Subtype'): NameObject('/Type1'),
+                                 NameObject('/BaseFont'): NameObject('/Helvetica')})
+        pdf_page[NameObject('/Resources')] = DictionaryObject({NameObject('/Font'):
+            DictionaryObject({NameObject('/F1'): writer._add_object(font)})})
+        stream = DecodedStreamObject()
+        stream.set_data(b'BT /F1 12 Tf 50 700 Td (Skills: Programming) Tj ET')
+        pdf_page[NameObject('/Contents')] = writer._add_object(stream)
+        uploaded = BytesIO()
+        writer.write(uploaded)
+        uploaded.name = 'cv.pdf'
+        current = [None]
+        def upload(label, **kwargs):
+            return current[0] if label == 'Choose a PDF CV' else None
+        def fail_once(*args):
+            self.assertTrue(page.session_state['cv_extract_busy'])
+            extract_button = next(call for call in reversed(button.call_args_list)
+                                  if call.kwargs.get('key') == 'cv_extract')
+            self.assertTrue(extract_button.kwargs['disabled'])
+            self.assertEqual(page.session_state['pathway_draft'], {})
+            if ai.call_count == 1:
+                raise CVError('AI timeout error. No profile was changed.')
+            return validate_extraction({'education': [], 'skills': [
+                {'field': 'skill_04', 'evidence': 'Skills: Programming'}],
+                'knowledge': [], 'experience': [], 'unconfirmed_fields': []}, args[0], app.LABELS)
+        with patch('streamlit.file_uploader', side_effect=upload), \
+             patch('streamlit.button', wraps=streamlit.button) as button, \
+             patch('src.cv_intake.AIConfig.from_env', return_value=CONFIG), \
+             patch('src.cv_intake.extract_with_ai', side_effect=fail_once) as ai:
+            page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run(), entry='cv')
+            current[0] = uploaded
+            page.run()
+            next(box for box in page.checkbox if box.key.startswith('cv_consent_')).check().run()
+            self.assertFalse(page.button(key='cv_extract').disabled)
+            page.button(key='cv_extract').click().run()
+            self.assertFalse(page.exception)
+            self.assertFalse(page.session_state['cv_extract_busy'])
+            self.assertFalse(page.button(key='cv_extract').disabled)
+            self.assertEqual(page.session_state.get('cv_upload_generation', 0), 0)
+            page.run()
+            self.assertEqual(ai.call_count, 1)
+            page.button(key='cv_extract').click().run()
+            self.assertFalse(page.exception)
+            self.assertEqual(ai.call_count, 2)
+            self.assertFalse(page.session_state['cv_extract_busy'])
+            self.assertNotIn('cv_notice', page.session_state)
+            self.assertTrue(page.session_state['cv_review']['skills'])
+            self.assertEqual(page.session_state['pathway_draft'], {})
+
     def test_entry_both_pages_and_no_config_fallback(self) -> None:
         """PDF upload is visible on identity and background; missing configuration leaves manual intake usable."""
         from streamlit.testing.v1 import AppTest
@@ -352,6 +471,12 @@ class CVPageTests(unittest.TestCase):
                         warning = ' '.join(item.value for item in page.warning)
                         self.assertIn(expected, warning)
                         self.assertIn('No profile was changed', warning)
+                        if kind in ('timeout', 'wrapped_timeout'):
+                            self.assertIn('may still be cold starting', warning)
+                            from src.i18n import translate_error
+                            with patch('src.i18n._language') as language:
+                                language.get.return_value = 'zh'
+                                self.assertIn('AI 服务仍可能正在冷启动。本次未修改画像，请稍后手动重试。', translate_error(page.session_state['cv_notice']))
                         details = next(item for item in page.expander if item.label == 'Technical error details')
                         self.assertFalse(details.proto.expanded)
                         technical = ' '.join(item.value for item in details.text)
@@ -441,3 +566,100 @@ class CVPageTests(unittest.TestCase):
             page.run()
             page.button(key='cv_cancel_review').click().run()
             self.assertEqual(page.session_state['pathway_draft'], before)
+
+class CVRegressionTests(unittest.TestCase):
+    def test_real_synthetic_pdf_boundaries(self):
+        from pypdf import PdfWriter
+        from pypdf.generic import DecodedStreamObject, DictionaryObject, NameObject
+
+        def pdf(*, blank=False, encrypted=False, pages=1):
+            writer = PdfWriter()
+            for _ in range(pages):
+                page = writer.add_blank_page(width=612, height=792)
+                if not blank:
+                    font = DictionaryObject({NameObject('/Type'): NameObject('/Font'),
+                                             NameObject('/Subtype'): NameObject('/Type1'),
+                                             NameObject('/BaseFont'): NameObject('/Helvetica')})
+                    page[NameObject('/Resources')] = DictionaryObject({NameObject('/Font'): DictionaryObject({NameObject('/F1'): writer._add_object(font)})})
+                    stream = DecodedStreamObject()
+                    stream.set_data(b'BT /F1 12 Tf 50 700 Td (Skills: Programming) Tj 0 -20 Td (Knowledge: Mathematics) Tj ET')
+                    page[NameObject('/Contents')] = writer._add_object(stream)
+            if encrypted:
+                writer.encrypt('synthetic-password')
+            output = BytesIO()
+            writer.write(output)
+            return output.getvalue()
+
+        self.assertIn('Programming', extract_pdf('synthetic.pdf', pdf()))
+        for data, expected in ((pdf(blank=True), 'No selectable text'),
+                               (pdf(encrypted=True), 'Encrypted'),
+                               (pdf(pages=6), '1–5'),
+                               (b'%PDF-1.7 broken', 'damaged')):
+            with self.subTest(expected=expected), self.assertRaisesRegex(CVError, expected):
+                extract_pdf('synthetic.pdf', data)
+
+    def test_typography_and_failure_reasons(self):
+        source = SOURCE.replace("Bachelor's", 'Bachelor’s').replace('Programming', 'programming')
+        document = extraction()
+        document['skills'][0]['evidence'] = 'Skills: programming and Critical Thinking'
+        result = validate_extraction(document, source, app.LABELS)
+        self.assertEqual(len(result['education']), 2)
+        self.assertEqual(len(result['skills']), 1)
+        document['skills'][0]['evidence'] = 'Programming expert'
+        result = validate_extraction(document, source, app.LABELS)
+        self.assertIn('skill_04', result['verification_failures'])
+        self.assertNotIn(source, str(result['verification_failures']))
+
+    def test_response_error_categories_and_fences(self):
+        from src.cv_client import parse_response
+        cases = [(b'broken', 'invalid JSON'), (b'{}', 'missing Chat Completions fields'),
+                 (json.dumps({'choices': [{'message': {'refusal': 'PRIVATE'}, 'finish_reason': 'stop'}]}).encode(), 'refused'),
+                 (json.dumps({'choices': [{'message': {}, 'finish_reason': 'length'}]}).encode(), 'truncated')]
+        for raw, expected in cases:
+            with self.subTest(expected=expected), self.assertRaisesRegex(CVError, expected) as caught:
+                parse_response(raw)
+            self.assertNotIn('PRIVATE', str(caught.exception))
+        result = extract_with_ai(SOURCE, True, app.LABELS, config=CONFIG,
+                                opener=Mock(return_value=reply('```json\n' + json.dumps(extraction()) + '\n```')))
+        self.assertTrue(result['skills'])
+
+    def test_preview_sent_and_verified_text_identical(self):
+        source = 'Name: Synthetic\n' + SOURCE + '\nmail: synthetic@example.com'
+        send = Mock(return_value=reply())
+        with patch('src.cv_client.validate_extraction', wraps=validate_extraction) as validate:
+            extract_with_ai(source, True, app.LABELS, config=CONFIG, opener=send)
+        payload = json.loads(send.call_args.args[0].data)
+        self.assertEqual(payload['messages'][1]['content'], redact_text(source))
+        self.assertEqual(validate.call_args.args[1], redact_text(source))
+        self.assertEqual(payload['model'], CONFIG.model)
+        self.assertEqual(send.call_args.args[0].get_header('Authorization'), 'Bearer ' + CONFIG.api_key)
+        full = AIConfig(CONFIG.base_url + '/chat/completions', CONFIG.model, CONFIG.api_key)
+        extract_with_ai(SOURCE, True, app.LABELS, config=full, opener=send)
+        self.assertEqual(send.call_args.args[0].full_url, full.base_url)
+
+    def test_page_all_unverified_is_actionable(self):
+        from streamlit.testing.v1 import AppTest
+        try:
+            extract_with_ai('Unrelated synthetic text', True, app.LABELS, config=CONFIG,
+                            opener=Mock(return_value=reply()))
+        except CVError as exc:
+            message = str(exc)
+        page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run(), entry='cv')
+        original = {'skill_04': 1}
+        page.session_state['pathway_draft'] = deepcopy(original)
+        page.session_state['cv_notice'] = message
+        page.run()
+        warning = ' '.join(item.value for item in page.warning)
+        self.assertIn('No CV fields could be verified', warning)
+        self.assertIn('fill in your profile manually', warning)
+        self.assertIn('skill_04', warning)
+        self.assertEqual(page.session_state['pathway_draft'], original)
+        self.assertNotIn(SOURCE, warning)
+        self.assertNotIn(CONFIG.api_key, warning)
+
+    def test_pdf_headers_footers_and_crlf_evidence(self):
+        source = 'Synthetic header\r\n' + SOURCE.replace('Programming', 'Pro-\r\ngramming') + '\r\nPage 1'
+        text = extract_pdf('synthetic.pdf', b'%PDF-1.7', PDFTests().reader(source))
+        result = extract_with_ai(text, True, app.LABELS, config=CONFIG, opener=Mock(return_value=reply()))
+        self.assertTrue(result['skills'])
+        self.assertEqual(result['unverified_fields'], [])

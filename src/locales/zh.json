@@ -635,5 +635,16 @@
   "Try a virtual example": "试用虚拟示例",
   "0 · No exposure → 4 · Advanced": "0 · 未接触 → 4 · 熟练",
   "1 · Strongly disagree → 5 · Strongly agree": "1 · 非常不同意 → 5 · 非常同意",
-  "{count} required questions remain unanswered.": "还有 {count} 道必答题未完成。"
+  "{count} required questions remain unanswered.": "还有 {count} 道必答题未完成。",
+  "AI returned invalid JSON. Retry manually or use the questionnaire. No profile was changed.": "AI 返回无效 JSON。请手动重试或使用问卷。画像未改变。",
+  "AI service refused extraction. Use the questionnaire. No profile was changed.": "AI 服务拒绝提取。请使用问卷。画像未改变。",
+  "AI response was truncated. Use a shorter synthetic CV or the questionnaire. No profile was changed.": "AI 响应被截断。请使用较短的合成简历或问卷。画像未改变。",
+  "AI response is missing Chat Completions fields. Check the endpoint configuration. No profile was changed.": "AI 响应缺少 Chat Completions 字段。请检查端点配置。画像未改变。",
+  "AI extraction is missing required fields. Retry manually or use the questionnaire. No profile was changed.": "AI 提取结果缺少必填字段。请手动重试或使用问卷。画像未改变。",
+  "evidence not found or outside quote limits": "证据未在脱敏文本中找到，或超出摘录长度限制",
+  "education category unsupported": "教育类别缺少明确术语支持",
+  "summary not a literal excerpt": "经历摘要不是证据中的字面摘录",
+  "questionnaire name absent from evidence": "证据未包含问卷规定的技能或知识名称",
+  "AI timeout error. The AI service may still be cold starting. No profile was changed; please retry manually later.": "AI 服务仍可能正在冷启动。本次未修改画像，请稍后手动重试。",
+  "AI_TIMEOUT_SECONDS must be a positive integer from 1 to 3600. No profile was changed.": "AI_TIMEOUT_SECONDS 必须为 1–3600 的正整数。本次未修改画像。"
 }
