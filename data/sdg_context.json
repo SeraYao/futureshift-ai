@@ -1,0 +1,4077 @@
+{
+  "version": "official-context-v1",
+  "checked_on": "2026-10-23",
+  "database_version": "31.0",
+  "task_source": {
+    "url": "https://www.onetcenter.org/dl_files/database/db_31_0_csv/task_statements.csv",
+    "sha256": "4568e14d8db6f05551ad37e056e909b13ebae4a26bcb5ff915bb5f281d582c57",
+    "bytes": 3461375,
+    "total_rows": 18838
+  },
+  "element_source": {
+    "url": "https://www.onetcenter.org/dl_files/database/db_31_0_csv/content_model_reference.csv",
+    "accessed_on": "2026-10-21",
+    "bytes": 235856,
+    "sha256": "370033744006dbd5df048431d42a402f6741a00a229b6d0f4e4f4249b6399c04"
+  },
+  "license": {
+    "name": "CC BY 4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/",
+    "official_notice_url": "https://www.onetcenter.org/license_db.html",
+    "attribution": "O*NET® 31.0 Database, U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). O*NET® is a trademark of USDOL/ETA.",
+    "modifications": "FutureShift AI selected occupations and questionnaire elements, normalized ratings and blocked flagged or unavailable values. USDOL/ETA has not approved, endorsed, or tested these modifications."
+  },
+  "roles": {
+    "15-1211.00": [
+      {
+        "id": "onet-task:15-1211.00:20950",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "20950",
+        "text": "Troubleshoot program and system malfunctions to restore normal functioning.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2203,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "20950",
+          "Task": "Troubleshoot program and system malfunctions to restore normal functioning.",
+          "Task Type": "Core",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3464",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3464",
+        "text": "Provide staff and users with assistance solving computer-related problems, such as malfunctions and program problems.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2204,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3464",
+          "Task": "Provide staff and users with assistance solving computer-related problems, such as malfunctions and program problems.",
+          "Task Type": "Core",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3465",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3465",
+        "text": "Test, maintain, and monitor computer programs and systems, including coordinating the installation of computer programs and systems.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2205,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3465",
+          "Task": "Test, maintain, and monitor computer programs and systems, including coordinating the installation of computer programs and systems.",
+          "Task Type": "Core",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3482",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3482",
+        "text": "Use the computer in the analysis and solution of business problems, such as development of integrated production and inventory control and cost analysis systems.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2206,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3482",
+          "Task": "Use the computer in the analysis and solution of business problems, such as development of integrated production and inventory control and cost analysis systems.",
+          "Task Type": "Core",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3468",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3468",
+        "text": "Coordinate and link the computer systems within an organization to increase compatibility so that information can be shared.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2207,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3468",
+          "Task": "Coordinate and link the computer systems within an organization to increase compatibility so that information can be shared.",
+          "Task Type": "Core",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3466",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3466",
+        "text": "Use object-oriented programming languages, as well as client and server applications development processes and multimedia and Internet technology.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2208,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3466",
+          "Task": "Use object-oriented programming languages, as well as client and server applications development processes and multimedia and Internet technology.",
+          "Task Type": "Core",
+          "Incumbents Responding": "64",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3474",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3474",
+        "text": "Analyze information processing or computation needs and plan and design computer systems, using techniques such as structured analysis, data modeling, and information engineering.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2209,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3474",
+          "Task": "Analyze information processing or computation needs and plan and design computer systems, using techniques such as structured analysis, data modeling, and information engineering.",
+          "Task Type": "Core",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3469",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3469",
+        "text": "Consult with management to ensure agreement on system principles.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2210,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3469",
+          "Task": "Consult with management to ensure agreement on system principles.",
+          "Task Type": "Core",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3484",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3484",
+        "text": "Specify inputs accessed by the system and plan the distribution and use of the results.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2211,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3484",
+          "Task": "Specify inputs accessed by the system and plan the distribution and use of the results.",
+          "Task Type": "Core",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3470",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3470",
+        "text": "Expand or modify system to serve new purposes or improve work flow.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2212,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3470",
+          "Task": "Expand or modify system to serve new purposes or improve work flow.",
+          "Task Type": "Core",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3473",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3473",
+        "text": "Train staff and users to work with computer systems and programs.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2213,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3473",
+          "Task": "Train staff and users to work with computer systems and programs.",
+          "Task Type": "Core",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3475",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3475",
+        "text": "Assess the usefulness of pre-developed application packages and adapt them to a user environment.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2214,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3475",
+          "Task": "Assess the usefulness of pre-developed application packages and adapt them to a user environment.",
+          "Task Type": "Core",
+          "Incumbents Responding": "64",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3472",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3472",
+        "text": "Determine computer software or hardware needed to set up or alter systems.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2215,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3472",
+          "Task": "Determine computer software or hardware needed to set up or alter systems.",
+          "Task Type": "Core",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3480",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3480",
+        "text": "Read manuals, periodicals, and technical reports to learn how to develop programs that meet staff and user requirements.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2216,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3480",
+          "Task": "Read manuals, periodicals, and technical reports to learn how to develop programs that meet staff and user requirements.",
+          "Task Type": "Core",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3477",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3477",
+        "text": "Develop, document, and revise system design procedures, test procedures, and quality standards.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2217,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3477",
+          "Task": "Develop, document, and revise system design procedures, test procedures, and quality standards.",
+          "Task Type": "Core",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3479",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3479",
+        "text": "Recommend new equipment or software packages.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2218,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3479",
+          "Task": "Recommend new equipment or software packages.",
+          "Task Type": "Core",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3476",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3476",
+        "text": "Define the goals of the system and devise flow charts and diagrams describing logical operational steps of programs.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2219,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3476",
+          "Task": "Define the goals of the system and devise flow charts and diagrams describing logical operational steps of programs.",
+          "Task Type": "Core",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3467",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3467",
+        "text": "Confer with clients regarding the nature of the information processing or computation needs a computer program is to address.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2220,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3467",
+          "Task": "Confer with clients regarding the nature of the information processing or computation needs a computer program is to address.",
+          "Task Type": "Core",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3478",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3478",
+        "text": "Review and analyze computer printouts and performance indicators to locate code problems, and correct errors by correcting codes.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2221,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3478",
+          "Task": "Review and analyze computer printouts and performance indicators to locate code problems, and correct errors by correcting codes.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3471",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3471",
+        "text": "Interview or survey workers, observe job performance, or perform the job to determine what information is processed and how it is processed.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2222,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3471",
+          "Task": "Interview or survey workers, observe job performance, or perform the job to determine what information is processed and how it is processed.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3481",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3481",
+        "text": "Supervise computer programmers or other systems analysts or serve as project leaders for particular systems projects.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2223,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3481",
+          "Task": "Supervise computer programmers or other systems analysts or serve as project leaders for particular systems projects.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1211.00:3483",
+        "kind": "task",
+        "career_code": "15-1211.00",
+        "task_id": "3483",
+        "text": "Prepare cost-benefit and return-on-investment analyses to aid in decisions on system implementation.",
+        "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+        "date": "08/2023",
+        "row_number": 2224,
+        "raw": {
+          "O*NET-SOC Code": "15-1211.00",
+          "Title": "Computer Systems Analysts",
+          "Task ID": "3483",
+          "Task": "Prepare cost-benefit and return-on-investment analyses to aid in decisions on system implementation.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "65",
+          "Date": "08/2023",
+          "Domain Source": "Incumbent"
+        }
+      }
+    ],
+    "17-2081.00": [
+      {
+        "id": "onet-task:17-2081.00:15210",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "15210",
+        "text": "Design, or supervise the design of, systems, processes, or equipment for control, management, or remediation of water, air, or soil quality.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3294,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "15210",
+          "Task": "Design, or supervise the design of, systems, processes, or equipment for control, management, or remediation of water, air, or soil quality.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1377",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1377",
+        "text": "Assess the existing or potential environmental impact of land use projects on air, water, or land.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3295,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1377",
+          "Task": "Assess the existing or potential environmental impact of land use projects on air, water, or land.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:20195",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "20195",
+        "text": "Collaborate with environmental scientists, planners, hazardous waste technicians, engineers, experts in law or business, or other specialists to address environmental problems.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3296,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "20195",
+          "Task": "Collaborate with environmental scientists, planners, hazardous waste technicians, engineers, experts in law or business, or other specialists to address environmental problems.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1374",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1374",
+        "text": "Advise corporations or government agencies of procedures to follow in cleaning up contaminated sites to protect people and the environment.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3297,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1374",
+          "Task": "Advise corporations or government agencies of procedures to follow in cleaning up contaminated sites to protect people and the environment.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1373",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1373",
+        "text": "Develop proposed project objectives and targets and report to management on progress in attaining them.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3298,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1373",
+          "Task": "Develop proposed project objectives and targets and report to management on progress in attaining them.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1370",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1370",
+        "text": "Monitor progress of environmental improvement programs.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3299,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1370",
+          "Task": "Monitor progress of environmental improvement programs.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1366",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1366",
+        "text": "Prepare, review, or update environmental investigation or recommendation reports.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3300,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1366",
+          "Task": "Prepare, review, or update environmental investigation or recommendation reports.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:20197",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "20197",
+        "text": "Prepare, maintain, or revise quality assurance documentation or procedures.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3301,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "20197",
+          "Task": "Prepare, maintain, or revise quality assurance documentation or procedures.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1379",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1379",
+        "text": "Develop site-specific health and safety protocols, such as spill contingency plans or methods for loading or transporting waste.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3302,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1379",
+          "Task": "Develop site-specific health and safety protocols, such as spill contingency plans or methods for loading or transporting waste.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1369",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1369",
+        "text": "Provide technical support for environmental remediation or litigation projects, including remediation system design or determination of regulatory applicability.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3303,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1369",
+          "Task": "Provide technical support for environmental remediation or litigation projects, including remediation system design or determination of regulatory applicability.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:19625",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "19625",
+        "text": "Prepare or present public briefings on the status of environmental engineering projects.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3304,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "19625",
+          "Task": "Prepare or present public briefings on the status of environmental engineering projects.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1378",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1378",
+        "text": "Assist in budget implementation, forecasts, or administration.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3305,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1378",
+          "Task": "Assist in budget implementation, forecasts, or administration.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1380",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1380",
+        "text": "Coordinate or manage environmental protection programs or projects, assigning or evaluating work.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3306,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1380",
+          "Task": "Coordinate or manage environmental protection programs or projects, assigning or evaluating work.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1375",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1375",
+        "text": "Advise industries or government agencies about environmental policies and standards.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3307,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1375",
+          "Task": "Advise industries or government agencies about environmental policies and standards.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1368",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1368",
+        "text": "Obtain, update, or maintain plans, permits, or standard operating procedures.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3308,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1368",
+          "Task": "Obtain, update, or maintain plans, permits, or standard operating procedures.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:19624",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "19624",
+        "text": "Direct installation or operation of environmental monitoring devices or supervise related data collection programs.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3309,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "19624",
+          "Task": "Direct installation or operation of environmental monitoring devices or supervise related data collection programs.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1371",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1371",
+        "text": "Inspect industrial or municipal facilities or programs to evaluate operational effectiveness or ensure compliance with environmental regulations.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3310,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1371",
+          "Task": "Inspect industrial or municipal facilities or programs to evaluate operational effectiveness or ensure compliance with environmental regulations.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1389",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1389",
+        "text": "Request bids from suppliers or consultants.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3311,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1389",
+          "Task": "Request bids from suppliers or consultants.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1376",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1376",
+        "text": "Inform company employees or other interested parties of environmental issues.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3312,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1376",
+          "Task": "Inform company employees or other interested parties of environmental issues.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1381",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1381",
+        "text": "Serve as liaison with federal, state, or local agencies or officials on issues pertaining to solid or hazardous waste program requirements.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3313,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1381",
+          "Task": "Serve as liaison with federal, state, or local agencies or officials on issues pertaining to solid or hazardous waste program requirements.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1372",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1372",
+        "text": "Provide administrative support for projects by collecting data, providing project documentation, training staff, or performing other general administrative duties.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3314,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1372",
+          "Task": "Provide administrative support for projects by collecting data, providing project documentation, training staff, or performing other general administrative duties.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1390",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1390",
+        "text": "Provide environmental engineering assistance in network analysis, regulatory analysis, or planning or reviewing database development.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3315,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1390",
+          "Task": "Provide environmental engineering assistance in network analysis, regulatory analysis, or planning or reviewing database development.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1385",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1385",
+        "text": "Develop or present environmental compliance training or orientation sessions.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3316,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1385",
+          "Task": "Develop or present environmental compliance training or orientation sessions.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:20196",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "20196",
+        "text": "Provide assistance with planning, quality assurance, safety inspection protocols, or sampling as part of a team conducting multimedia inspections at complex facilities.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3317,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "20196",
+          "Task": "Provide assistance with planning, quality assurance, safety inspection protocols, or sampling as part of a team conducting multimedia inspections at complex facilities.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1387",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1387",
+        "text": "Develop, implement, or manage plans or programs related to conservation or management of natural resources.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3318,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1387",
+          "Task": "Develop, implement, or manage plans or programs related to conservation or management of natural resources.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1383",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1383",
+        "text": "Prepare hazardous waste manifests or land disposal restriction notifications.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3319,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1383",
+          "Task": "Prepare hazardous waste manifests or land disposal restriction notifications.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:23987",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "23987",
+        "text": "Attend professional conferences to share information.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3320,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "23987",
+          "Task": "Attend professional conferences to share information.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:19626",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "19626",
+        "text": "Write reports or articles for Web sites or newsletters related to environmental engineering issues.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3321,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "19626",
+          "Task": "Write reports or articles for Web sites or newsletters related to environmental engineering issues.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2081.00:1388",
+        "kind": "task",
+        "career_code": "17-2081.00",
+        "task_id": "1388",
+        "text": "Assess, sort, characterize, or pack known or unknown materials.",
+        "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+        "date": "08/2024",
+        "row_number": 3322,
+        "raw": {
+          "O*NET-SOC Code": "17-2081.00",
+          "Title": "Environmental Engineers",
+          "Task ID": "1388",
+          "Task": "Assess, sort, characterize, or pack known or unknown materials.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      }
+    ],
+    "15-2051.00": [
+      {
+        "id": "onet-task:15-2051.00:21823",
+        "kind": "task",
+        "career_code": "15-2051.00",
+        "task_id": "21823",
+        "text": "Analyze, manipulate, or process large sets of data using statistical software.",
+        "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+        "date": "08/2026",
+        "row_number": 2900,
+        "raw": {
+          "O*NET-SOC Code": "15-2051.00",
+          "Title": "Data Scientists",
+          "Task ID": "21823",
+          "Task": "Analyze, manipulate, or process large sets of data using statistical software.",
+          "Task Type": "Core",
+          "Incumbents Responding": "24",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2051.00:21828",
+        "kind": "task",
+        "career_code": "15-2051.00",
+        "task_id": "21828",
+        "text": "Create graphs, charts, or other visualizations to convey the results of data analysis using specialized software.",
+        "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+        "date": "08/2026",
+        "row_number": 2901,
+        "raw": {
+          "O*NET-SOC Code": "15-2051.00",
+          "Title": "Data Scientists",
+          "Task ID": "21828",
+          "Task": "Create graphs, charts, or other visualizations to convey the results of data analysis using specialized software.",
+          "Task Type": "Core",
+          "Incumbents Responding": "24",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2051.00:21837",
+        "kind": "task",
+        "career_code": "15-2051.00",
+        "task_id": "21837",
+        "text": "Test, validate, and reformulate models to ensure accurate prediction of outcomes of interest.",
+        "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+        "date": "08/2026",
+        "row_number": 2902,
+        "raw": {
+          "O*NET-SOC Code": "15-2051.00",
+          "Title": "Data Scientists",
+          "Task ID": "21837",
+          "Task": "Test, validate, and reformulate models to ensure accurate prediction of outcomes of interest.",
+          "Task Type": "Core",
+          "Incumbents Responding": "24",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2051.00:21829",
+        "kind": "task",
+        "career_code": "15-2051.00",
+        "task_id": "21829",
+        "text": "Deliver oral or written presentations of the results of mathematical modeling and data analysis to management or other end users.",
+        "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+        "date": "08/2026",
+        "row_number": 2903,
+        "raw": {
+          "O*NET-SOC Code": "15-2051.00",
+          "Title": "Data Scientists",
+          "Task ID": "21829",
+          "Task": "Deliver oral or written presentations of the results of mathematical modeling and data analysis to management or other end users.",
+          "Task Type": "Core",
+          "Incumbents Responding": "24",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2051.00:21836",
+        "kind": "task",
+        "career_code": "15-2051.00",
+        "task_id": "21836",
+        "text": "Recommend data-driven solutions to key stakeholders.",
+        "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+        "date": "08/2026",
+        "row_number": 2904,
+        "raw": {
+          "O*NET-SOC Code": "15-2051.00",
+          "Title": "Data Scientists",
+          "Task ID": "21836",
+          "Task": "Recommend data-driven solutions to key stakeholders.",
+          "Task Type": "Core",
+          "Incumbents Responding": "24",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2051.00:21831",
+        "kind": "task",
+        "career_code": "15-2051.00",
+        "task_id": "21831",
+        "text": "Identify business problems or management objectives that can be addressed through data analysis.",
+        "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+        "date": "08/2026",
+        "row_number": 2905,
+        "raw": {
+          "O*NET-SOC Code": "15-2051.00",
+          "Title": "Data Scientists",
+          "Task ID": "21831",
+          "Task": "Identify business problems or management objectives that can be addressed through data analysis.",
+          "Task Type": "Core",
+          "Incumbents Responding": "24",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2051.00:21827",
+        "kind": "task",
+        "career_code": "15-2051.00",
+        "task_id": "21827",
+        "text": "Compare models using statistical performance metrics, such as loss functions or proportion of explained variance.",
+        "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+        "date": "08/2026",
+        "row_number": 2906,
+        "raw": {
+          "O*NET-SOC Code": "15-2051.00",
+          "Title": "Data Scientists",
+          "Task ID": "21827",
+          "Task": "Compare models using statistical performance metrics, such as loss functions or proportion of explained variance.",
+          "Task Type": "Core",
+          "Incumbents Responding": "24",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2051.00:21826",
+        "kind": "task",
+        "career_code": "15-2051.00",
+        "task_id": "21826",
+        "text": "Clean and manipulate raw data using statistical software.",
+        "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+        "date": "08/2026",
+        "row_number": 2907,
+        "raw": {
+          "O*NET-SOC Code": "15-2051.00",
+          "Title": "Data Scientists",
+          "Task ID": "21826",
+          "Task": "Clean and manipulate raw data using statistical software.",
+          "Task Type": "Core",
+          "Incumbents Responding": "24",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2051.00:21833",
+        "kind": "task",
+        "career_code": "15-2051.00",
+        "task_id": "21833",
+        "text": "Identify solutions to business problems, such as budgeting, staffing, and marketing decisions, using the results of data analysis.",
+        "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+        "date": "08/2026",
+        "row_number": 2908,
+        "raw": {
+          "O*NET-SOC Code": "15-2051.00",
+          "Title": "Data Scientists",
+          "Task ID": "21833",
+          "Task": "Identify solutions to business problems, such as budgeting, staffing, and marketing decisions, using the results of data analysis.",
+          "Task Type": "Core",
+          "Incumbents Responding": "24",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2051.00:21824",
+        "kind": "task",
+        "career_code": "15-2051.00",
+        "task_id": "21824",
+        "text": "Apply feature selection algorithms to models predicting outcomes of interest, such as sales, attrition, and healthcare use.",
+        "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+        "date": "08/2026",
+        "row_number": 2909,
+        "raw": {
+          "O*NET-SOC Code": "15-2051.00",
+          "Title": "Data Scientists",
+          "Task ID": "21824",
+          "Task": "Apply feature selection algorithms to models predicting outcomes of interest, such as sales, attrition, and healthcare use.",
+          "Task Type": "Core",
+          "Incumbents Responding": "24",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2051.00:21832",
+        "kind": "task",
+        "career_code": "15-2051.00",
+        "task_id": "21832",
+        "text": "Identify relationships and trends or any factors that could affect the results of research.",
+        "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+        "date": "08/2026",
+        "row_number": 2910,
+        "raw": {
+          "O*NET-SOC Code": "15-2051.00",
+          "Title": "Data Scientists",
+          "Task ID": "21832",
+          "Task": "Identify relationships and trends or any factors that could affect the results of research.",
+          "Task Type": "Core",
+          "Incumbents Responding": "24",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2051.00:21838",
+        "kind": "task",
+        "career_code": "15-2051.00",
+        "task_id": "21838",
+        "text": "Write new functions or applications in programming languages to conduct analyses.",
+        "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+        "date": "08/2026",
+        "row_number": 2911,
+        "raw": {
+          "O*NET-SOC Code": "15-2051.00",
+          "Title": "Data Scientists",
+          "Task ID": "21838",
+          "Task": "Write new functions or applications in programming languages to conduct analyses.",
+          "Task Type": "Core",
+          "Incumbents Responding": "24",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2051.00:21835",
+        "kind": "task",
+        "career_code": "15-2051.00",
+        "task_id": "21835",
+        "text": "Read scientific articles, conference papers, or other sources of research to identify emerging analytic trends and technologies.",
+        "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+        "date": "08/2026",
+        "row_number": 2912,
+        "raw": {
+          "O*NET-SOC Code": "15-2051.00",
+          "Title": "Data Scientists",
+          "Task ID": "21835",
+          "Task": "Read scientific articles, conference papers, or other sources of research to identify emerging analytic trends and technologies.",
+          "Task Type": "Core",
+          "Incumbents Responding": "24",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2051.00:21834",
+        "kind": "task",
+        "career_code": "15-2051.00",
+        "task_id": "21834",
+        "text": "Propose solutions in engineering, the sciences, and other fields using mathematical theories and techniques.",
+        "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+        "date": "08/2026",
+        "row_number": 2913,
+        "raw": {
+          "O*NET-SOC Code": "15-2051.00",
+          "Title": "Data Scientists",
+          "Task ID": "21834",
+          "Task": "Propose solutions in engineering, the sciences, and other fields using mathematical theories and techniques.",
+          "Task Type": "Core",
+          "Incumbents Responding": "24",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2051.00:21825",
+        "kind": "task",
+        "career_code": "15-2051.00",
+        "task_id": "21825",
+        "text": "Apply sampling techniques to determine groups to be surveyed or use complete enumeration methods.",
+        "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+        "date": "08/2026",
+        "row_number": 2914,
+        "raw": {
+          "O*NET-SOC Code": "15-2051.00",
+          "Title": "Data Scientists",
+          "Task ID": "21825",
+          "Task": "Apply sampling techniques to determine groups to be surveyed or use complete enumeration methods.",
+          "Task Type": "Core",
+          "Incumbents Responding": "24",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2051.00:21830",
+        "kind": "task",
+        "career_code": "15-2051.00",
+        "task_id": "21830",
+        "text": "Design surveys, opinion polls, or other instruments to collect data.",
+        "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+        "date": "08/2026",
+        "row_number": 2915,
+        "raw": {
+          "O*NET-SOC Code": "15-2051.00",
+          "Title": "Data Scientists",
+          "Task ID": "21830",
+          "Task": "Design surveys, opinion polls, or other instruments to collect data.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "24",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      }
+    ],
+    "17-2199.03": [
+      {
+        "id": "onet-task:17-2199.03:20854",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "20854",
+        "text": "Identify and recommend energy savings strategies to achieve more energy-efficient operation.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3646,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "20854",
+          "Task": "Identify and recommend energy savings strategies to achieve more energy-efficient operation.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:20859",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "20859",
+        "text": "Collect data for energy conservation analyses, using jobsite observation, field inspections, or sub-metering.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3647,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "20859",
+          "Task": "Collect data for energy conservation analyses, using jobsite observation, field inspections, or sub-metering.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:18156",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "18156",
+        "text": "Monitor and analyze energy consumption.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3648,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "18156",
+          "Task": "Monitor and analyze energy consumption.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:20861",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "20861",
+        "text": "Prepare energy-related project reports or related documentation.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3649,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "20861",
+          "Task": "Prepare energy-related project reports or related documentation.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:20856",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "20856",
+        "text": "Monitor energy related design or construction issues, such as energy engineering, energy management, or sustainable design.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3650,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "20856",
+          "Task": "Monitor energy related design or construction issues, such as energy engineering, energy management, or sustainable design.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:20855",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "20855",
+        "text": "Conduct energy audits to evaluate energy use and to identify conservation and cost reduction measures.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3651,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "20855",
+          "Task": "Conduct energy audits to evaluate energy use and to identify conservation and cost reduction measures.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:18159",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "18159",
+        "text": "Analyze, interpret, or create graphical representations of energy data, using engineering software.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3652,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "18159",
+          "Task": "Analyze, interpret, or create graphical representations of energy data, using engineering software.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:18166",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "18166",
+        "text": "Train personnel or clients on topics such as energy management.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3653,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "18166",
+          "Task": "Train personnel or clients on topics such as energy management.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:20857",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "20857",
+        "text": "Advise clients or colleagues on topics such as climate control systems, energy modeling, data logging, sustainable design, or energy auditing.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3654,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "20857",
+          "Task": "Advise clients or colleagues on topics such as climate control systems, energy modeling, data logging, sustainable design, or energy auditing.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:18148",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "18148",
+        "text": "Perform energy modeling, measurement, verification, commissioning, or retro-commissioning.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3655,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "18148",
+          "Task": "Perform energy modeling, measurement, verification, commissioning, or retro-commissioning.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:20858",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "20858",
+        "text": "Verify energy bills and meter readings.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3656,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "20858",
+          "Task": "Verify energy bills and meter readings.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:20860",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "20860",
+        "text": "Review architectural, mechanical, or electrical plans or specifications to evaluate energy efficiency.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3657,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "20860",
+          "Task": "Review architectural, mechanical, or electrical plans or specifications to evaluate energy efficiency.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:18150",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "18150",
+        "text": "Inspect or monitor energy systems, including heating, ventilating, and air conditioning (HVAC) or daylighting systems to determine energy use or potential energy savings.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3658,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "18150",
+          "Task": "Inspect or monitor energy systems, including heating, ventilating, and air conditioning (HVAC) or daylighting systems to determine energy use or potential energy savings.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:18151",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "18151",
+        "text": "Manage the development, design, or construction of energy conservation projects to ensure acceptability of budgets and time lines, conformance to federal and state laws, or adherence to approved specifications.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3659,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "18151",
+          "Task": "Manage the development, design, or construction of energy conservation projects to ensure acceptability of budgets and time lines, conformance to federal and state laws, or adherence to approved specifications.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:20862",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "20862",
+        "text": "Direct the implementation of energy management projects.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3660,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "20862",
+          "Task": "Direct the implementation of energy management projects.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:18157",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "18157",
+        "text": "Promote awareness or use of alternative or renewable energy sources.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3661,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "18157",
+          "Task": "Promote awareness or use of alternative or renewable energy sources.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:20864",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "20864",
+        "text": "Recommend best fuel for specific sites or circumstances.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3662,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "20864",
+          "Task": "Recommend best fuel for specific sites or circumstances.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:19648",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "19648",
+        "text": "Write or install energy management routines for building automation systems.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3663,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "19648",
+          "Task": "Write or install energy management routines for building automation systems.",
+          "Task Type": "Core",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:20863",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "20863",
+        "text": "Research renewable or alternative energy systems or technologies, such as solar thermal or photovoltaic energy.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3664,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "20863",
+          "Task": "Research renewable or alternative energy systems or technologies, such as solar thermal or photovoltaic energy.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:18165",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "18165",
+        "text": "Review or negotiate energy purchase agreements.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3665,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "18165",
+          "Task": "Review or negotiate energy purchase agreements.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "19",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.03:18149",
+        "kind": "task",
+        "career_code": "17-2199.03",
+        "task_id": "18149",
+        "text": "Consult with construction or renovation clients or other engineers on topics such as Leadership in Energy and Environmental Design (LEED) or Green Buildings.",
+        "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+        "date": "08/2026",
+        "row_number": 3666,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.03",
+          "Title": "Energy Engineers, Except Wind and Solar",
+          "Task ID": "18149",
+          "Task": "Consult with construction or renovation clients or other engineers on topics such as Leadership in Energy and Environmental Design (LEED) or Green Buildings.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "20",
+          "Date": "08/2026",
+          "Domain Source": "Occupational Expert"
+        }
+      }
+    ],
+    "15-2031.00": [
+      {
+        "id": "onet-task:15-2031.00:20952",
+        "kind": "task",
+        "career_code": "15-2031.00",
+        "task_id": "20952",
+        "text": "Present the results of mathematical modeling and data analysis to management or other end users.",
+        "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+        "date": "08/2024",
+        "row_number": 2839,
+        "raw": {
+          "O*NET-SOC Code": "15-2031.00",
+          "Title": "Operations Research Analysts",
+          "Task ID": "20952",
+          "Task": "Present the results of mathematical modeling and data analysis to management or other end users.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2031.00:7382",
+        "kind": "task",
+        "career_code": "15-2031.00",
+        "task_id": "7382",
+        "text": "Define data requirements, and gather and validate information, applying judgment and statistical tests.",
+        "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+        "date": "08/2024",
+        "row_number": 2840,
+        "raw": {
+          "O*NET-SOC Code": "15-2031.00",
+          "Title": "Operations Research Analysts",
+          "Task ID": "7382",
+          "Task": "Define data requirements, and gather and validate information, applying judgment and statistical tests.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2031.00:7380",
+        "kind": "task",
+        "career_code": "15-2031.00",
+        "task_id": "7380",
+        "text": "Perform validation and testing of models to ensure adequacy, and reformulate models, as necessary.",
+        "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+        "date": "08/2024",
+        "row_number": 2841,
+        "raw": {
+          "O*NET-SOC Code": "15-2031.00",
+          "Title": "Operations Research Analysts",
+          "Task ID": "7380",
+          "Task": "Perform validation and testing of models to ensure adequacy, and reformulate models, as necessary.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2031.00:7384",
+        "kind": "task",
+        "career_code": "15-2031.00",
+        "task_id": "7384",
+        "text": "Prepare management reports defining and evaluating problems and recommending solutions.",
+        "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+        "date": "08/2024",
+        "row_number": 2842,
+        "raw": {
+          "O*NET-SOC Code": "15-2031.00",
+          "Title": "Operations Research Analysts",
+          "Task ID": "7384",
+          "Task": "Prepare management reports defining and evaluating problems and recommending solutions.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2031.00:7378",
+        "kind": "task",
+        "career_code": "15-2031.00",
+        "task_id": "7378",
+        "text": "Collaborate with others in the organization to ensure successful implementation of chosen problem solutions.",
+        "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+        "date": "08/2024",
+        "row_number": 2843,
+        "raw": {
+          "O*NET-SOC Code": "15-2031.00",
+          "Title": "Operations Research Analysts",
+          "Task ID": "7378",
+          "Task": "Collaborate with others in the organization to ensure successful implementation of chosen problem solutions.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2031.00:7377",
+        "kind": "task",
+        "career_code": "15-2031.00",
+        "task_id": "7377",
+        "text": "Formulate mathematical or simulation models of problems, relating constants and variables, restrictions, alternatives, conflicting objectives, and their numerical parameters.",
+        "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+        "date": "08/2024",
+        "row_number": 2844,
+        "raw": {
+          "O*NET-SOC Code": "15-2031.00",
+          "Title": "Operations Research Analysts",
+          "Task ID": "7377",
+          "Task": "Formulate mathematical or simulation models of problems, relating constants and variables, restrictions, alternatives, conflicting objectives, and their numerical parameters.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2031.00:7387",
+        "kind": "task",
+        "career_code": "15-2031.00",
+        "task_id": "7387",
+        "text": "Observe the current system in operation, and gather and analyze information about each of the component problems, using a variety of sources.",
+        "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+        "date": "08/2024",
+        "row_number": 2845,
+        "raw": {
+          "O*NET-SOC Code": "15-2031.00",
+          "Title": "Operations Research Analysts",
+          "Task ID": "7387",
+          "Task": "Observe the current system in operation, and gather and analyze information about each of the component problems, using a variety of sources.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2031.00:7379",
+        "kind": "task",
+        "career_code": "15-2031.00",
+        "task_id": "7379",
+        "text": "Analyze information obtained from management to conceptualize and define operational problems.",
+        "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+        "date": "08/2024",
+        "row_number": 2846,
+        "raw": {
+          "O*NET-SOC Code": "15-2031.00",
+          "Title": "Operations Research Analysts",
+          "Task ID": "7379",
+          "Task": "Analyze information obtained from management to conceptualize and define operational problems.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2031.00:7383",
+        "kind": "task",
+        "career_code": "15-2031.00",
+        "task_id": "7383",
+        "text": "Study and analyze information about alternative courses of action to determine which plan will offer the best outcomes.",
+        "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+        "date": "08/2024",
+        "row_number": 2847,
+        "raw": {
+          "O*NET-SOC Code": "15-2031.00",
+          "Title": "Operations Research Analysts",
+          "Task ID": "7383",
+          "Task": "Study and analyze information about alternative courses of action to determine which plan will offer the best outcomes.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2031.00:7381",
+        "kind": "task",
+        "career_code": "15-2031.00",
+        "task_id": "7381",
+        "text": "Collaborate with senior managers and decision makers to identify and solve a variety of problems and to clarify management objectives.",
+        "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+        "date": "08/2024",
+        "row_number": 2848,
+        "raw": {
+          "O*NET-SOC Code": "15-2031.00",
+          "Title": "Operations Research Analysts",
+          "Task ID": "7381",
+          "Task": "Collaborate with senior managers and decision makers to identify and solve a variety of problems and to clarify management objectives.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2031.00:7386",
+        "kind": "task",
+        "career_code": "15-2031.00",
+        "task_id": "7386",
+        "text": "Specify manipulative or computational methods to be applied to models.",
+        "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+        "date": "08/2024",
+        "row_number": 2849,
+        "raw": {
+          "O*NET-SOC Code": "15-2031.00",
+          "Title": "Operations Research Analysts",
+          "Task ID": "7386",
+          "Task": "Specify manipulative or computational methods to be applied to models.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2031.00:7388",
+        "kind": "task",
+        "career_code": "15-2031.00",
+        "task_id": "7388",
+        "text": "Design, conduct, and evaluate experimental operational models in cases where models cannot be developed from existing data.",
+        "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+        "date": "08/2024",
+        "row_number": 2850,
+        "raw": {
+          "O*NET-SOC Code": "15-2031.00",
+          "Title": "Operations Research Analysts",
+          "Task ID": "7388",
+          "Task": "Design, conduct, and evaluate experimental operational models in cases where models cannot be developed from existing data.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2031.00:7389",
+        "kind": "task",
+        "career_code": "15-2031.00",
+        "task_id": "7389",
+        "text": "Develop and apply time and cost networks to plan, control, and review large projects.",
+        "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+        "date": "08/2024",
+        "row_number": 2851,
+        "raw": {
+          "O*NET-SOC Code": "15-2031.00",
+          "Title": "Operations Research Analysts",
+          "Task ID": "7389",
+          "Task": "Develop and apply time and cost networks to plan, control, and review large projects.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2031.00:7385",
+        "kind": "task",
+        "career_code": "15-2031.00",
+        "task_id": "7385",
+        "text": "Break systems into their components, assign numerical values to each component, and examine the mathematical relationships between them.",
+        "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+        "date": "08/2024",
+        "row_number": 2852,
+        "raw": {
+          "O*NET-SOC Code": "15-2031.00",
+          "Title": "Operations Research Analysts",
+          "Task ID": "7385",
+          "Task": "Break systems into their components, assign numerical values to each component, and examine the mathematical relationships between them.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2031.00:20953",
+        "kind": "task",
+        "career_code": "15-2031.00",
+        "task_id": "20953",
+        "text": "Educate staff in the use of mathematical models.",
+        "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+        "date": "08/2024",
+        "row_number": 2853,
+        "raw": {
+          "O*NET-SOC Code": "15-2031.00",
+          "Title": "Operations Research Analysts",
+          "Task ID": "20953",
+          "Task": "Educate staff in the use of mathematical models.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2031.00:7390",
+        "kind": "task",
+        "career_code": "15-2031.00",
+        "task_id": "7390",
+        "text": "Develop business methods and procedures, including accounting systems, file systems, office systems, logistics systems, and production schedules.",
+        "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+        "date": "08/2024",
+        "row_number": 2854,
+        "raw": {
+          "O*NET-SOC Code": "15-2031.00",
+          "Title": "Operations Research Analysts",
+          "Task ID": "7390",
+          "Task": "Develop business methods and procedures, including accounting systems, file systems, office systems, logistics systems, and production schedules.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:15-2031.00:23986",
+        "kind": "task",
+        "career_code": "15-2031.00",
+        "task_id": "23986",
+        "text": "Review research literature.",
+        "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+        "date": "08/2024",
+        "row_number": 2855,
+        "raw": {
+          "O*NET-SOC Code": "15-2031.00",
+          "Title": "Operations Research Analysts",
+          "Task ID": "23986",
+          "Task": "Review research literature.",
+          "Task Type": "Core",
+          "Incumbents Responding": "21",
+          "Date": "08/2024",
+          "Domain Source": "Occupational Expert"
+        }
+      }
+    ],
+    "15-1212.00": [
+      {
+        "id": "onet-task:15-1212.00:5314",
+        "kind": "task",
+        "career_code": "15-1212.00",
+        "task_id": "5314",
+        "text": "Develop plans to safeguard computer files against accidental or unauthorized modification, destruction, or disclosure and to meet emergency data processing needs.",
+        "url": "https://www.onetonline.org/link/details/15-1212.00#Tasks",
+        "date": "08/2018",
+        "row_number": 2242,
+        "raw": {
+          "O*NET-SOC Code": "15-1212.00",
+          "Title": "Information Security Analysts",
+          "Task ID": "5314",
+          "Task": "Develop plans to safeguard computer files against accidental or unauthorized modification, destruction, or disclosure and to meet emergency data processing needs.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2018",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1212.00:5316",
+        "kind": "task",
+        "career_code": "15-1212.00",
+        "task_id": "5316",
+        "text": "Monitor current reports of computer viruses to determine when to update virus protection systems.",
+        "url": "https://www.onetonline.org/link/details/15-1212.00#Tasks",
+        "date": "08/2018",
+        "row_number": 2243,
+        "raw": {
+          "O*NET-SOC Code": "15-1212.00",
+          "Title": "Information Security Analysts",
+          "Task ID": "5316",
+          "Task": "Monitor current reports of computer viruses to determine when to update virus protection systems.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2018",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1212.00:5321",
+        "kind": "task",
+        "career_code": "15-1212.00",
+        "task_id": "5321",
+        "text": "Encrypt data transmissions and erect firewalls to conceal confidential information as it is being transmitted and to keep out tainted digital transfers.",
+        "url": "https://www.onetonline.org/link/details/15-1212.00#Tasks",
+        "date": "08/2018",
+        "row_number": 2244,
+        "raw": {
+          "O*NET-SOC Code": "15-1212.00",
+          "Title": "Information Security Analysts",
+          "Task ID": "5321",
+          "Task": "Encrypt data transmissions and erect firewalls to conceal confidential information as it is being transmitted and to keep out tainted digital transfers.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2018",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1212.00:5320",
+        "kind": "task",
+        "career_code": "15-1212.00",
+        "task_id": "5320",
+        "text": "Perform risk assessments and execute tests of data processing system to ensure functioning of data processing activities and security measures.",
+        "url": "https://www.onetonline.org/link/details/15-1212.00#Tasks",
+        "date": "08/2018",
+        "row_number": 2245,
+        "raw": {
+          "O*NET-SOC Code": "15-1212.00",
+          "Title": "Information Security Analysts",
+          "Task ID": "5320",
+          "Task": "Perform risk assessments and execute tests of data processing system to ensure functioning of data processing activities and security measures.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2018",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1212.00:5317",
+        "kind": "task",
+        "career_code": "15-1212.00",
+        "task_id": "5317",
+        "text": "Modify computer security files to incorporate new software, correct errors, or change individual access status.",
+        "url": "https://www.onetonline.org/link/details/15-1212.00#Tasks",
+        "date": "08/2018",
+        "row_number": 2246,
+        "raw": {
+          "O*NET-SOC Code": "15-1212.00",
+          "Title": "Information Security Analysts",
+          "Task ID": "5317",
+          "Task": "Modify computer security files to incorporate new software, correct errors, or change individual access status.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2018",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1212.00:5323",
+        "kind": "task",
+        "career_code": "15-1212.00",
+        "task_id": "5323",
+        "text": "Review violations of computer security procedures and discuss procedures with violators to ensure violations are not repeated.",
+        "url": "https://www.onetonline.org/link/details/15-1212.00#Tasks",
+        "date": "08/2018",
+        "row_number": 2247,
+        "raw": {
+          "O*NET-SOC Code": "15-1212.00",
+          "Title": "Information Security Analysts",
+          "Task ID": "5323",
+          "Task": "Review violations of computer security procedures and discuss procedures with violators to ensure violations are not repeated.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2018",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1212.00:5322",
+        "kind": "task",
+        "career_code": "15-1212.00",
+        "task_id": "5322",
+        "text": "Document computer security and emergency measures policies, procedures, and tests.",
+        "url": "https://www.onetonline.org/link/details/15-1212.00#Tasks",
+        "date": "08/2018",
+        "row_number": 2248,
+        "raw": {
+          "O*NET-SOC Code": "15-1212.00",
+          "Title": "Information Security Analysts",
+          "Task ID": "5322",
+          "Task": "Document computer security and emergency measures policies, procedures, and tests.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2018",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1212.00:5315",
+        "kind": "task",
+        "career_code": "15-1212.00",
+        "task_id": "5315",
+        "text": "Confer with users to discuss issues such as computer data access needs, security violations, and programming changes.",
+        "url": "https://www.onetonline.org/link/details/15-1212.00#Tasks",
+        "date": "08/2018",
+        "row_number": 2249,
+        "raw": {
+          "O*NET-SOC Code": "15-1212.00",
+          "Title": "Information Security Analysts",
+          "Task ID": "5315",
+          "Task": "Confer with users to discuss issues such as computer data access needs, security violations, and programming changes.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2018",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1212.00:5319",
+        "kind": "task",
+        "career_code": "15-1212.00",
+        "task_id": "5319",
+        "text": "Monitor use of data files and regulate access to safeguard information in computer files.",
+        "url": "https://www.onetonline.org/link/details/15-1212.00#Tasks",
+        "date": "08/2018",
+        "row_number": 2250,
+        "raw": {
+          "O*NET-SOC Code": "15-1212.00",
+          "Title": "Information Security Analysts",
+          "Task ID": "5319",
+          "Task": "Monitor use of data files and regulate access to safeguard information in computer files.",
+          "Task Type": "Core",
+          "Incumbents Responding": "71",
+          "Date": "08/2018",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1212.00:5318",
+        "kind": "task",
+        "career_code": "15-1212.00",
+        "task_id": "5318",
+        "text": "Coordinate implementation of computer system plan with establishment personnel and outside vendors.",
+        "url": "https://www.onetonline.org/link/details/15-1212.00#Tasks",
+        "date": "08/2018",
+        "row_number": 2251,
+        "raw": {
+          "O*NET-SOC Code": "15-1212.00",
+          "Title": "Information Security Analysts",
+          "Task ID": "5318",
+          "Task": "Coordinate implementation of computer system plan with establishment personnel and outside vendors.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2018",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1212.00:5313",
+        "kind": "task",
+        "career_code": "15-1212.00",
+        "task_id": "5313",
+        "text": "Train users and promote security awareness to ensure system security and to improve server and network efficiency.",
+        "url": "https://www.onetonline.org/link/details/15-1212.00#Tasks",
+        "date": "08/2018",
+        "row_number": 2252,
+        "raw": {
+          "O*NET-SOC Code": "15-1212.00",
+          "Title": "Information Security Analysts",
+          "Task ID": "5313",
+          "Task": "Train users and promote security awareness to ensure system security and to improve server and network efficiency.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2018",
+          "Domain Source": "Incumbent"
+        }
+      }
+    ],
+    "13-1199.05": [
+      {
+        "id": "onet-task:13-1199.05:15981",
+        "kind": "task",
+        "career_code": "13-1199.05",
+        "task_id": "15981",
+        "text": "Develop sustainability project goals, objectives, initiatives, or strategies in collaboration with other sustainability professionals.",
+        "url": "https://www.onetonline.org/link/details/13-1199.05#Tasks",
+        "date": "08/2020",
+        "row_number": 1805,
+        "raw": {
+          "O*NET-SOC Code": "13-1199.05",
+          "Title": "Sustainability Specialists",
+          "Task ID": "15981",
+          "Task": "Develop sustainability project goals, objectives, initiatives, or strategies in collaboration with other sustainability professionals.",
+          "Task Type": "Core",
+          "Incumbents Responding": "23",
+          "Date": "08/2020",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:13-1199.05:15980",
+        "kind": "task",
+        "career_code": "13-1199.05",
+        "task_id": "15980",
+        "text": "Monitor or track sustainability indicators, such as energy usage, natural resource usage, waste generation, and recycling.",
+        "url": "https://www.onetonline.org/link/details/13-1199.05#Tasks",
+        "date": "08/2020",
+        "row_number": 1806,
+        "raw": {
+          "O*NET-SOC Code": "13-1199.05",
+          "Title": "Sustainability Specialists",
+          "Task ID": "15980",
+          "Task": "Monitor or track sustainability indicators, such as energy usage, natural resource usage, waste generation, and recycling.",
+          "Task Type": "Core",
+          "Incumbents Responding": "23",
+          "Date": "08/2020",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:13-1199.05:15979",
+        "kind": "task",
+        "career_code": "13-1199.05",
+        "task_id": "15979",
+        "text": "Assess or propose sustainability initiatives, considering factors such as cost effectiveness, technical feasibility, and acceptance.",
+        "url": "https://www.onetonline.org/link/details/13-1199.05#Tasks",
+        "date": "08/2020",
+        "row_number": 1807,
+        "raw": {
+          "O*NET-SOC Code": "13-1199.05",
+          "Title": "Sustainability Specialists",
+          "Task ID": "15979",
+          "Task": "Assess or propose sustainability initiatives, considering factors such as cost effectiveness, technical feasibility, and acceptance.",
+          "Task Type": "Core",
+          "Incumbents Responding": "23",
+          "Date": "08/2020",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:13-1199.05:15973",
+        "kind": "task",
+        "career_code": "13-1199.05",
+        "task_id": "15973",
+        "text": "Provide technical or administrative support for sustainability programs or issues.",
+        "url": "https://www.onetonline.org/link/details/13-1199.05#Tasks",
+        "date": "08/2020",
+        "row_number": 1808,
+        "raw": {
+          "O*NET-SOC Code": "13-1199.05",
+          "Title": "Sustainability Specialists",
+          "Task ID": "15973",
+          "Task": "Provide technical or administrative support for sustainability programs or issues.",
+          "Task Type": "Core",
+          "Incumbents Responding": "23",
+          "Date": "08/2020",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:13-1199.05:15968",
+        "kind": "task",
+        "career_code": "13-1199.05",
+        "task_id": "15968",
+        "text": "Review and revise sustainability proposals or policies.",
+        "url": "https://www.onetonline.org/link/details/13-1199.05#Tasks",
+        "date": "08/2020",
+        "row_number": 1809,
+        "raw": {
+          "O*NET-SOC Code": "13-1199.05",
+          "Title": "Sustainability Specialists",
+          "Task ID": "15968",
+          "Task": "Review and revise sustainability proposals or policies.",
+          "Task Type": "Core",
+          "Incumbents Responding": "23",
+          "Date": "08/2020",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:13-1199.05:15976",
+        "kind": "task",
+        "career_code": "13-1199.05",
+        "task_id": "15976",
+        "text": "Develop reports or presentations to communicate the effectiveness of sustainability initiatives.",
+        "url": "https://www.onetonline.org/link/details/13-1199.05#Tasks",
+        "date": "08/2020",
+        "row_number": 1810,
+        "raw": {
+          "O*NET-SOC Code": "13-1199.05",
+          "Title": "Sustainability Specialists",
+          "Task ID": "15976",
+          "Task": "Develop reports or presentations to communicate the effectiveness of sustainability initiatives.",
+          "Task Type": "Core",
+          "Incumbents Responding": "23",
+          "Date": "08/2020",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:13-1199.05:15975",
+        "kind": "task",
+        "career_code": "13-1199.05",
+        "task_id": "15975",
+        "text": "Create or maintain plans or other documents related to sustainability projects.",
+        "url": "https://www.onetonline.org/link/details/13-1199.05#Tasks",
+        "date": "08/2020",
+        "row_number": 1811,
+        "raw": {
+          "O*NET-SOC Code": "13-1199.05",
+          "Title": "Sustainability Specialists",
+          "Task ID": "15975",
+          "Task": "Create or maintain plans or other documents related to sustainability projects.",
+          "Task Type": "Core",
+          "Incumbents Responding": "23",
+          "Date": "08/2020",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:13-1199.05:15978",
+        "kind": "task",
+        "career_code": "13-1199.05",
+        "task_id": "15978",
+        "text": "Collect information about waste stream management or green building practices to inform decision makers.",
+        "url": "https://www.onetonline.org/link/details/13-1199.05#Tasks",
+        "date": "08/2020",
+        "row_number": 1812,
+        "raw": {
+          "O*NET-SOC Code": "13-1199.05",
+          "Title": "Sustainability Specialists",
+          "Task ID": "15978",
+          "Task": "Collect information about waste stream management or green building practices to inform decision makers.",
+          "Task Type": "Core",
+          "Incumbents Responding": "23",
+          "Date": "08/2020",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:13-1199.05:15969",
+        "kind": "task",
+        "career_code": "13-1199.05",
+        "task_id": "15969",
+        "text": "Research or review regulatory, technical, or market issues related to sustainability.",
+        "url": "https://www.onetonline.org/link/details/13-1199.05#Tasks",
+        "date": "08/2020",
+        "row_number": 1813,
+        "raw": {
+          "O*NET-SOC Code": "13-1199.05",
+          "Title": "Sustainability Specialists",
+          "Task ID": "15969",
+          "Task": "Research or review regulatory, technical, or market issues related to sustainability.",
+          "Task Type": "Core",
+          "Incumbents Responding": "23",
+          "Date": "08/2020",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:13-1199.05:15970",
+        "kind": "task",
+        "career_code": "13-1199.05",
+        "task_id": "15970",
+        "text": "Identify or investigate violations of natural resources, waste management, recycling, or other environmental policies.",
+        "url": "https://www.onetonline.org/link/details/13-1199.05#Tasks",
+        "date": "08/2020",
+        "row_number": 1814,
+        "raw": {
+          "O*NET-SOC Code": "13-1199.05",
+          "Title": "Sustainability Specialists",
+          "Task ID": "15970",
+          "Task": "Identify or investigate violations of natural resources, waste management, recycling, or other environmental policies.",
+          "Task Type": "Core",
+          "Incumbents Responding": "23",
+          "Date": "08/2020",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:13-1199.05:15971",
+        "kind": "task",
+        "career_code": "13-1199.05",
+        "task_id": "15971",
+        "text": "Identify or create new sustainability indicators.",
+        "url": "https://www.onetonline.org/link/details/13-1199.05#Tasks",
+        "date": "08/2020",
+        "row_number": 1815,
+        "raw": {
+          "O*NET-SOC Code": "13-1199.05",
+          "Title": "Sustainability Specialists",
+          "Task ID": "15971",
+          "Task": "Identify or create new sustainability indicators.",
+          "Task Type": "Core",
+          "Incumbents Responding": "23",
+          "Date": "08/2020",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:13-1199.05:15977",
+        "kind": "task",
+        "career_code": "13-1199.05",
+        "task_id": "15977",
+        "text": "Create marketing or outreach media, such as brochures or Web sites, to communicate sustainability issues, procedures, or objectives.",
+        "url": "https://www.onetonline.org/link/details/13-1199.05#Tasks",
+        "date": "08/2020",
+        "row_number": 1816,
+        "raw": {
+          "O*NET-SOC Code": "13-1199.05",
+          "Title": "Sustainability Specialists",
+          "Task ID": "15977",
+          "Task": "Create marketing or outreach media, such as brochures or Web sites, to communicate sustainability issues, procedures, or objectives.",
+          "Task Type": "Core",
+          "Incumbents Responding": "23",
+          "Date": "08/2020",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:13-1199.05:15974",
+        "kind": "task",
+        "career_code": "13-1199.05",
+        "task_id": "15974",
+        "text": "Identify or procure needed resources to implement sustainability programs or projects.",
+        "url": "https://www.onetonline.org/link/details/13-1199.05#Tasks",
+        "date": "08/2020",
+        "row_number": 1817,
+        "raw": {
+          "O*NET-SOC Code": "13-1199.05",
+          "Title": "Sustainability Specialists",
+          "Task ID": "15974",
+          "Task": "Identify or procure needed resources to implement sustainability programs or projects.",
+          "Task Type": "Core",
+          "Incumbents Responding": "23",
+          "Date": "08/2020",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:13-1199.05:15972",
+        "kind": "task",
+        "career_code": "13-1199.05",
+        "task_id": "15972",
+        "text": "Write grant applications, rebate applications, or project proposals to secure funding for sustainability projects.",
+        "url": "https://www.onetonline.org/link/details/13-1199.05#Tasks",
+        "date": "08/2020",
+        "row_number": 1818,
+        "raw": {
+          "O*NET-SOC Code": "13-1199.05",
+          "Title": "Sustainability Specialists",
+          "Task ID": "15972",
+          "Task": "Write grant applications, rebate applications, or project proposals to secure funding for sustainability projects.",
+          "Task Type": "Core",
+          "Incumbents Responding": "23",
+          "Date": "08/2020",
+          "Domain Source": "Occupational Expert"
+        }
+      }
+    ],
+    "19-1029.01": [
+      {
+        "id": "onet-task:19-1029.01:16794",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16794",
+        "text": "Consult with researchers to analyze problems, recommend technology-based solutions, or determine computational strategies.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4311,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16794",
+          "Task": "Consult with researchers to analyze problems, recommend technology-based solutions, or determine computational strategies.",
+          "Task Type": "Core",
+          "Incumbents Responding": "40",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16781",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16781",
+        "text": "Provide statistical and computational tools for biologically based activities, such as genetic analysis, measurement of gene expression, or gene function determination.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4312,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16781",
+          "Task": "Provide statistical and computational tools for biologically based activities, such as genetic analysis, measurement of gene expression, or gene function determination.",
+          "Task Type": "Core",
+          "Incumbents Responding": "40",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16795",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16795",
+        "text": "Analyze large molecular datasets, such as raw microarray data, genomic sequence data, or proteomics data, for clinical or basic research purposes.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4313,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16795",
+          "Task": "Analyze large molecular datasets, such as raw microarray data, genomic sequence data, or proteomics data, for clinical or basic research purposes.",
+          "Task Type": "Core",
+          "Incumbents Responding": "39",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16790",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16790",
+        "text": "Create novel computational approaches and analytical tools as required by research goals.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4314,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16790",
+          "Task": "Create novel computational approaches and analytical tools as required by research goals.",
+          "Task Type": "Core",
+          "Incumbents Responding": "40",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16791",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16791",
+        "text": "Compile data for use in activities, such as gene expression profiling, genome annotation, or structural bioinformatics.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4315,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16791",
+          "Task": "Compile data for use in activities, such as gene expression profiling, genome annotation, or structural bioinformatics.",
+          "Task Type": "Core",
+          "Incumbents Responding": "40",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16792",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16792",
+        "text": "Communicate research results through conference presentations, scientific publications, or project reports.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4316,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16792",
+          "Task": "Communicate research results through conference presentations, scientific publications, or project reports.",
+          "Task Type": "Core",
+          "Incumbents Responding": "40",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16780",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16780",
+        "text": "Test new and updated bioinformatics tools and software.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4317,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16780",
+          "Task": "Test new and updated bioinformatics tools and software.",
+          "Task Type": "Core",
+          "Incumbents Responding": "40",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16789",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16789",
+        "text": "Design and apply bioinformatics algorithms including unsupervised and supervised machine learning, dynamic programming, or graphic algorithms.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4318,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16789",
+          "Task": "Design and apply bioinformatics algorithms including unsupervised and supervised machine learning, dynamic programming, or graphic algorithms.",
+          "Task Type": "Core",
+          "Incumbents Responding": "40",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16786",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16786",
+        "text": "Develop new software applications or customize existing applications to meet specific scientific project needs.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4319,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16786",
+          "Task": "Develop new software applications or customize existing applications to meet specific scientific project needs.",
+          "Task Type": "Core",
+          "Incumbents Responding": "39",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16793",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16793",
+        "text": "Manipulate publicly accessible, commercial, or proprietary genomic, proteomic, or post-genomic databases.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4320,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16793",
+          "Task": "Manipulate publicly accessible, commercial, or proprietary genomic, proteomic, or post-genomic databases.",
+          "Task Type": "Core",
+          "Incumbents Responding": "40",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16787",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16787",
+        "text": "Develop data models and databases.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4321,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16787",
+          "Task": "Develop data models and databases.",
+          "Task Type": "Core",
+          "Incumbents Responding": "39",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16777",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16777",
+        "text": "Keep abreast of new biochemistries, instrumentation, or software by reading scientific literature and attending professional conferences.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4322,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16777",
+          "Task": "Keep abreast of new biochemistries, instrumentation, or software by reading scientific literature and attending professional conferences.",
+          "Task Type": "Core",
+          "Incumbents Responding": "40",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16785",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16785",
+        "text": "Direct the work of technicians and information technology staff applying bioinformatics tools or applications in areas such as proteomics, transcriptomics, metabolomics, or clinical bioinformatics.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4323,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16785",
+          "Task": "Direct the work of technicians and information technology staff applying bioinformatics tools or applications in areas such as proteomics, transcriptomics, metabolomics, or clinical bioinformatics.",
+          "Task Type": "Core",
+          "Incumbents Responding": "40",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16783",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16783",
+        "text": "Instruct others in the selection and use of bioinformatics tools.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4324,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16783",
+          "Task": "Instruct others in the selection and use of bioinformatics tools.",
+          "Task Type": "Core",
+          "Incumbents Responding": "40",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16784",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16784",
+        "text": "Improve user interfaces to bioinformatics software and databases.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4325,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16784",
+          "Task": "Improve user interfaces to bioinformatics software and databases.",
+          "Task Type": "Core",
+          "Incumbents Responding": "40",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16776",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16776",
+        "text": "Recommend new systems and processes to improve operations.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4326,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16776",
+          "Task": "Recommend new systems and processes to improve operations.",
+          "Task Type": "Core",
+          "Incumbents Responding": "39",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16782",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16782",
+        "text": "Prepare summary statistics of information regarding human genomes.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4327,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16782",
+          "Task": "Prepare summary statistics of information regarding human genomes.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "40",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16778",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16778",
+        "text": "Confer with departments, such as marketing, business development, or operations, to coordinate product development or improvement.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4328,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16778",
+          "Task": "Confer with departments, such as marketing, business development, or operations, to coordinate product development or improvement.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "40",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16779",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16779",
+        "text": "Collaborate with software developers in the development and modification of commercial bioinformatics software.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4329,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16779",
+          "Task": "Collaborate with software developers in the development and modification of commercial bioinformatics software.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "40",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:19-1029.01:16788",
+        "kind": "task",
+        "career_code": "19-1029.01",
+        "task_id": "16788",
+        "text": "Create or modify web-based bioinformatics tools.",
+        "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+        "date": "08/2026",
+        "row_number": 4330,
+        "raw": {
+          "O*NET-SOC Code": "19-1029.01",
+          "Title": "Bioinformatics Scientists",
+          "Task ID": "16788",
+          "Task": "Create or modify web-based bioinformatics tools.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "39",
+          "Date": "08/2026",
+          "Domain Source": "Incumbent"
+        }
+      }
+    ],
+    "17-2199.08": [
+      {
+        "id": "onet-task:17-2199.08:16512",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16512",
+        "text": "Review or approve designs, calculations, or cost estimates.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3747,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16512",
+          "Task": "Review or approve designs, calculations, or cost estimates.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16517",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16517",
+        "text": "Process or interpret signals or sensor data.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3748,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16517",
+          "Task": "Process or interpret signals or sensor data.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16521",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16521",
+        "text": "Debug robotics programs.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3749,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16521",
+          "Task": "Debug robotics programs.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:21057",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "21057",
+        "text": "Build, configure, or test robots or robotic applications.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3750,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "21057",
+          "Task": "Build, configure, or test robots or robotic applications.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16516",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16516",
+        "text": "Create back-ups of robot programs or parameters.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3751,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16516",
+          "Task": "Create back-ups of robot programs or parameters.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16511",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16511",
+        "text": "Provide technical support for robotic systems.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3752,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16511",
+          "Task": "Provide technical support for robotic systems.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16522",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16522",
+        "text": "Design end-of-arm tooling.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3753,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16522",
+          "Task": "Design end-of-arm tooling.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16530",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16530",
+        "text": "Design robotic systems, such as automatic vehicle control, autonomous vehicles, advanced displays, advanced sensing, robotic platforms, computer vision, or telematics systems.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3754,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16530",
+          "Task": "Design robotic systems, such as automatic vehicle control, autonomous vehicles, advanced displays, advanced sensing, robotic platforms, computer vision, or telematics systems.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16509",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16509",
+        "text": "Supervise technologists, technicians, or other engineers.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3755,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16509",
+          "Task": "Supervise technologists, technicians, or other engineers.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16528",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16528",
+        "text": "Design software to control robotic systems for applications, such as military defense or manufacturing.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3756,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16528",
+          "Task": "Design software to control robotic systems for applications, such as military defense or manufacturing.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16523",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16523",
+        "text": "Conduct research on robotic technology to create new robotic systems or system capabilities.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3757,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16523",
+          "Task": "Conduct research on robotic technology to create new robotic systems or system capabilities.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16519",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16519",
+        "text": "Investigate mechanical failures or unexpected maintenance problems.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3758,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16519",
+          "Task": "Investigate mechanical failures or unexpected maintenance problems.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16510",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16510",
+        "text": "Integrate robotics with peripherals, such as welders, controllers, or other equipment.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3759,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16510",
+          "Task": "Integrate robotics with peripherals, such as welders, controllers, or other equipment.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:21058",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "21058",
+        "text": "Evaluate robotic systems or prototypes.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3760,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "21058",
+          "Task": "Evaluate robotic systems or prototypes.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16520",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16520",
+        "text": "Install, calibrate, operate, or maintain robots.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3761,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16520",
+          "Task": "Install, calibrate, operate, or maintain robots.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16525",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16525",
+        "text": "Conduct research into the feasibility, design, operation, or performance of robotic mechanisms, components, or systems, such as planetary rovers, multiple mobile robots, reconfigurable robots, or man-machine interactions.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3762,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16525",
+          "Task": "Conduct research into the feasibility, design, operation, or performance of robotic mechanisms, components, or systems, such as planetary rovers, multiple mobile robots, reconfigurable robots, or man-machine interactions.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16514",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16514",
+        "text": "Document robotic application development, maintenance, or changes.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3763,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16514",
+          "Task": "Document robotic application development, maintenance, or changes.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16527",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16527",
+        "text": "Design automated robotic systems to increase production volume or precision in high-throughput operations, such as automated ribonucleic acid (RNA) analysis or sorting, moving, or stacking production materials.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3764,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16527",
+          "Task": "Design automated robotic systems to increase production volume or precision in high-throughput operations, such as automated ribonucleic acid (RNA) analysis or sorting, moving, or stacking production materials.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16515",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16515",
+        "text": "Write algorithms or programming code for ad hoc robotic applications.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3765,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16515",
+          "Task": "Write algorithms or programming code for ad hoc robotic applications.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16513",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16513",
+        "text": "Make system device lists or event timing charts.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3766,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16513",
+          "Task": "Make system device lists or event timing charts.",
+          "Task Type": "Core",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:19667",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "19667",
+        "text": "Design or program robotics systems for environmental clean-up applications to minimize human exposure to toxic or hazardous materials or to improve the quality or speed of clean-up operations.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3767,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "19667",
+          "Task": "Design or program robotics systems for environmental clean-up applications to minimize human exposure to toxic or hazardous materials or to improve the quality or speed of clean-up operations.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16518",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16518",
+        "text": "Plan mobile robot paths and teach path plans to robots.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3768,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16518",
+          "Task": "Plan mobile robot paths and teach path plans to robots.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:19668",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "19668",
+        "text": "Design robotics applications for manufacturers of green products, such as wind turbines or solar panels, to increase production time, eliminate waste, or reduce costs.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3769,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "19668",
+          "Task": "Design robotics applications for manufacturers of green products, such as wind turbines or solar panels, to increase production time, eliminate waste, or reduce costs.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      },
+      {
+        "id": "onet-task:17-2199.08:16524",
+        "kind": "task",
+        "career_code": "17-2199.08",
+        "task_id": "16524",
+        "text": "Automate assays on laboratory robotics.",
+        "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+        "date": "08/2018",
+        "row_number": 3770,
+        "raw": {
+          "O*NET-SOC Code": "17-2199.08",
+          "Title": "Robotics Engineers",
+          "Task ID": "16524",
+          "Task": "Automate assays on laboratory robotics.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "30",
+          "Date": "08/2018",
+          "Domain Source": "Occupational Expert"
+        }
+      }
+    ],
+    "15-1252.00": [
+      {
+        "id": "onet-task:15-1252.00:21662",
+        "kind": "task",
+        "career_code": "15-1252.00",
+        "task_id": "21662",
+        "text": "Analyze user needs and software requirements to determine feasibility of design within time and cost constraints.",
+        "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+        "date": "08/2025",
+        "row_number": 2467,
+        "raw": {
+          "O*NET-SOC Code": "15-1252.00",
+          "Title": "Software Developers",
+          "Task ID": "21662",
+          "Task": "Analyze user needs and software requirements to determine feasibility of design within time and cost constraints.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2025",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1252.00:21669",
+        "kind": "task",
+        "career_code": "15-1252.00",
+        "task_id": "21669",
+        "text": "Develop or direct software system testing or validation procedures, programming, or documentation.",
+        "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+        "date": "08/2025",
+        "row_number": 2468,
+        "raw": {
+          "O*NET-SOC Code": "15-1252.00",
+          "Title": "Software Developers",
+          "Task ID": "21669",
+          "Task": "Develop or direct software system testing or validation procedures, programming, or documentation.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2025",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1252.00:21664",
+        "kind": "task",
+        "career_code": "15-1252.00",
+        "task_id": "21664",
+        "text": "Confer with systems analysts, engineers, programmers and others to design systems and to obtain information on project limitations and capabilities, performance requirements and interfaces.",
+        "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+        "date": "08/2025",
+        "row_number": 2469,
+        "raw": {
+          "O*NET-SOC Code": "15-1252.00",
+          "Title": "Software Developers",
+          "Task ID": "21664",
+          "Task": "Confer with systems analysts, engineers, programmers and others to design systems and to obtain information on project limitations and capabilities, performance requirements and interfaces.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2025",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1252.00:21670",
+        "kind": "task",
+        "career_code": "15-1252.00",
+        "task_id": "21670",
+        "text": "Modify existing software to correct errors, adapt it to new hardware, or upgrade interfaces and improve performance.",
+        "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+        "date": "08/2025",
+        "row_number": 2470,
+        "raw": {
+          "O*NET-SOC Code": "15-1252.00",
+          "Title": "Software Developers",
+          "Task ID": "21670",
+          "Task": "Modify existing software to correct errors, adapt it to new hardware, or upgrade interfaces and improve performance.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2025",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1252.00:21673",
+        "kind": "task",
+        "career_code": "15-1252.00",
+        "task_id": "21673",
+        "text": "Prepare reports or correspondence concerning project specifications, activities, or status.",
+        "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+        "date": "08/2025",
+        "row_number": 2471,
+        "raw": {
+          "O*NET-SOC Code": "15-1252.00",
+          "Title": "Software Developers",
+          "Task ID": "21673",
+          "Task": "Prepare reports or correspondence concerning project specifications, activities, or status.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2025",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1252.00:21661",
+        "kind": "task",
+        "career_code": "15-1252.00",
+        "task_id": "21661",
+        "text": "Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.",
+        "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+        "date": "08/2025",
+        "row_number": 2472,
+        "raw": {
+          "O*NET-SOC Code": "15-1252.00",
+          "Title": "Software Developers",
+          "Task ID": "21661",
+          "Task": "Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2025",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1252.00:21676",
+        "kind": "task",
+        "career_code": "15-1252.00",
+        "task_id": "21676",
+        "text": "Store, retrieve, and manipulate data for analysis of system capabilities and requirements.",
+        "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+        "date": "08/2025",
+        "row_number": 2473,
+        "raw": {
+          "O*NET-SOC Code": "15-1252.00",
+          "Title": "Software Developers",
+          "Task ID": "21676",
+          "Task": "Store, retrieve, and manipulate data for analysis of system capabilities and requirements.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2025",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1252.00:21667",
+        "kind": "task",
+        "career_code": "15-1252.00",
+        "task_id": "21667",
+        "text": "Design, develop and modify software systems, using scientific analysis and mathematical models to predict and measure outcomes and consequences of design.",
+        "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+        "date": "08/2025",
+        "row_number": 2474,
+        "raw": {
+          "O*NET-SOC Code": "15-1252.00",
+          "Title": "Software Developers",
+          "Task ID": "21667",
+          "Task": "Design, develop and modify software systems, using scientific analysis and mathematical models to predict and measure outcomes and consequences of design.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2025",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1252.00:21668",
+        "kind": "task",
+        "career_code": "15-1252.00",
+        "task_id": "21668",
+        "text": "Determine system performance standards.",
+        "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+        "date": "08/2025",
+        "row_number": 2475,
+        "raw": {
+          "O*NET-SOC Code": "15-1252.00",
+          "Title": "Software Developers",
+          "Task ID": "21668",
+          "Task": "Determine system performance standards.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2025",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1252.00:21665",
+        "kind": "task",
+        "career_code": "15-1252.00",
+        "task_id": "21665",
+        "text": "Consult with customers or other departments on project status, proposals, or technical issues, such as software system design or maintenance.",
+        "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+        "date": "08/2025",
+        "row_number": 2476,
+        "raw": {
+          "O*NET-SOC Code": "15-1252.00",
+          "Title": "Software Developers",
+          "Task ID": "21665",
+          "Task": "Consult with customers or other departments on project status, proposals, or technical issues, such as software system design or maintenance.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2025",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1252.00:21663",
+        "kind": "task",
+        "career_code": "15-1252.00",
+        "task_id": "21663",
+        "text": "Confer with data processing or project managers to obtain information on limitations or capabilities for data processing projects.",
+        "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+        "date": "08/2025",
+        "row_number": 2477,
+        "raw": {
+          "O*NET-SOC Code": "15-1252.00",
+          "Title": "Software Developers",
+          "Task ID": "21663",
+          "Task": "Confer with data processing or project managers to obtain information on limitations or capabilities for data processing projects.",
+          "Task Type": "Core",
+          "Incumbents Responding": "72",
+          "Date": "08/2025",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1252.00:21671",
+        "kind": "task",
+        "career_code": "15-1252.00",
+        "task_id": "21671",
+        "text": "Monitor functioning of equipment to ensure system operates in conformance with specifications.",
+        "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+        "date": "08/2025",
+        "row_number": 2478,
+        "raw": {
+          "O*NET-SOC Code": "15-1252.00",
+          "Title": "Software Developers",
+          "Task ID": "21671",
+          "Task": "Monitor functioning of equipment to ensure system operates in conformance with specifications.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "72",
+          "Date": "08/2025",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1252.00:21666",
+        "kind": "task",
+        "career_code": "15-1252.00",
+        "task_id": "21666",
+        "text": "Coordinate installation of software system.",
+        "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+        "date": "08/2025",
+        "row_number": 2479,
+        "raw": {
+          "O*NET-SOC Code": "15-1252.00",
+          "Title": "Software Developers",
+          "Task ID": "21666",
+          "Task": "Coordinate installation of software system.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "72",
+          "Date": "08/2025",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1252.00:21678",
+        "kind": "task",
+        "career_code": "15-1252.00",
+        "task_id": "21678",
+        "text": "Supervise the work of programmers, technologists and technicians and other engineering and scientific personnel.",
+        "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+        "date": "08/2025",
+        "row_number": 2480,
+        "raw": {
+          "O*NET-SOC Code": "15-1252.00",
+          "Title": "Software Developers",
+          "Task ID": "21678",
+          "Task": "Supervise the work of programmers, technologists and technicians and other engineering and scientific personnel.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "71",
+          "Date": "08/2025",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1252.00:21677",
+        "kind": "task",
+        "career_code": "15-1252.00",
+        "task_id": "21677",
+        "text": "Supervise and assign work to programmers, designers, technologists, technicians, or other engineering or scientific personnel.",
+        "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+        "date": "08/2025",
+        "row_number": 2481,
+        "raw": {
+          "O*NET-SOC Code": "15-1252.00",
+          "Title": "Software Developers",
+          "Task ID": "21677",
+          "Task": "Supervise and assign work to programmers, designers, technologists, technicians, or other engineering or scientific personnel.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "72",
+          "Date": "08/2025",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1252.00:21672",
+        "kind": "task",
+        "career_code": "15-1252.00",
+        "task_id": "21672",
+        "text": "Obtain and evaluate information on factors such as reporting formats required, costs, or security needs to determine hardware configuration.",
+        "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+        "date": "08/2025",
+        "row_number": 2482,
+        "raw": {
+          "O*NET-SOC Code": "15-1252.00",
+          "Title": "Software Developers",
+          "Task ID": "21672",
+          "Task": "Obtain and evaluate information on factors such as reporting formats required, costs, or security needs to determine hardware configuration.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "72",
+          "Date": "08/2025",
+          "Domain Source": "Incumbent"
+        }
+      },
+      {
+        "id": "onet-task:15-1252.00:21679",
+        "kind": "task",
+        "career_code": "15-1252.00",
+        "task_id": "21679",
+        "text": "Train users to use new or modified equipment.",
+        "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+        "date": "08/2025",
+        "row_number": 2483,
+        "raw": {
+          "O*NET-SOC Code": "15-1252.00",
+          "Title": "Software Developers",
+          "Task ID": "21679",
+          "Task": "Train users to use new or modified equipment.",
+          "Task Type": "Supplemental",
+          "Incumbents Responding": "72",
+          "Date": "08/2025",
+          "Domain Source": "Incumbent"
+        }
+      }
+    ]
+  },
+  "elements": {
+    "skill_01": {
+      "id": "onet-element:2.A.2.a",
+      "kind": "element",
+      "element_id": "2.A.2.a",
+      "text": "Using logic and reasoning to identify the strengths and weaknesses of alternative solutions, conclusions, or approaches to problems.",
+      "name": "Critical Thinking",
+      "url": "https://www.onetcenter.org/content.html"
+    },
+    "skill_02": {
+      "id": "onet-element:2.B.2.i",
+      "kind": "element",
+      "element_id": "2.B.2.i",
+      "text": "Identifying complex problems and reviewing related information to develop and evaluate options and implement solutions.",
+      "name": "Complex Problem Solving",
+      "url": "https://www.onetcenter.org/content.html"
+    },
+    "skill_03": {
+      "id": "onet-element:2.A.1.e",
+      "kind": "element",
+      "element_id": "2.A.1.e",
+      "text": "Using mathematics to solve problems.",
+      "name": "Mathematics",
+      "url": "https://www.onetcenter.org/content.html"
+    },
+    "skill_04": {
+      "id": "onet-element:2.B.3.e",
+      "kind": "element",
+      "element_id": "2.B.3.e",
+      "text": "Writing computer programs for various purposes.",
+      "name": "Programming",
+      "url": "https://www.onetcenter.org/content.html"
+    },
+    "skill_05": {
+      "id": "onet-element:2.A.1.f",
+      "kind": "element",
+      "element_id": "2.A.1.f",
+      "text": "Using scientific rules and methods to solve problems.",
+      "name": "Science",
+      "url": "https://www.onetcenter.org/content.html"
+    },
+    "skill_06": {
+      "id": "onet-element:2.B.4.g",
+      "kind": "element",
+      "element_id": "2.B.4.g",
+      "text": "Determining how a system should work and how changes in conditions, operations, and the environment will affect outcomes.",
+      "name": "Systems Analysis",
+      "url": "https://www.onetcenter.org/content.html"
+    },
+    "skill_07": {
+      "id": "onet-element:2.B.3.a",
+      "kind": "element",
+      "element_id": "2.B.3.a",
+      "text": "Analyzing needs and product requirements to create a design.",
+      "name": "Operations Analysis",
+      "url": "https://www.onetcenter.org/content.html"
+    },
+    "skill_08": {
+      "id": "onet-element:2.B.3.b",
+      "kind": "element",
+      "element_id": "2.B.3.b",
+      "text": "Generating or adapting equipment and technology to serve user needs.",
+      "name": "Technology Design",
+      "url": "https://www.onetcenter.org/content.html"
+    },
+    "skill_09": {
+      "id": "onet-element:2.B.4.e",
+      "kind": "element",
+      "element_id": "2.B.4.e",
+      "text": "Considering the relative costs and benefits of potential actions to choose the most appropriate one.",
+      "name": "Judgment and Decision Making",
+      "url": "https://www.onetcenter.org/content.html"
+    },
+    "skill_10": {
+      "id": "onet-element:2.A.1.c",
+      "kind": "element",
+      "element_id": "2.A.1.c",
+      "text": "Communicating effectively in writing as appropriate for the needs of the audience.",
+      "name": "Writing",
+      "url": "https://www.onetcenter.org/content.html"
+    },
+    "skill_11": {
+      "id": "onet-element:2.A.1.d",
+      "kind": "element",
+      "element_id": "2.A.1.d",
+      "text": "Talking to others to convey information effectively.",
+      "name": "Speaking",
+      "url": "https://www.onetcenter.org/content.html"
+    },
+    "knowledge_01": {
+      "id": "onet-element:2.C.3.a",
+      "kind": "element",
+      "element_id": "2.C.3.a",
+      "text": "Knowledge of circuit boards, processors, chips, electronic equipment, and computer hardware and software, including applications and programming.",
+      "name": "Computers and Electronics",
+      "url": "https://www.onetcenter.org/content.html"
+    },
+    "knowledge_02": {
+      "id": "onet-element:2.C.4.a",
+      "kind": "element",
+      "element_id": "2.C.4.a",
+      "text": "Knowledge of arithmetic, algebra, geometry, calculus, statistics, and their applications.",
+      "name": "Mathematics",
+      "url": "https://www.onetcenter.org/content.html"
+    },
+    "knowledge_03": {
+      "id": "onet-element:2.C.3.b",
+      "kind": "element",
+      "element_id": "2.C.3.b",
+      "text": "Knowledge of the practical application of engineering science and technology. This includes applying principles, techniques, procedures, and equipment to the design and production of various goods and services.",
+      "name": "Engineering and Technology",
+      "url": "https://www.onetcenter.org/content.html"
+    },
+    "knowledge_04": {
+      "id": "onet-element:2.C.4.b",
+      "kind": "element",
+      "element_id": "2.C.4.b",
+      "text": "Knowledge and prediction of physical principles, laws, their interrelationships, and applications to understanding fluid, material, and atmospheric dynamics, and mechanical, electrical, atomic and sub-atomic structures and processes.",
+      "name": "Physics",
+      "url": "https://www.onetcenter.org/content.html"
+    },
+    "knowledge_05": {
+      "id": "onet-element:2.C.4.c",
+      "kind": "element",
+      "element_id": "2.C.4.c",
+      "text": "Knowledge of the chemical composition, structure, and properties of substances and of the chemical processes and transformations that they undergo. This includes uses of chemicals and their interactions, danger signs, production techniques, and disposal methods.",
+      "name": "Chemistry",
+      "url": "https://www.onetcenter.org/content.html"
+    },
+    "knowledge_06": {
+      "id": "onet-element:2.C.4.d",
+      "kind": "element",
+      "element_id": "2.C.4.d",
+      "text": "Knowledge of plant and animal organisms, their tissues, cells, functions, interdependencies, and interactions with each other and the environment.",
+      "name": "Biology",
+      "url": "https://www.onetcenter.org/content.html"
+    },
+    "knowledge_07": {
+      "id": "onet-element:2.C.1.a",
+      "kind": "element",
+      "element_id": "2.C.1.a",
+      "text": "Knowledge of business and management principles involved in strategic planning, resource allocation, human resources modeling, leadership technique, production methods, and coordination of people and resources.",
+      "name": "Administration and Management",
+      "url": "https://www.onetcenter.org/content.html"
+    }
+  },
+  "targets": {
+    "6.3": {
+      "id": "un-target:6.3",
+      "kind": "target",
+      "target_id": "6.3",
+      "goal": "6",
+      "text": "By 2030, improve water quality by reducing pollution, eliminating dumping and minimizing release of hazardous chemicals and materials, halving the proportion of untreated wastewater and substantially increasing recycling and safe reuse globally",
+      "url": "https://sdgs.un.org/goals/goal6",
+      "checked_on": "2026-10-23"
+    },
+    "7.3": {
+      "id": "un-target:7.3",
+      "kind": "target",
+      "target_id": "7.3",
+      "goal": "7",
+      "text": "By 2030, double the global rate of improvement in energy efficiency",
+      "url": "https://sdgs.un.org/goals/goal7",
+      "checked_on": "2026-10-23"
+    },
+    "9.4": {
+      "id": "un-target:9.4",
+      "kind": "target",
+      "target_id": "9.4",
+      "goal": "9",
+      "text": "By 2030, upgrade infrastructure and retrofit industries to make them sustainable, with increased resource-use efficiency and greater adoption of clean and environmentally sound technologies and industrial processes, with all countries taking action in accordance with their respective capabilities",
+      "url": "https://sdgs.un.org/goals/goal9",
+      "checked_on": "2026-10-23"
+    },
+    "9.5": {
+      "id": "un-target:9.5",
+      "kind": "target",
+      "target_id": "9.5",
+      "goal": "9",
+      "text": "Enhance scientific research, upgrade the technological capabilities of industrial sectors in all countries, in particular developing countries, including, by 2030, encouraging innovation and substantially increasing the number of research and development workers per 1 million people and public and private research and development spending",
+      "url": "https://sdgs.un.org/goals/goal9",
+      "checked_on": "2026-10-23"
+    },
+    "12.2": {
+      "id": "un-target:12.2",
+      "kind": "target",
+      "target_id": "12.2",
+      "goal": "12",
+      "text": "By 2030, achieve the sustainable management and efficient use of natural resources",
+      "url": "https://sdgs.un.org/goals/goal12",
+      "checked_on": "2026-10-23"
+    },
+    "12.5": {
+      "id": "un-target:12.5",
+      "kind": "target",
+      "target_id": "12.5",
+      "goal": "12",
+      "text": "By 2030, substantially reduce waste generation through prevention, reduction, recycling and reuse",
+      "url": "https://sdgs.un.org/goals/goal12",
+      "checked_on": "2026-10-23"
+    },
+    "12.6": {
+      "id": "un-target:12.6",
+      "kind": "target",
+      "target_id": "12.6",
+      "goal": "12",
+      "text": "Encourage companies, especially large and transnational companies, to adopt sustainable practices and to integrate sustainability information into their reporting cycle",
+      "url": "https://sdgs.un.org/goals/goal12",
+      "checked_on": "2026-10-23"
+    }
+  }
+}

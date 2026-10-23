@@ -13,13 +13,13 @@
     "modifications": "FutureShift AI selected occupations and questionnaire elements, normalized ratings and blocked flagged or unavailable values. USDOL/ETA has not approved, endorsed, or tested these modifications."
   },
   "transformations": {
-    "version": "onet31-v1",
+    "version": "onet31-v2",
     "user": "response / 4 (questionnaire only)",
     "importance": "(IM - 1) / 4",
     "required": "LV / 7",
     "riasec": "(OI - 1) / 6",
     "caution": "Different measurement systems: normalization is not validity calibration. U.S. occupational requirements are not Malaysian employment forecasts.",
-    "quality_policy": "Retain all 11 skills and 7 knowledge items. Missing/duplicate/flagged/out-of-range values are null with reasons, not zero; no automatic core-subset exclusions. IM Not Relevant blanks are not supplied (preserved), while LV requires explicit N. No imputation or reweighting."
+    "quality_policy": "Retain all 11 skills and 7 knowledge items. Missing/duplicate/flagged/out-of-range values are null with reasons, not zero; no automatic core-subset exclusions. Optional blank precision flags on Knowledge Occupational Expert rows with N>=10 are preserved as not supplied, not N; explicit suppression still blocks. IM Not Relevant blanks are not supplied (preserved), while LV requires explicit N. No imputation or reweighting."
   },
   "selection": {
     "career_pool_sha256": "a16a1ac28023c8096c6564e5f49773417e0471b3df26fe8ed0a4680c0d923289",
@@ -958,8 +958,8 @@
         "knowledge_01": {
           "element_id": "2.C.3.a",
           "name": "Computers and Electronics",
-          "importance": null,
-          "required": null,
+          "importance": 0.43500000000000005,
+          "required": 0.5528571428571428,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -988,10 +988,8 @@
                 }
               ],
               "normalized_raw": 0.43500000000000005,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.43500000000000005,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -1020,22 +1018,17 @@
                 }
               ],
               "normalized_raw": 0.5528571428571428,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.5528571428571428,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_02": {
           "element_id": "2.C.4.a",
           "name": "Mathematics",
-          "importance": null,
-          "required": null,
+          "importance": 0.42000000000000004,
+          "required": 0.5157142857142857,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -1064,10 +1057,8 @@
                 }
               ],
               "normalized_raw": 0.42000000000000004,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.42000000000000004,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -1096,22 +1087,17 @@
                 }
               ],
               "normalized_raw": 0.5157142857142857,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.5157142857142857,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_03": {
           "element_id": "2.C.3.b",
           "name": "Engineering and Technology",
-          "importance": null,
-          "required": null,
+          "importance": 0.51,
+          "required": 0.5157142857142857,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -1140,10 +1126,8 @@
                 }
               ],
               "normalized_raw": 0.51,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.51,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -1172,22 +1156,17 @@
                 }
               ],
               "normalized_raw": 0.5157142857142857,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.5157142857142857,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_04": {
           "element_id": "2.C.4.b",
           "name": "Physics",
-          "importance": null,
-          "required": null,
+          "importance": 0.2825,
+          "required": 0.36,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -1216,10 +1195,8 @@
                 }
               ],
               "normalized_raw": 0.2825,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.2825,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -1248,22 +1225,17 @@
                 }
               ],
               "normalized_raw": 0.36,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.36,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_05": {
           "element_id": "2.C.4.c",
           "name": "Chemistry",
-          "importance": null,
-          "required": null,
+          "importance": 0.33999999999999997,
+          "required": 0.42857142857142855,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -1292,10 +1264,8 @@
                 }
               ],
               "normalized_raw": 0.33999999999999997,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.33999999999999997,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -1324,22 +1294,17 @@
                 }
               ],
               "normalized_raw": 0.42857142857142855,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.42857142857142855,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_06": {
           "element_id": "2.C.4.d",
           "name": "Biology",
-          "importance": null,
-          "required": null,
+          "importance": 0.32499999999999996,
+          "required": 0.4714285714285714,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -1368,10 +1333,8 @@
                 }
               ],
               "normalized_raw": 0.32499999999999996,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.32499999999999996,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -1400,22 +1363,17 @@
                 }
               ],
               "normalized_raw": 0.4714285714285714,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.4714285714285714,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_07": {
           "element_id": "2.C.1.a",
           "name": "Administration and Management",
-          "importance": null,
-          "required": null,
+          "importance": 0.685,
+          "required": 0.64,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -1444,10 +1402,8 @@
                 }
               ],
               "normalized_raw": 0.685,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.685,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -1476,16 +1432,11 @@
                 }
               ],
               "normalized_raw": 0.64,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.64,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         }
       },
       "riasec": [
@@ -1642,22 +1593,7 @@
           "issues": []
         }
       ],
-      "data_issues": [
-        "knowledge_01 (Computers and Electronics): IM: Recommend Suppress=unknown",
-        "knowledge_01 (Computers and Electronics): LV: Recommend Suppress=unknown",
-        "knowledge_02 (Mathematics): IM: Recommend Suppress=unknown",
-        "knowledge_02 (Mathematics): LV: Recommend Suppress=unknown",
-        "knowledge_03 (Engineering and Technology): IM: Recommend Suppress=unknown",
-        "knowledge_03 (Engineering and Technology): LV: Recommend Suppress=unknown",
-        "knowledge_04 (Physics): IM: Recommend Suppress=unknown",
-        "knowledge_04 (Physics): LV: Recommend Suppress=unknown",
-        "knowledge_05 (Chemistry): IM: Recommend Suppress=unknown",
-        "knowledge_05 (Chemistry): LV: Recommend Suppress=unknown",
-        "knowledge_06 (Biology): IM: Recommend Suppress=unknown",
-        "knowledge_06 (Biology): LV: Recommend Suppress=unknown",
-        "knowledge_07 (Administration and Management): IM: Recommend Suppress=unknown",
-        "knowledge_07 (Administration and Management): LV: Recommend Suppress=unknown"
-      ]
+      "data_issues": []
     },
     {
       "code": "15-1211.00",
@@ -6758,8 +6694,8 @@
         "knowledge_01": {
           "element_id": "2.C.3.a",
           "name": "Computers and Electronics",
-          "importance": null,
-          "required": null,
+          "importance": 0.7749999999999999,
+          "required": 0.7614285714285715,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -6788,10 +6724,8 @@
                 }
               ],
               "normalized_raw": 0.7749999999999999,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.7749999999999999,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -6820,22 +6754,17 @@
                 }
               ],
               "normalized_raw": 0.7614285714285715,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.7614285714285715,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_02": {
           "element_id": "2.C.4.a",
           "name": "Mathematics",
-          "importance": null,
-          "required": null,
+          "importance": 0.9275,
+          "required": 0.9185714285714285,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -6864,10 +6793,8 @@
                 }
               ],
               "normalized_raw": 0.9275,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.9275,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -6896,22 +6823,17 @@
                 }
               ],
               "normalized_raw": 0.9185714285714285,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.9185714285714285,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_03": {
           "element_id": "2.C.3.b",
           "name": "Engineering and Technology",
-          "importance": null,
-          "required": null,
+          "importance": 0.7375,
+          "required": 0.7342857142857142,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -6940,10 +6862,8 @@
                 }
               ],
               "normalized_raw": 0.7375,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.7375,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -6972,22 +6892,17 @@
                 }
               ],
               "normalized_raw": 0.7342857142857142,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.7342857142857142,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_04": {
           "element_id": "2.C.4.b",
           "name": "Physics",
-          "importance": null,
-          "required": null,
+          "importance": 0.2025,
+          "required": 0.2714285714285714,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -7016,10 +6931,8 @@
                 }
               ],
               "normalized_raw": 0.2025,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.2025,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -7048,22 +6961,17 @@
                 }
               ],
               "normalized_raw": 0.2714285714285714,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.2714285714285714,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_05": {
           "element_id": "2.C.4.c",
           "name": "Chemistry",
-          "importance": null,
-          "required": null,
+          "importance": 0.09499999999999997,
+          "required": 0.1285714285714286,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -7092,10 +7000,8 @@
                 }
               ],
               "normalized_raw": 0.09499999999999997,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.09499999999999997,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -7124,21 +7030,16 @@
                 }
               ],
               "normalized_raw": 0.1285714285714286,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.1285714285714286,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_06": {
           "element_id": "2.C.4.d",
           "name": "Biology",
-          "importance": null,
+          "importance": 0.06,
           "required": null,
           "sources": {
             "IM": {
@@ -7168,10 +7069,8 @@
                 }
               ],
               "normalized_raw": 0.06,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.06,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -7202,22 +7101,19 @@
               "normalized_raw": 0.07428571428571429,
               "value": null,
               "issues": [
-                "Recommend Suppress=unknown",
                 "Not Relevant=Y"
               ]
             }
           },
           "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown",
             "LV: Not Relevant=Y"
           ]
         },
         "knowledge_07": {
           "element_id": "2.C.1.a",
           "name": "Administration and Management",
-          "importance": null,
-          "required": null,
+          "importance": 0.4525,
+          "required": 0.5442857142857143,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -7246,10 +7142,8 @@
                 }
               ],
               "normalized_raw": 0.4525,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.4525,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -7278,16 +7172,11 @@
                 }
               ],
               "normalized_raw": 0.5442857142857143,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.5442857142857143,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         }
       },
       "riasec": [
@@ -7445,21 +7334,7 @@
         }
       ],
       "data_issues": [
-        "knowledge_01 (Computers and Electronics): IM: Recommend Suppress=unknown",
-        "knowledge_01 (Computers and Electronics): LV: Recommend Suppress=unknown",
-        "knowledge_02 (Mathematics): IM: Recommend Suppress=unknown",
-        "knowledge_02 (Mathematics): LV: Recommend Suppress=unknown",
-        "knowledge_03 (Engineering and Technology): IM: Recommend Suppress=unknown",
-        "knowledge_03 (Engineering and Technology): LV: Recommend Suppress=unknown",
-        "knowledge_04 (Physics): IM: Recommend Suppress=unknown",
-        "knowledge_04 (Physics): LV: Recommend Suppress=unknown",
-        "knowledge_05 (Chemistry): IM: Recommend Suppress=unknown",
-        "knowledge_05 (Chemistry): LV: Recommend Suppress=unknown",
-        "knowledge_06 (Biology): IM: Recommend Suppress=unknown",
-        "knowledge_06 (Biology): LV: Recommend Suppress=unknown",
-        "knowledge_06 (Biology): LV: Not Relevant=Y",
-        "knowledge_07 (Administration and Management): IM: Recommend Suppress=unknown",
-        "knowledge_07 (Administration and Management): LV: Recommend Suppress=unknown"
+        "knowledge_06 (Biology): LV: Not Relevant=Y"
       ]
     },
     {
@@ -8256,8 +8131,8 @@
         "knowledge_01": {
           "element_id": "2.C.3.a",
           "name": "Computers and Electronics",
-          "importance": null,
-          "required": null,
+          "importance": 0.81,
+          "required": 0.8342857142857143,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -8286,10 +8161,8 @@
                 }
               ],
               "normalized_raw": 0.81,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.81,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -8318,22 +8191,17 @@
                 }
               ],
               "normalized_raw": 0.8342857142857143,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.8342857142857143,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_02": {
           "element_id": "2.C.4.a",
           "name": "Mathematics",
-          "importance": null,
-          "required": null,
+          "importance": 0.8799999999999999,
+          "required": 0.8114285714285714,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -8362,10 +8230,8 @@
                 }
               ],
               "normalized_raw": 0.8799999999999999,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.8799999999999999,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -8394,22 +8260,17 @@
                 }
               ],
               "normalized_raw": 0.8114285714285714,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.8114285714285714,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_03": {
           "element_id": "2.C.3.b",
           "name": "Engineering and Technology",
-          "importance": null,
-          "required": null,
+          "importance": 0.47,
+          "required": 0.5028571428571429,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -8438,10 +8299,8 @@
                 }
               ],
               "normalized_raw": 0.47,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.47,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -8470,22 +8329,17 @@
                 }
               ],
               "normalized_raw": 0.5028571428571429,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.5028571428571429,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_04": {
           "element_id": "2.C.4.b",
           "name": "Physics",
-          "importance": null,
-          "required": null,
+          "importance": 0.21000000000000002,
+          "required": 0.2742857142857143,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -8514,10 +8368,8 @@
                 }
               ],
               "normalized_raw": 0.21000000000000002,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.21000000000000002,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -8546,21 +8398,16 @@
                 }
               ],
               "normalized_raw": 0.2742857142857143,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.2742857142857143,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_05": {
           "element_id": "2.C.4.c",
           "name": "Chemistry",
-          "importance": null,
+          "importance": 0.07,
           "required": null,
           "sources": {
             "IM": {
@@ -8590,10 +8437,8 @@
                 }
               ],
               "normalized_raw": 0.07,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.07,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -8624,21 +8469,18 @@
               "normalized_raw": 0.09142857142857143,
               "value": null,
               "issues": [
-                "Recommend Suppress=unknown",
                 "Not Relevant=Y"
               ]
             }
           },
           "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown",
             "LV: Not Relevant=Y"
           ]
         },
         "knowledge_06": {
           "element_id": "2.C.4.d",
           "name": "Biology",
-          "importance": null,
+          "importance": 0.07,
           "required": null,
           "sources": {
             "IM": {
@@ -8668,10 +8510,8 @@
                 }
               ],
               "normalized_raw": 0.07,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.07,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -8702,22 +8542,19 @@
               "normalized_raw": 0.1142857142857143,
               "value": null,
               "issues": [
-                "Recommend Suppress=unknown",
                 "Not Relevant=Y"
               ]
             }
           },
           "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown",
             "LV: Not Relevant=Y"
           ]
         },
         "knowledge_07": {
           "element_id": "2.C.1.a",
           "name": "Administration and Management",
-          "importance": null,
-          "required": null,
+          "importance": 0.28,
+          "required": 0.4342857142857143,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -8746,10 +8583,8 @@
                 }
               ],
               "normalized_raw": 0.28,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.28,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -8778,16 +8613,11 @@
                 }
               ],
               "normalized_raw": 0.4342857142857143,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.4342857142857143,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         }
       },
       "riasec": [
@@ -8949,22 +8779,8 @@
         "skill_05 (Science): LV: Recommend Suppress=Y",
         "skill_06 (Systems Analysis): LV: Recommend Suppress=Y",
         "skill_07 (Operations Analysis): LV: Not Relevant=Y",
-        "knowledge_01 (Computers and Electronics): IM: Recommend Suppress=unknown",
-        "knowledge_01 (Computers and Electronics): LV: Recommend Suppress=unknown",
-        "knowledge_02 (Mathematics): IM: Recommend Suppress=unknown",
-        "knowledge_02 (Mathematics): LV: Recommend Suppress=unknown",
-        "knowledge_03 (Engineering and Technology): IM: Recommend Suppress=unknown",
-        "knowledge_03 (Engineering and Technology): LV: Recommend Suppress=unknown",
-        "knowledge_04 (Physics): IM: Recommend Suppress=unknown",
-        "knowledge_04 (Physics): LV: Recommend Suppress=unknown",
-        "knowledge_05 (Chemistry): IM: Recommend Suppress=unknown",
-        "knowledge_05 (Chemistry): LV: Recommend Suppress=unknown",
         "knowledge_05 (Chemistry): LV: Not Relevant=Y",
-        "knowledge_06 (Biology): IM: Recommend Suppress=unknown",
-        "knowledge_06 (Biology): LV: Recommend Suppress=unknown",
-        "knowledge_06 (Biology): LV: Not Relevant=Y",
-        "knowledge_07 (Administration and Management): IM: Recommend Suppress=unknown",
-        "knowledge_07 (Administration and Management): LV: Recommend Suppress=unknown"
+        "knowledge_06 (Biology): LV: Not Relevant=Y"
       ]
     },
     {
@@ -9745,8 +9561,8 @@
         "knowledge_01": {
           "element_id": "2.C.3.a",
           "name": "Computers and Electronics",
-          "importance": null,
-          "required": null,
+          "importance": 0.65,
+          "required": 0.6785714285714286,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -9775,10 +9591,8 @@
                 }
               ],
               "normalized_raw": 0.65,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.65,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -9807,22 +9621,17 @@
                 }
               ],
               "normalized_raw": 0.6785714285714286,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.6785714285714286,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_02": {
           "element_id": "2.C.4.a",
           "name": "Mathematics",
-          "importance": null,
-          "required": null,
+          "importance": 0.75,
+          "required": 0.7485714285714286,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -9851,10 +9660,8 @@
                 }
               ],
               "normalized_raw": 0.75,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.75,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -9883,22 +9690,17 @@
                 }
               ],
               "normalized_raw": 0.7485714285714286,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.7485714285714286,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_03": {
           "element_id": "2.C.3.b",
           "name": "Engineering and Technology",
-          "importance": null,
-          "required": null,
+          "importance": 0.9875,
+          "required": 0.8914285714285715,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -9927,10 +9729,8 @@
                 }
               ],
               "normalized_raw": 0.9875,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.9875,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -9959,22 +9759,17 @@
                 }
               ],
               "normalized_raw": 0.8914285714285715,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.8914285714285715,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_04": {
           "element_id": "2.C.4.b",
           "name": "Physics",
-          "importance": null,
-          "required": null,
+          "importance": 0.69,
+          "required": 0.7214285714285714,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -10003,10 +9798,8 @@
                 }
               ],
               "normalized_raw": 0.69,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.69,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -10035,22 +9828,17 @@
                 }
               ],
               "normalized_raw": 0.7214285714285714,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.7214285714285714,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_05": {
           "element_id": "2.C.4.c",
           "name": "Chemistry",
-          "importance": null,
-          "required": null,
+          "importance": 0.7625,
+          "required": 0.7142857142857143,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -10079,10 +9867,8 @@
                 }
               ],
               "normalized_raw": 0.7625,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.7625,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -10111,22 +9897,17 @@
                 }
               ],
               "normalized_raw": 0.7142857142857143,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.7142857142857143,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_06": {
           "element_id": "2.C.4.d",
           "name": "Biology",
-          "importance": null,
-          "required": null,
+          "importance": 0.655,
+          "required": 0.6942857142857143,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -10155,10 +9936,8 @@
                 }
               ],
               "normalized_raw": 0.655,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.655,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -10187,22 +9966,17 @@
                 }
               ],
               "normalized_raw": 0.6942857142857143,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.6942857142857143,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_07": {
           "element_id": "2.C.1.a",
           "name": "Administration and Management",
-          "importance": null,
-          "required": null,
+          "importance": 0.5725,
+          "required": 0.6185714285714285,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -10231,10 +10005,8 @@
                 }
               ],
               "normalized_raw": 0.5725,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.5725,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -10263,16 +10035,11 @@
                 }
               ],
               "normalized_raw": 0.6185714285714285,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.6185714285714285,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         }
       },
       "riasec": [
@@ -10429,22 +10196,7 @@
           "issues": []
         }
       ],
-      "data_issues": [
-        "knowledge_01 (Computers and Electronics): IM: Recommend Suppress=unknown",
-        "knowledge_01 (Computers and Electronics): LV: Recommend Suppress=unknown",
-        "knowledge_02 (Mathematics): IM: Recommend Suppress=unknown",
-        "knowledge_02 (Mathematics): LV: Recommend Suppress=unknown",
-        "knowledge_03 (Engineering and Technology): IM: Recommend Suppress=unknown",
-        "knowledge_03 (Engineering and Technology): LV: Recommend Suppress=unknown",
-        "knowledge_04 (Physics): IM: Recommend Suppress=unknown",
-        "knowledge_04 (Physics): LV: Recommend Suppress=unknown",
-        "knowledge_05 (Chemistry): IM: Recommend Suppress=unknown",
-        "knowledge_05 (Chemistry): LV: Recommend Suppress=unknown",
-        "knowledge_06 (Biology): IM: Recommend Suppress=unknown",
-        "knowledge_06 (Biology): LV: Recommend Suppress=unknown",
-        "knowledge_07 (Administration and Management): IM: Recommend Suppress=unknown",
-        "knowledge_07 (Administration and Management): LV: Recommend Suppress=unknown"
-      ]
+      "data_issues": []
     },
     {
       "code": "17-2199.03",
@@ -11224,8 +10976,8 @@
         "knowledge_01": {
           "element_id": "2.C.3.a",
           "name": "Computers and Electronics",
-          "importance": null,
-          "required": null,
+          "importance": 0.5625,
+          "required": 0.6142857142857142,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -11254,10 +11006,8 @@
                 }
               ],
               "normalized_raw": 0.5625,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.5625,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -11286,22 +11036,17 @@
                 }
               ],
               "normalized_raw": 0.6142857142857142,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.6142857142857142,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_02": {
           "element_id": "2.C.4.a",
           "name": "Mathematics",
-          "importance": null,
-          "required": null,
+          "importance": 0.8125,
+          "required": 0.7428571428571429,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -11330,10 +11075,8 @@
                 }
               ],
               "normalized_raw": 0.8125,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.8125,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -11362,22 +11105,17 @@
                 }
               ],
               "normalized_raw": 0.7428571428571429,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.7428571428571429,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_03": {
           "element_id": "2.C.3.b",
           "name": "Engineering and Technology",
-          "importance": null,
-          "required": null,
+          "importance": 0.8999999999999999,
+          "required": 0.7857142857142857,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -11406,10 +11144,8 @@
                 }
               ],
               "normalized_raw": 0.8999999999999999,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.8999999999999999,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -11438,22 +11174,17 @@
                 }
               ],
               "normalized_raw": 0.7857142857142857,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.7857142857142857,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_04": {
           "element_id": "2.C.4.b",
           "name": "Physics",
-          "importance": null,
-          "required": null,
+          "importance": 0.6125,
+          "required": 0.6142857142857142,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -11482,10 +11213,8 @@
                 }
               ],
               "normalized_raw": 0.6125,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.6125,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -11514,22 +11243,17 @@
                 }
               ],
               "normalized_raw": 0.6142857142857142,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.6142857142857142,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_05": {
           "element_id": "2.C.4.c",
           "name": "Chemistry",
-          "importance": null,
-          "required": null,
+          "importance": 0.3375,
+          "required": 0.43571428571428567,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -11558,10 +11282,8 @@
                 }
               ],
               "normalized_raw": 0.3375,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.3375,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -11590,22 +11312,17 @@
                 }
               ],
               "normalized_raw": 0.43571428571428567,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.43571428571428567,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_06": {
           "element_id": "2.C.4.d",
           "name": "Biology",
-          "importance": null,
-          "required": null,
+          "importance": 0.175,
+          "required": 0.22142857142857145,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -11634,10 +11351,8 @@
                 }
               ],
               "normalized_raw": 0.175,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.175,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -11666,22 +11381,17 @@
                 }
               ],
               "normalized_raw": 0.22142857142857145,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.22142857142857145,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_07": {
           "element_id": "2.C.1.a",
           "name": "Administration and Management",
-          "importance": null,
-          "required": null,
+          "importance": 0.5125,
+          "required": 0.5928571428571429,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -11710,10 +11420,8 @@
                 }
               ],
               "normalized_raw": 0.5125,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.5125,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -11742,16 +11450,11 @@
                 }
               ],
               "normalized_raw": 0.5928571428571429,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.5928571428571429,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         }
       },
       "riasec": [
@@ -11908,22 +11611,7 @@
           "issues": []
         }
       ],
-      "data_issues": [
-        "knowledge_01 (Computers and Electronics): IM: Recommend Suppress=unknown",
-        "knowledge_01 (Computers and Electronics): LV: Recommend Suppress=unknown",
-        "knowledge_02 (Mathematics): IM: Recommend Suppress=unknown",
-        "knowledge_02 (Mathematics): LV: Recommend Suppress=unknown",
-        "knowledge_03 (Engineering and Technology): IM: Recommend Suppress=unknown",
-        "knowledge_03 (Engineering and Technology): LV: Recommend Suppress=unknown",
-        "knowledge_04 (Physics): IM: Recommend Suppress=unknown",
-        "knowledge_04 (Physics): LV: Recommend Suppress=unknown",
-        "knowledge_05 (Chemistry): IM: Recommend Suppress=unknown",
-        "knowledge_05 (Chemistry): LV: Recommend Suppress=unknown",
-        "knowledge_06 (Biology): IM: Recommend Suppress=unknown",
-        "knowledge_06 (Biology): LV: Recommend Suppress=unknown",
-        "knowledge_07 (Administration and Management): IM: Recommend Suppress=unknown",
-        "knowledge_07 (Administration and Management): LV: Recommend Suppress=unknown"
-      ]
+      "data_issues": []
     },
     {
       "code": "17-2199.08",
@@ -12703,8 +12391,8 @@
         "knowledge_01": {
           "element_id": "2.C.3.a",
           "name": "Computers and Electronics",
-          "importance": null,
-          "required": null,
+          "importance": 0.8625,
+          "required": 0.812857142857143,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -12733,10 +12421,8 @@
                 }
               ],
               "normalized_raw": 0.8625,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.8625,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -12765,22 +12451,17 @@
                 }
               ],
               "normalized_raw": 0.812857142857143,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.812857142857143,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_02": {
           "element_id": "2.C.4.a",
           "name": "Mathematics",
-          "importance": null,
-          "required": null,
+          "importance": 0.8,
+          "required": 0.7857142857142857,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -12809,10 +12490,8 @@
                 }
               ],
               "normalized_raw": 0.8,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.8,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -12841,22 +12520,17 @@
                 }
               ],
               "normalized_raw": 0.7857142857142857,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.7857142857142857,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_03": {
           "element_id": "2.C.3.b",
           "name": "Engineering and Technology",
-          "importance": null,
-          "required": null,
+          "importance": 0.9475,
+          "required": 0.8757142857142857,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -12885,10 +12559,8 @@
                 }
               ],
               "normalized_raw": 0.9475,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.9475,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -12917,22 +12589,17 @@
                 }
               ],
               "normalized_raw": 0.8757142857142857,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.8757142857142857,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_04": {
           "element_id": "2.C.4.b",
           "name": "Physics",
-          "importance": null,
-          "required": null,
+          "importance": 0.7325,
+          "required": 0.7242857142857143,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -12961,10 +12628,8 @@
                 }
               ],
               "normalized_raw": 0.7325,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.7325,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -12993,22 +12658,17 @@
                 }
               ],
               "normalized_raw": 0.7242857142857143,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.7242857142857143,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_05": {
           "element_id": "2.C.4.c",
           "name": "Chemistry",
-          "importance": null,
-          "required": null,
+          "importance": 0.4,
+          "required": 0.4857142857142857,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -13037,10 +12697,8 @@
                 }
               ],
               "normalized_raw": 0.4,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.4,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -13069,22 +12727,17 @@
                 }
               ],
               "normalized_raw": 0.4857142857142857,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.4857142857142857,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_06": {
           "element_id": "2.C.4.d",
           "name": "Biology",
-          "importance": null,
-          "required": null,
+          "importance": 0.21750000000000003,
+          "required": 0.21857142857142858,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -13113,10 +12766,8 @@
                 }
               ],
               "normalized_raw": 0.21750000000000003,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.21750000000000003,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -13145,22 +12796,17 @@
                 }
               ],
               "normalized_raw": 0.21857142857142858,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.21857142857142858,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         },
         "knowledge_07": {
           "element_id": "2.C.1.a",
           "name": "Administration and Management",
-          "importance": null,
-          "required": null,
+          "importance": 0.4425,
+          "required": 0.5,
           "sources": {
             "IM": {
               "file": "knowledge",
@@ -13189,10 +12835,8 @@
                 }
               ],
               "normalized_raw": 0.4425,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.4425,
+              "issues": []
             },
             "LV": {
               "file": "knowledge",
@@ -13221,16 +12865,11 @@
                 }
               ],
               "normalized_raw": 0.5,
-              "value": null,
-              "issues": [
-                "Recommend Suppress=unknown"
-              ]
+              "value": 0.5,
+              "issues": []
             }
           },
-          "issues": [
-            "IM: Recommend Suppress=unknown",
-            "LV: Recommend Suppress=unknown"
-          ]
+          "issues": []
         }
       },
       "riasec": [
@@ -13387,22 +13026,7 @@
           "issues": []
         }
       ],
-      "data_issues": [
-        "knowledge_01 (Computers and Electronics): IM: Recommend Suppress=unknown",
-        "knowledge_01 (Computers and Electronics): LV: Recommend Suppress=unknown",
-        "knowledge_02 (Mathematics): IM: Recommend Suppress=unknown",
-        "knowledge_02 (Mathematics): LV: Recommend Suppress=unknown",
-        "knowledge_03 (Engineering and Technology): IM: Recommend Suppress=unknown",
-        "knowledge_03 (Engineering and Technology): LV: Recommend Suppress=unknown",
-        "knowledge_04 (Physics): IM: Recommend Suppress=unknown",
-        "knowledge_04 (Physics): LV: Recommend Suppress=unknown",
-        "knowledge_05 (Chemistry): IM: Recommend Suppress=unknown",
-        "knowledge_05 (Chemistry): LV: Recommend Suppress=unknown",
-        "knowledge_06 (Biology): IM: Recommend Suppress=unknown",
-        "knowledge_06 (Biology): LV: Recommend Suppress=unknown",
-        "knowledge_07 (Administration and Management): IM: Recommend Suppress=unknown",
-        "knowledge_07 (Administration and Management): LV: Recommend Suppress=unknown"
-      ]
+      "data_issues": []
     },
     {
       "code": "19-1029.01",

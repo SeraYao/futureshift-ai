@@ -310,6 +310,13 @@ def parse_response(raw: bytes) -> dict:
     try:
         choice = envelope['choices'][0]
         message = choice['message']
+        finish = choice.get('finish_reason')
+        usage = envelope.get('usage', {})
+        tokens = usage.get('completion_tokens') if isinstance(usage, dict) else None
+        logger.info('ai_response finish_reason=%s completion_tokens=%s content_chars=%d',
+                    finish if finish in ('stop', 'length', 'content_filter', 'tool_calls') else 'other',
+                    tokens if type(tokens) is int else 'unknown',
+                    len(message.get('content', '')) if isinstance(message.get('content'), str) else 0)
         if message.get('refusal') or choice.get('finish_reason') == 'content_filter':
             raise CVError('AI service refused extraction. Use the questionnaire. No profile was changed.')
         if choice.get('finish_reason') == 'length':
@@ -359,6 +366,18 @@ def extract_with_ai(text: str, consent: bool, labels: dict, *, config: AIConfig 
     payload = {'model': config.model, 'temperature': 0, 'response_format': {'type': 'json_object'},
                'messages': [{'role': 'system', 'content': prompt},
                             {'role': 'user', 'content': sanitized}], 'max_tokens': 2400}
+    return request_json(payload, config=config, source=sanitized, opener=opener,
+                        validator=lambda document: validate_extraction(document, sanitized, labels))
+
+
+def request_json(payload: dict, *, config: AIConfig, source: str,
+                 opener: Callable | None = None, validator: Callable | None = None) -> dict:
+    """Shared bounded JSON transport; one request, TLS checks and redacted diagnostics.
+
+    Used by consent-gated CV extraction and explicit public-source SDG analysis.
+    Callers own their schema validation; neither transport nor errors log payloads.
+    """
+    sanitized = source
     base = config.base_url.rstrip('/')
     url = base if base.endswith('/chat/completions') else base + '/chat/completions'
     started = monotonic()
@@ -384,7 +403,7 @@ def extract_with_ai(text: str, consent: bool, labels: dict, *, config: AIConfig 
             stage = 'response_parse'
             document = parse_response(raw)
         stage = 'evidence_validation'
-        result = validate_extraction(document, sanitized, labels)
+        result = validator(document) if validator is not None else document
         logger.info('cv_ai stage=complete elapsed_ms=%d', (monotonic() - started) * 1000)
         return result
     except CVError:

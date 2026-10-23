@@ -101,7 +101,12 @@ def extract_rating(rows: list[dict], code: str, element: str | None,
     value, issues = normalized_value(raw.get('Data Value'), scale)
     result['normalized_raw'] = value
     if scale in ('IM', 'LV'):
-        if raw.get('Recommend Suppress') != 'N':
+        # Optional precision statistics are not supplied for official expert knowledge ratings.
+        # Preserve the blank flag; never reinterpret it as N or accept an explicit Y.
+        expert_optional = (filename == 'knowledge' and raw.get('Domain Source') == 'Occupational Expert'
+                           and raw.get('Recommend Suppress') == ''
+                           and raw.get('N', '').isdigit() and int(raw['N']) >= 10)
+        if raw.get('Recommend Suppress') != 'N' and not expert_optional:
             issues.append(f"Recommend Suppress={raw.get('Recommend Suppress') or 'unknown'}")
         # IM rows normally have an empty Not Relevant field: preserve it as
         # not supplied, not a guessed N. LV must explicitly establish relevance.
@@ -161,10 +166,10 @@ def build_dataset(tables: dict, sources: dict, pool_text: str,
                         'official_notice_url': 'https://www.onetcenter.org/license_db.html',
                         'attribution': 'O*NET® 31.0 Database, U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). O*NET® is a trademark of USDOL/ETA.',
                         'modifications': 'FutureShift AI selected occupations and questionnaire elements, normalized ratings and blocked flagged or unavailable values. USDOL/ETA has not approved, endorsed, or tested these modifications.'},
-            'transformations': {'version': 'onet31-v1', 'user': 'response / 4 (questionnaire only)',
+            'transformations': {'version': 'onet31-v2', 'user': 'response / 4 (questionnaire only)',
                                 'importance': '(IM - 1) / 4', 'required': 'LV / 7', 'riasec': '(OI - 1) / 6',
                                 'caution': 'Different measurement systems: normalization is not validity calibration. U.S. occupational requirements are not Malaysian employment forecasts.',
-                                'quality_policy': 'Retain all 11 skills and 7 knowledge items. Missing/duplicate/flagged/out-of-range values are null with reasons, not zero; no automatic core-subset exclusions. IM Not Relevant blanks are not supplied (preserved), while LV requires explicit N. No imputation or reweighting.'},
+                                'quality_policy': 'Retain all 11 skills and 7 knowledge items. Missing/duplicate/flagged/out-of-range values are null with reasons, not zero; no automatic core-subset exclusions. Optional blank precision flags on Knowledge Occupational Expert rows with N>=10 are preserved as not supplied, not N; explicit suppression still blocks. IM Not Relevant blanks are not supplied (preserved), while LV requires explicit N. No imputation or reweighting.'},
             'selection': {'career_pool_sha256': hashlib.sha256(pool_text.encode()).hexdigest(),
                           'questionnaire_sha256': hashlib.sha256(questionnaire_text.encode()).hexdigest()},
             'sources': sources, 'questionnaire_fields': mapping, 'roles': roles}

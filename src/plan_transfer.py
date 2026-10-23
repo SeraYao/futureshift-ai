@@ -4,6 +4,7 @@ from copy import deepcopy
 from datetime import datetime, timezone
 import hashlib
 import json
+from pathlib import Path
 from typing import Any, Callable
 
 from src.scoring import SCORING_VERSION, rank_roles
@@ -11,6 +12,7 @@ from src.scoring import SCORING_VERSION, rank_roles
 VERSION = 'futureshift-plan-v1'
 NOTICE = ('Prototype plan. Synthetic occupational requirements and trend signals are not employment predictions. '
           'Practice completion does not prove skill mastery or guarantee employment.')
+OFFICIAL_NOTICE = 'Official-derived plan. Limited questionnaire coverage, no labour-demand prediction. Practice completion does not prove qualification or guarantee employment.'
 MAX_BYTES = 256_000
 
 
@@ -36,13 +38,13 @@ def export_plan(assessment: dict, plan: dict, completion: dict,
         answers['data_status'] = 'synthetic'
     role = next(role for role in assessment['roles']['roles'] if role['code'] == plan['role_code'])
     document = {'format_version': VERSION, 'exported_at': exported_at or datetime.now(timezone.utc).isoformat(),
-                'notice': NOTICE, 'profile': confirmed_profile(answers), 'answers': answers,
+                'notice': OFFICIAL_NOTICE if role.get('data_status') == 'official_derived' else NOTICE, 'profile': confirmed_profile(answers), 'answers': answers,
                 'career': {'code': role['code'], 'title': role['title']}, 'duration_weeks': 4,
                 'weekly_hours': plan['weekly_hours'], 'plan': deepcopy(plan),
                 'completion': {task['id']: bool(completion.get(task['id'], False)) for task in plan['tasks']},
                 'last_assessment': {'scoring_version': SCORING_VERSION,
                     'source_fingerprint': source_fingerprint(assessment['roles'], assessment['trends']),
-                    'data_status': 'synthetic_requirements_and_trends',
+                    'data_status': 'official_requirements_personal_fit' if role.get('data_status') == 'official_derived' else 'synthetic_requirements_and_trends',
                     'results': assessment_summary(assessment['rows'])}}
     return json.dumps(document, ensure_ascii=False, indent=2, allow_nan=False)
 
@@ -54,11 +56,11 @@ def readable_plan(assessment: dict, plan: dict, completion: dict, labels: dict) 
              '## ' + career_name(role['code'], role['title']),
              tr('Official source title: {title}', title=role['title']),
              tr('Career ID: {code} · Plan ID: {plan}', code=role['code'], plan=plan['id']),
-             role['identity_source_url'], '', tr(NOTICE),
+             role['identity_source_url'], '', tr(OFFICIAL_NOTICE if role.get('data_status') == 'official_derived' else NOTICE),
              tr('Four weeks · {hours} hours per week', hours=plan['weekly_hours']), '',
              tr('Verified learning resources are not connected yet. These are authored practice exercises, not course recommendations. Completion does not change your matching scores or prove skill mastery.'), '',
              tr('Moderate = 85% personal fit + 15% trend; Fast = 65% personal fit + 35% trend. These are unvalidated sensitivity assumptions, not probabilities or employment forecasts.')]
-    source = assessment.get('recommendation_source', 'Synthetic demo')
+    source = assessment.get('recommendation_source', 'Official cross-domain careers' if role.get('data_status') == 'official_derived' else 'Synthetic demo')
     lines += ['', tr('Ranking basis: {source}', source=display_text(source))]
     row = next(row for row in assessment.get('recommendation_rows', assessment['rows']) if row['code'] == role['code'])
     for name, score in (('Personal fit', row['P']), ('Trend signal', row['trend']['score']),
@@ -125,12 +127,20 @@ def validate_saved_plan(raw: bytes, load_demo: Callable) -> dict:
         if not isinstance(document['answers'], dict):
             raise ValueError('Scored answers must be a JSON object')
         profile = confirmed_profile(document['answers'])
-        _, roles, trends = load_demo()
+        if document.get('last_assessment', {}).get('data_status') == 'official_requirements_personal_fit':
+            roles = json.loads((Path(__file__).resolve().parent.parent / 'data/onet_roles.json').read_text())
+            trends = {'topics': {}}
+        else:
+            _, roles, trends = load_demo()
         code = document['career']['code']
         role = next((role for role in roles['roles'] if role['code'] == code), None)
         if role is None:
             raise ValueError('Occupation is not in the current prototype catalog')
-        rows = rank_roles(profile, roles['roles'], trends['topics'])
+        if roles.get('data_status') == 'official_derived':
+            from src.career_pool import official_ranking
+            rows = official_ranking(profile, roles)
+        else:
+            rows = rank_roles(profile, roles['roles'], trends['topics'])
         row = next(row for row in rows if row['code'] == code)
         plan = build_plan(row, role, document['weekly_hours'])
         if not plan['tasks']:
@@ -168,6 +178,7 @@ def restore_saved_plan(state: Any, prepared: dict) -> None:
     current['plans'][plan['role_code']] = {'plan': plan, 'completion': deepcopy(prepared['completion'])}
     state['pathway_draft'] = answers
     state['pathway_confirmed'] = deepcopy(assessment['profile'])
+    state['career_catalog_mode'] = 'Official cross-domain careers' if assessment['roles'].get('data_status') == 'official_derived' else 'Synthetic demo'
     state['pathway_step'] = 7
     state['learning_role'] = plan['role_code']
     state['learning_hours'] = plan['weekly_hours']

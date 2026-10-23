@@ -84,7 +84,7 @@ def render_learning_plan(st: Any, rows: list[dict], roles: dict, labels: dict,
                          previous: dict | None = None) -> None:
     """Offer occupation selection, a budgeted plan and session-only completion checks."""
     st.subheader(tr('Your four-week practice plan'))
-    st.warning(tr('Prototype suggestion — no employment outcome is guaranteed. Occupational gaps here are synthetic.'))
+    st.warning(tr('Official-derived questionnaire gaps; practice exercises are authored suggestions, not verified courses or qualification evidence.') if assessment and assessment['roles'].get('data_status') == 'official_derived' else tr('Prototype suggestion — no employment outcome is guaranteed. Occupational gaps here are synthetic.'))
     st.info(tr('Verified learning resources are not connected yet. These are authored practice exercises, not course recommendations. Completion does not change your matching scores or prove skill mastery.'))
     codes = [row['code'] for row in rows]
     if assessment is not None and 'learning_role' not in st.session_state:
@@ -154,7 +154,7 @@ def render_learning_plan(st: Any, rows: list[dict], roles: dict, labels: dict,
                 st.write(tr('Action: {v0} Complete {v1} practice rounds. This week: {v2}; retain earlier evidence for comparison.', v0=display_text(task['action']), v1=task['practice_rounds'], v2=display_text(task['phase'])))
                 st.write(tr('Completion evidence: ') + display_text(task['evidence']) + tr(' Keep a dated record of attempts, checks and revisions.'))
                 gap = task['gap']
-                st.caption(tr('Career gap · {v0}: your normalized level {v1:.2f}, synthetic requirement {v2:.2f}, importance {v3:.2f}, weighted gap {v4:.3f}.', v0=names[code], v1=gap['user'], v2=gap['required'], v3=gap['importance'], v4=gap['gap']))
+                st.caption(tr('Career gap · {v0}: your normalized level {v1:.2f}, requirement {v2:.2f}, importance {v3:.2f}, weighted gap {v4:.3f}.', v0=names[code], v1=gap['user'], v2=gap['required'], v3=gap['importance'], v4=gap['gap']))
                 key = 'learning_check_' + plan['id'] + '_' + task['id']
                 if key not in st.session_state:
                     st.session_state[key] = saved.get(task['id'], False)

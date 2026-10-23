@@ -353,7 +353,7 @@ class LanguagePageTests(unittest.TestCase):
                 self.assertEqual(page.session_state['pathway_assessment'], frozen)
                 self.assertEqual(page.session_state['learning_progress'], progress)
                 self.assertEqual(page.selectbox(key='learning_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).value, '15-2051.00')
-                names = {code: self.text(language, labels[0]) for code, labels in CAREER_LABELS.items()}
+                names = {code: self.text(language, CAREER_LABELS[code][0]) for code in ('15-2051.00', '15-2031.00', '15-1252.00')}
                 self.assertEqual(set(page.selectbox(key='learning_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).options), set(names.values()))
                 self.assertEqual(set(page.selectbox(key='evidence_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).options), set(names.values()))
                 table = next(t.value for t in page.table if self.text(language, 'Career') in t.value.columns

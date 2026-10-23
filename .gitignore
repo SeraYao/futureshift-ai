@@ -141,3 +141,6 @@ __pycache__/
 
 /data/cache/github_trends.json
 /data/cache/github_trends.tmp
+
+/data/cache/sdg_ai.json
+/data/cache/sdg_ai.tmp

@@ -26,6 +26,13 @@ CAREER_LABELS = {
     '15-2051.00': ('Data Scientists', 'Uses data analysis and models to investigate questions and support decisions.'),
     '15-2031.00': ('Operations Research Analysts', 'Uses quantitative analysis and optimisation to support operational decisions.'),
     '15-1252.00': ('Software Developers', 'Designs, builds, tests and maintains software applications and systems.'),
+    '13-1199.05': ('Sustainability Specialists', 'Coordinates sustainability initiatives and communicates organisational progress.'),
+    '17-2081.00': ('Environmental Engineers', 'Develops engineering solutions for environmental protection and pollution control.'),
+    '17-2199.03': ('Energy Engineers, Except Wind and Solar', 'Evaluates energy use and designs improvements in energy efficiency.'),
+    '17-2199.08': ('Robotics Engineers', 'Designs and evaluates robotic systems and their applications.'),
+    '15-1211.00': ('Computer Systems Analysts', 'Analyses computer systems and organisational information needs.'),
+    '15-1212.00': ('Information Security Analysts', 'Analyses information security risks and plans protective measures.'),
+    '19-1029.01': ('Bioinformatics Scientists', 'Uses computational methods to investigate biological data.'),
 }
 
 

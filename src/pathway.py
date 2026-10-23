@@ -133,7 +133,7 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
     if step == 0:
         st.header(tr('Let us get to know you'))
     if step != 0:
-        st.caption(tr('No name, age, gender or contact details are required. Occupational requirements are synthetic; the results page lets you choose GitHub snapshots or synthetic demo trends.'))
+        st.caption(tr('No name or contact details are required. Official cross-domain careers and a separately labelled synthetic demo are available after confirmation.'))
     if draft.get('data_status') == 'synthetic':
         st.warning(tr('SAMPLE PROFILE · Synthetic student answers, including any edits to this example. Not real personal data or a real employment prediction.'))
     if step != 0:
@@ -191,7 +191,7 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
         sample_entry('Try a virtual example', describe=False)
         if st.button(tr('Restore a saved plan'), key='profile_restore'):
             st.session_state['profile_entry'] = 'restore'
-        st.caption(tr('No name, age, gender or contact details are required. Occupational requirements are synthetic; the results page lets you choose GitHub snapshots or synthetic demo trends.'))
+        st.caption(tr('No name or contact details are required. Official cross-domain careers and a separately labelled synthetic demo are available after confirmation.'))
         st.caption(tr('The sample is fictional, editable and kept separate from your own questionnaire answers.'))
         if st.session_state.get('profile_entry') == 'cv':
             render_cv_intake(st, labels, levels, expanded=True)
@@ -270,59 +270,77 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
         if profile is None:
             st.warning(tr('Review and confirm your profile before calculating matches.'))
         else:
-            _, role_file, trend_file = load_demo()
-            st.caption(tr('Your confirmed profile + synthetic occupational requirements. Trend evidence and its source are shown below; no official O*NET requirements are substituted.'))
-            st.write(tr('Career goal: ') + goal_display(draft))
-            current = st.session_state.get('pathway_assessment')
-            if current is None or current['profile'] != profile or current['answers'] != draft:
-                # Pin the synthetic inputs for a profile reassessment.
-                if current is not None:
-                    role_file, trend_file = current['roles'], current['trends']
-                rows = rank_roles(profile, role_file['roles'], trend_file['topics'])
-                old_time = current['answers'].get('Weekly learning time') if current else None
-                current = store_assessment(st.session_state, profile, draft, rows, role_file, trend_file)
-                if old_time != draft.get('Weekly learning time'):
-                    st.session_state.pop('learning_hours', None)
+            st.session_state.setdefault('career_catalog_mode', 'Official cross-domain careers' if not st.session_state.get('pathway_assessment') or st.session_state['pathway_assessment']['roles'].get('data_status') == 'official_derived' else 'Synthetic demo')
+            basis = st.radio(tr('Career catalog'), ('Official cross-domain careers', 'Synthetic demo'),
+                             key='career_catalog_mode', format_func=translated_options())
+            if basis == 'Official cross-domain careers' and official_loader is not None:
+                from src.career_pool import render_official
+                render_official(st, profile, draft, official_loader(), labels, render_role, client_factory)
             else:
-                rows = current['rows']
-                role_file, trend_file = current['roles'], current['trends']
-            with st.expander(tr('Profile reassessment · fixed synthetic baseline')):
-                render_comparison(st, st.session_state.get('pathway_previous'), current, labels)
-            if st.button(tr('Update my profile and reassess'), key='pathway_reassess'):
-                begin_reassessment(st.session_state)
-                st.rerun()
-            if official_loader is not None and client_factory is not None:
-                rows = render_evidence_reassessment(st, current, official_loader, client_factory)
-            st.caption(tr('Moderate = 85% personal fit + 15% trend; Fast = 65% personal fit + 35% trend. These are unvalidated sensitivity assumptions, not probabilities or employment forecasts.'))
-            st.table(table_text([{
-                'Career': career_name(row['code'], row['title']),
-                'Personal fit': row['P'].value if row['P'].value is not None else 'Unavailable',
-                'Trend signal': row['trend']['score'].value if row['trend']['score'].value is not None else 'Unavailable',
-                'Moderate score': row['moderate'].value if row['moderate'].value is not None else 'Unavailable',
-                'Fast score': row['fast'].value if row['fast'].value is not None else 'Unavailable',
-                'Trend impact · Moderate': row['moderate'].value - row['P'].value if row['moderate'].value is not None else 'Unavailable',
-                'Trend impact · Fast': row['fast'].value - row['P'].value if row['fast'].value is not None else 'Unavailable',
-            } for row in rows]))
-            for scenario, title in (('moderate', 'Moderate'), ('fast', 'Fast disruption')):
-                st.markdown(tr('### {v0}', v0=display_text(title)))
-                ranked = sorted((row for row in rows if row[scenario+'_rank'] is not None),
-                                key=lambda row: row[scenario+'_rank'])
-                if not ranked:
-                    st.info(tr('No complete rankings available. Review the component reasons below.'))
-                for row in ranked:
-                    st.write(tr('{v0}. {v1} · {v2:.2f} / 100', v0=row[scenario + '_rank'], v1=career_name(row['code'], row['title']), v2=row[scenario].value))
-                    render_sdg_preview(st, row['code'])
-            by_code = {role['code']: role for role in role_file['roles']}
-            for row in rows:
-                with st.expander(career_name(row['code'], row['title']) + tr(' · Why this match?')):
-                    render_role(st, row, by_code[row['code']], profile=profile,
-                                real_trends=current.get('recommendation_source') == 'GitHub snapshots')
-            st.caption(tr('Choose a career from the current results below. A career without a complete trend score can still have synthetic skill gaps, but has no complete evidence-based match score.'))
-            st.caption(tr('Plan downloads retain the fixed synthetic comparison baseline and practice tasks; live GitHub rankings are not exported or restored. Evidence provenance remains available above.'))
-            render_learning_plan(st, sorted(rows, key=lambda row: row['code']), by_code, labels, draft.get('Weekly learning time'),
-                                 current, st.session_state.get('pathway_previous'))
-            with st.expander(tr('Technical details'), expanded=False):
-                st.json(profile, expanded=False)
+                _, role_file, trend_file = load_demo()
+                st.caption(tr('Your confirmed profile + synthetic occupational requirements. Trend evidence and its source are shown below; no official O*NET requirements are substituted.'))
+                st.write(tr('Career goal: ') + goal_display(draft))
+                current = st.session_state.get('pathway_assessment')
+                if current and current['roles'].get('data_status') == 'official_derived':
+                    st.info(tr('Official career and plan retained. Confirm before opening the separate synthetic demo.'))
+                    if not st.button(tr('Confirm synthetic demo'), key='confirm_demo_catalog'):
+                        return
+                    st.session_state['archived_official_assessment'] = deepcopy(current)
+                    st.session_state.pop('pathway_assessment', None)
+                    st.session_state.pop('pathway_previous', None)
+                    for key in list(st.session_state):
+                        if key.startswith(('learning_role', 'learning_hours')):
+                            del st.session_state[key]
+                    current = None
+                if current is None or current['profile'] != profile or current['answers'] != draft:
+                    # Pin the synthetic inputs for a profile reassessment.
+                    if current is not None:
+                        role_file, trend_file = current['roles'], current['trends']
+                    rows = rank_roles(profile, role_file['roles'], trend_file['topics'])
+                    old_time = current['answers'].get('Weekly learning time') if current else None
+                    current = store_assessment(st.session_state, profile, draft, rows, role_file, trend_file)
+                    if old_time != draft.get('Weekly learning time'):
+                        st.session_state.pop('learning_hours', None)
+                else:
+                    rows = current['rows']
+                    role_file, trend_file = current['roles'], current['trends']
+                with st.expander(tr('Profile reassessment · fixed synthetic baseline')):
+                    render_comparison(st, st.session_state.get('pathway_previous'), current, labels)
+                if st.button(tr('Update my profile and reassess'), key='pathway_reassess'):
+                    begin_reassessment(st.session_state)
+                    st.rerun()
+                if official_loader is not None and client_factory is not None:
+                    rows = render_evidence_reassessment(st, current, official_loader, client_factory)
+                st.caption(tr('Moderate = 85% personal fit + 15% trend; Fast = 65% personal fit + 35% trend. These are unvalidated sensitivity assumptions, not probabilities or employment forecasts.'))
+                st.table(table_text([{
+                    'Career': career_name(row['code'], row['title']),
+                    'Personal fit': row['P'].value if row['P'].value is not None else 'Unavailable',
+                    'Trend signal': row['trend']['score'].value if row['trend']['score'].value is not None else 'Unavailable',
+                    'Moderate score': row['moderate'].value if row['moderate'].value is not None else 'Unavailable',
+                    'Fast score': row['fast'].value if row['fast'].value is not None else 'Unavailable',
+                    'Trend impact · Moderate': row['moderate'].value - row['P'].value if row['moderate'].value is not None else 'Unavailable',
+                    'Trend impact · Fast': row['fast'].value - row['P'].value if row['fast'].value is not None else 'Unavailable',
+                } for row in rows]))
+                for scenario, title in (('moderate', 'Moderate'), ('fast', 'Fast disruption')):
+                    st.markdown(tr('### {v0}', v0=display_text(title)))
+                    ranked = sorted((row for row in rows if row[scenario+'_rank'] is not None),
+                                    key=lambda row: row[scenario+'_rank'])
+                    if not ranked:
+                        st.info(tr('No complete rankings available. Review the component reasons below.'))
+                    for row in ranked:
+                        st.write(tr('{v0}. {v1} · {v2:.2f} / 100', v0=row[scenario + '_rank'], v1=career_name(row['code'], row['title']), v2=row[scenario].value))
+                        render_sdg_preview(st, row['code'])
+                by_code = {role['code']: role for role in role_file['roles']}
+                for row in rows:
+                    with st.expander(career_name(row['code'], row['title']) + tr(' · Why this match?')):
+                        render_role(st, row, by_code[row['code']], profile=profile,
+                                    real_trends=current.get('recommendation_source') == 'GitHub snapshots')
+                st.caption(tr('Choose a career from the current results below. A career without a complete trend score can still have synthetic skill gaps, but has no complete evidence-based match score.'))
+                st.caption(tr('Plan downloads retain the fixed synthetic comparison baseline and practice tasks; live GitHub rankings are not exported or restored. Evidence provenance remains available above.'))
+                render_learning_plan(st, sorted(rows, key=lambda row: row['code']), by_code, labels, draft.get('Weekly learning time'),
+                                     current, st.session_state.get('pathway_previous'))
+                with st.expander(tr('Technical details'), expanded=False):
+                    st.json(profile, expanded=False)
     if st.button(tr('Return to identity selection'), key='pathway_identity'):
         st.session_state.pathway_step = 0
         st.rerun()

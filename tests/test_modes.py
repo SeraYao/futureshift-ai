@@ -92,7 +92,7 @@ class ModeIsolationTests(unittest.TestCase):
         warnings = [args[0] for method, args, _ in ui.calls if method == 'warning']
         self.assertTrue(any('Recommend Suppress=Y' in text for text in warnings))
         self.assertTrue(any('Not Relevant=Y' in text for text in warnings))
-        self.assertTrue(any('unknown' in text for text in warnings))
+        self.assertTrue(any('Not Relevant' in text for text in warnings))
         table = next(args[0] for method, args, _ in ui.calls if method == 'table')
         self.assertEqual(len(table), 10)
         self.assertTrue(all('Code' in row and 'Official title' in row for row in table))
@@ -173,6 +173,6 @@ class StreamlitModeTests(unittest.TestCase):
         self.assertEqual(len(page.get('progress')), 0)
         self.assertEqual([box.key for box in page.selectbox], ['ui_language'])
         self.assertEqual(len(page.dataframe), 30)
-        self.assertTrue(any('unknown' in warning.value for warning in page.warning))
+        self.assertTrue(any('Not Relevant' in warning.value for warning in page.warning))
         self.assertTrue(any('Recommend Suppress=Y' in warning.value for warning in page.warning))
         self.assertEqual(len(page.table[0].value), 10)

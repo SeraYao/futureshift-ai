@@ -159,7 +159,7 @@ def render_breakdown(st: Any, heading: str, breakdown: dict) -> None:
     st.table(table_text([{
         'Item': LABELS.get(item['id'], item['id']),
         'Your level (0–1)': item['user'],
-        'Synthetic requirement (0–1)': item['required'],
+        'Requirement (0–1)': item['required'],
         'Importance': item['importance'],
         'Coverage': item['coverage'],
         'Weighted gap': item['gap'],
@@ -193,7 +193,11 @@ def render_topic(st: Any, topic: dict) -> None:
 
 def render_role(st: Any, row: dict, role: dict, profile: dict | None = None, *, real_trends: bool = False) -> None:
     """Explain the engine output using templates and its exact calculation trace."""
-    st.caption(tr('O*NET occupation identity: {code} · Synthetic requirements + GitHub trend snapshots', code=row['code']) if real_trends else tr('O*NET occupation identity: {v0} · Synthetic requirements and trends', v0=row['code']))
+    official = role.get('data_status') == 'official_derived'
+    if official:
+        st.caption(tr('Official O*NET 31.0 occupation: {code}', code=row['code']))
+    else:
+        st.caption(tr('O*NET occupation identity: {code} · Synthetic requirements + GitHub trend snapshots', code=row['code']) if real_trends else tr('O*NET occupation identity: {v0} · Synthetic requirements and trends', v0=row['code']))
     st.caption(tr('Career display names are project translations. Official source titles, codes and evidence remain original.'))
     description = career_description(row['code'])
     if description:
@@ -212,26 +216,31 @@ def render_role(st: Any, row: dict, role: dict, profile: dict | None = None, *, 
             st.write(tr('Your skill and knowledge coverage, together with your RIASEC similarity, produce a personal fit of {v0:.2f}. The synthetic technical activity score is {v1:.2f}. Giving that signal more weight {v2} this role’s score in the fast scenario.', v0=p, v1=t, v2=display_text(direction)))
         st.write(tr('Moderate: **{v0}** (rank {v1}) · Fast: **{v2}** (rank {v3})', v0=display_value(display_score(row['moderate'])), v1=row['moderate_rank'], v2=display_value(display_score(row['fast'])), v3=row['fast_rank']))
         st.caption(tr('Scenario sensitivity · Fast − Moderate: {v0:+.2f} points · Rank movement: {v1:+d} (positive means higher in Fast).', v0=row['score_delta'], v1=row['rank_delta']))
-    else:
+    elif not official:
         for issue in dict.fromkeys(row['moderate'].issues):
             st.warning(translate_error(tr('Cannot rank this role: ') + issue))
     render_breakdown(st, 'Skills gaps', row['skills'])
     render_breakdown(st, 'Knowledge gaps', row['knowledge'])
     st.markdown(tr('#### Interest profile'))
     st.table(table_text([{'Dimension': name, 'Your confirmed interest': user,
-               'Synthetic role interest': target}
+               ('Official role interest' if official else 'Synthetic role interest'): target}
               for name, user, target in zip(RIASEC, (profile if profile is not None else st.session_state.simulation_profile)['riasec'], role['riasec'])]))
-    st.markdown(tr('#### Trend evidence · GitHub snapshots') if real_trends else tr('#### Trend evidence · synthetic'))
+    if not official:
+        st.markdown(tr('#### Trend evidence · GitHub snapshots') if real_trends else tr('#### Trend evidence · synthetic'))
     for topic in row['trend']['topics']:
         if real_trends and topic['snapshot'].get('data_status') != 'github_api':
             st.info(tr('No valid GitHub evidence for this topic. Counts and trend score are unavailable.'))
             continue
         render_topic(st, topic)
-    render_sdg_details(st, row['code'])
+    if not official:
+        render_sdg_details(st, row['code'])
     st.markdown(tr('#### Source identity'))
     st.caption(tr('Official source title: {title}', title=role['title']))
     st.markdown(tr('[Official occupation identity]({v0})', v0=role['identity_source_url']))
-    st.caption(tr('The occupation link identifies only the official title and code. Requirements, importance and role interests remain synthetic; GitHub queries above are the trend sources.') if real_trends else tr('The linked page identifies only the official title and code. All requirements, importance, interests and trend counts used in this simulation are synthetic.'))
+    if official:
+        st.caption(tr('Official ratings retain source rows, dates and quality flags. U.S. requirements are not Malaysian labour-demand forecasts.'))
+    else:
+        st.caption(tr('The occupation link identifies only the official title and code. Requirements, importance and role interests remain synthetic; GitHub queries above are the trend sources.') if real_trends else tr('The linked page identifies only the official title and code. All requirements, importance, interests and trend counts used in this simulation are synthetic.'))
     with st.expander(tr('Technical details'), expanded=False):
         st.json(role, expanded=False)
         st.json(asdict(row['S_capability']), expanded=False)
