@@ -1,6 +1,6 @@
 """Student questionnaire and session-only confirmation flow; no external data access."""
 from src.i18n import career_name, tr, display_text, table_text, translated_options, translate_error
-from src.sdg import render_sdg_preview
+from src.sdg import render_sdg_result_card
 from copy import deepcopy
 from typing import Any, Callable
 
@@ -311,25 +311,22 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
                     st.rerun()
                 if official_loader is not None and client_factory is not None:
                     rows = render_evidence_reassessment(st, current, official_loader, client_factory)
-                st.caption(tr('Moderate = 85% personal fit + 15% trend; Fast = 65% personal fit + 35% trend. These are unvalidated sensitivity assumptions, not probabilities or employment forecasts.'))
+                st.markdown('#### ' + tr('Matched to your profile'))
+                st.caption(tr('This catalog uses synthetic occupational requirements and the existing 85% personal-fit + 15% trend formula. Trend values are labeled by their evidence source; they are not career-outlook probabilities or employment forecasts.'))
+                ranked = sorted(rows, key=lambda row: (row['moderate_rank'] is None,
+                                                       row['moderate_rank'] or 0, row['code']))
                 st.table(table_text([{
                     'Career': career_name(row['code'], row['title']),
                     'Personal fit': row['P'].value if row['P'].value is not None else 'Unavailable',
                     'Trend signal': row['trend']['score'].value if row['trend']['score'].value is not None else 'Unavailable',
-                    'Moderate score': row['moderate'].value if row['moderate'].value is not None else 'Unavailable',
-                    'Fast score': row['fast'].value if row['fast'].value is not None else 'Unavailable',
-                    'Trend impact · Moderate': row['moderate'].value - row['P'].value if row['moderate'].value is not None else 'Unavailable',
-                    'Trend impact · Fast': row['fast'].value - row['P'].value if row['fast'].value is not None else 'Unavailable',
-                } for row in rows]))
-                for scenario, title in (('moderate', 'Moderate'), ('fast', 'Fast disruption')):
-                    st.markdown(tr('### {v0}', v0=display_text(title)))
-                    ranked = sorted((row for row in rows if row[scenario+'_rank'] is not None),
-                                    key=lambda row: row[scenario+'_rank'])
-                    if not ranked:
-                        st.info(tr('No complete rankings available. Review the component reasons below.'))
-                    for row in ranked:
-                        st.write(tr('{v0}. {v1} · {v2:.2f} / 100', v0=row[scenario + '_rank'], v1=career_name(row['code'], row['title']), v2=row[scenario].value))
-                        render_sdg_preview(st, row['code'])
+                    'Matched to your profile': row['moderate'].value if row['moderate'].value is not None else 'Unavailable',
+                    'Rank': row['moderate_rank'] if row['moderate_rank'] is not None else 'Unavailable',
+                } for row in ranked]))
+                available = [row for row in ranked if row['moderate_rank'] is not None]
+                if not available:
+                    st.info(tr('No complete rankings available. Review the component reasons below.'))
+                for row in available:
+                    render_sdg_result_card(st, row['code'], row['title'])
                 by_code = {role['code']: role for role in role_file['roles']}
                 for row in rows:
                     with st.expander(career_name(row['code'], row['title']) + tr(' · Why this match?')):

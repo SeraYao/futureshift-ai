@@ -1,7 +1,7 @@
 {
   "version": "local-analyst-reviewed-v1",
   "checked_on": "2026-10-23",
-  "directory_scope": "six active official careers",
+  "directory_scope": "All ten occupations in the bundled O*NET catalog; the synthetic demo reuses three of these stable occupation IDs.",
   "goals": {
     "6": {
       "name": "Clean water and sanitation",
@@ -18,6 +18,14 @@
     "7": {
       "name": "Affordable and clean energy",
       "color": "#FCC30B"
+    },
+    "4": {
+      "name": "Quality education",
+      "color": "#C5192D"
+    },
+    "3": {
+      "name": "Good health and well-being",
+      "color": "#4C9F38"
     }
   },
   "target_goal": {
@@ -27,7 +35,9 @@
     "12.2": "12",
     "12.4": "12",
     "12.6": "12",
-    "7.3": "7"
+    "7.3": "7",
+    "4.5": "4",
+    "3.4": "3"
   },
   "sources": {
     "onet-skill:13-1199.05": {
@@ -155,6 +165,96 @@
       "url": "https://www.onetonline.org/link/summary/17-2199.03#Skills",
       "source_type": "official_occupation_data",
       "excerpt": "Occupation-specific skills and knowledge are from the bundled O*NET-derived snapshot; the target relationship is the project team’s interpretation."
+    },
+    "un-target:4.5": {
+      "title": "United Nations SDG target 4.5",
+      "url": "https://sdgs.un.org/goals/goal4",
+      "source_type": "official_target_definition",
+      "excerpt": "By 2030, eliminate gender disparities in education and ensure equal access to all levels of education and vocational training for the vulnerable, including persons with disabilities, indigenous peoples and children in vulnerable situations."
+    },
+    "w3c-wcag-2.2": {
+      "title": "W3C Recommendation: Web Content Accessibility Guidelines (WCAG) 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "source_type": "technical_standard",
+      "excerpt": "WCAG 2.2 provides recommendations for making web content more accessible to people with disabilities; following it does not meet every user need."
+    },
+    "onet-skill:15-1252.00": {
+      "title": "O*NET occupation and skill record · 15-1252.00",
+      "url": "https://www.onetonline.org/link/summary/15-1252.00#Skills",
+      "source_type": "official_occupation_data",
+      "excerpt": "Occupation-specific skills and knowledge are from the bundled O*NET-derived snapshot; the target relationship is the project team’s interpretation."
+    },
+    "onet-task:15-1252.00:21662": {
+      "title": "O*NET occupational task",
+      "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+      "source_type": "official_occupation_task",
+      "excerpt": "Analyze user needs and software requirements to determine feasibility of design within time and cost constraints."
+    },
+    "onet-task:15-1252.00:21669": {
+      "title": "O*NET occupational task",
+      "url": "https://www.onetonline.org/link/details/15-1252.00#Tasks",
+      "source_type": "official_occupation_task",
+      "excerpt": "Develop or direct software system testing or validation procedures, programming, or documentation."
+    },
+    "onet-skill:15-2051.00": {
+      "title": "O*NET occupation and skill record · 15-2051.00",
+      "url": "https://www.onetonline.org/link/summary/15-2051.00#Skills",
+      "source_type": "official_occupation_data",
+      "excerpt": "Occupation-specific skills and knowledge are from the bundled O*NET-derived snapshot; the target relationship is the project team’s interpretation."
+    },
+    "onet-task:15-2051.00:21823": {
+      "title": "O*NET occupational task",
+      "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+      "source_type": "official_occupation_task",
+      "excerpt": "Analyze, manipulate, or process large sets of data using statistical software."
+    },
+    "onet-task:15-2051.00:21836": {
+      "title": "O*NET occupational task",
+      "url": "https://www.onetonline.org/link/details/15-2051.00#Tasks",
+      "source_type": "official_occupation_task",
+      "excerpt": "Recommend data-driven solutions to key stakeholders."
+    },
+    "onet-task:15-1211.00:analyze-systems": {
+      "title": "O*NET occupational task · Computer Systems Analysts",
+      "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+      "source_type": "official_occupation_task",
+      "excerpt": "Analyze information processing or computation needs and plan and design computer systems, using techniques such as structured analysis, data modeling, and information engineering."
+    },
+    "onet-task:15-1211.00:coordinate-systems": {
+      "title": "O*NET occupational task · Computer Systems Analysts",
+      "url": "https://www.onetonline.org/link/details/15-1211.00#Tasks",
+      "source_type": "official_occupation_task",
+      "excerpt": "Coordinate and link the computer systems within an organization to increase compatibility so that information can be shared."
+    },
+    "onet-skill:15-1211.00": {
+      "title": "O*NET occupation and skill record · 15-1211.00",
+      "url": "https://www.onetonline.org/link/summary/15-1211.00#Skills",
+      "source_type": "official_occupation_data",
+      "excerpt": "Occupation-specific skills and knowledge are from O*NET; the target relationship is the project team’s interpretation."
+    },
+    "onet-task:19-1029.01:clinical-molecular-data": {
+      "title": "O*NET occupational task · Bioinformatics Scientists",
+      "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+      "source_type": "official_occupation_task",
+      "excerpt": "Analyze large molecular datasets, such as raw microarray data, genomic sequence data, or proteomics data, for clinical or basic research purposes."
+    },
+    "onet-task:19-1029.01:genetic-analysis": {
+      "title": "O*NET occupational task · Bioinformatics Scientists",
+      "url": "https://www.onetonline.org/link/details/19-1029.01#Tasks",
+      "source_type": "official_occupation_task",
+      "excerpt": "Provide statistical and computational tools for biologically based activities, such as genetic analysis, measurement of gene expression, or gene function determination."
+    },
+    "onet-skill:19-1029.01": {
+      "title": "O*NET occupation and skill record · 19-1029.01",
+      "url": "https://www.onetonline.org/link/summary/19-1029.01#Skills",
+      "source_type": "official_occupation_data",
+      "excerpt": "Occupation-specific skills and knowledge are from O*NET; the target relationship is the project team’s interpretation."
+    },
+    "un-target:3.4": {
+      "title": "United Nations SDG target 3.4",
+      "url": "https://sdgs.un.org/goals/goal3",
+      "source_type": "official_target_definition",
+      "excerpt": "Official UN target definition for reducing premature mortality from non-communicable diseases through prevention and treatment, and promoting mental health and well-being."
     }
   },
   "roles": {
@@ -2413,24 +2513,426 @@
       }
     },
     "19-1029.01": {
-      "status": "not_in_active_official_six",
-      "mappings": [],
+      "status": "analyst_reviewed",
+      "mappings": [
+        {
+          "sdg_id": "3",
+          "target_id": "3.4",
+          "relation_type": "Conditional, analyst-reviewed potential contribution",
+          "scenario": {
+            "en": "When a clinical research team uses bioinformatics to analyze molecular data for non-communicable disease prevention or treatment research, the analysis may inform that research.",
+            "zh": "当临床研究团队使用生物信息学分析非传染性疾病预防或治疗研究中的分子数据时，分析结果可能为相关研究提供信息。",
+            "ms": "Apabila pasukan penyelidikan klinikal menggunakan bioinformatik untuk menganalisis data molekul bagi penyelidikan pencegahan atau rawatan penyakit tidak berjangkit, analisis itu mungkin memaklumkan penyelidikan tersebut."
+          },
+          "contribution": {
+            "en": "Computational analysis can support research workflows, but it does not itself establish clinical benefit or reduce disease mortality; any contribution depends on later validated research and application.",
+            "zh": "计算分析可以支持研究流程，但本身不能证明临床获益或降低疾病死亡率；任何贡献都取决于后续经过验证的研究及应用。",
+            "ms": "Analisis komputasi boleh menyokong aliran kerja penyelidikan, tetapi dengan sendirinya tidak membuktikan manfaat klinikal atau mengurangkan kematian akibat penyakit; sebarang sumbangan bergantung pada penyelidikan dan aplikasi yang disahkan kemudian."
+          },
+          "source_ids": [
+            "onet-task:19-1029.01:clinical-molecular-data",
+            "onet-task:19-1029.01:genetic-analysis",
+            "un-target:3.4"
+          ],
+          "source_checked_on": "2026-10-23"
+        }
+      ],
       "skills": {}
     },
     "15-2051.00": {
-      "status": "not_in_active_official_six",
-      "mappings": [],
-      "skills": {}
+      "status": "analyst_reviewed",
+      "mappings": [
+        {
+          "sdg_id": "7",
+          "target_id": "7.3",
+          "relation_type": "Conditional, analyst-reviewed potential contribution",
+          "scenario": {
+            "en": "For an energy-efficiency project, a data scientist can analyze building or industrial energy-use data, validate patterns and communicate candidate efficiency opportunities to engineers and operators.",
+            "zh": "在能效项目中，数据科学家可分析建筑或工业能耗数据、验证数据模式，并向工程师和运营人员说明潜在的能效改进机会。",
+            "ms": "Dalam projek kecekapan tenaga, saintis data boleh menganalisis data penggunaan tenaga bangunan atau industri, mengesahkan corak dan menerangkan peluang kecekapan yang berpotensi kepada jurutera dan pengendali."
+          },
+          "contribution": {
+            "en": "This is a conditional project-team inference: analysis may inform actions that improve energy efficiency, but data analysis alone does not implement changes or demonstrate progress toward target 7.3.",
+            "zh": "这是项目团队的条件性推断：分析结果可能为提升能效的行动提供依据，但数据分析本身不会实施改进，也不能证明已推动目标 7.3 的进展。",
+            "ms": "Ini inferens bersyarat pasukan projek: analisis mungkin memaklumkan tindakan untuk meningkatkan kecekapan tenaga, tetapi analisis data sahaja tidak melaksanakan perubahan atau membuktikan kemajuan ke arah sasaran 7.3."
+          },
+          "source_ids": [
+            "onet-task:15-2051.00:21823",
+            "onet-task:15-2051.00:21836",
+            "onet-skill:15-2051.00",
+            "un-target:7.3"
+          ],
+          "source_checked_on": "2026-10-23"
+        }
+      ],
+      "skills": {
+        "skill_01": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "For an energy-efficiency project, a data scientist can analyze building or industrial energy-use data, validate patterns and communicate candidate efficiency opportunities to engineers and operators.",
+              "zh": "在能效项目中，数据科学家可分析建筑或工业能耗数据、验证数据模式，并向工程师和运营人员说明潜在的能效改进机会。",
+              "ms": "Dalam projek kecekapan tenaga, saintis data boleh menganalisis data penggunaan tenaga bangunan atau industri, mengesahkan corak dan menerangkan peluang kecekapan yang berpotensi kepada jurutera dan pengendali."
+            },
+            "contribution": {
+              "en": "This is a conditional project-team inference: analysis may inform actions that improve energy efficiency, but data analysis alone does not implement changes or demonstrate progress toward target 7.3.",
+              "zh": "这是项目团队的条件性推断：分析结果可能为提升能效的行动提供依据，但数据分析本身不会实施改进，也不能证明已推动目标 7.3 的进展。",
+              "ms": "Ini inferens bersyarat pasukan projek: analisis mungkin memaklumkan tindakan untuk meningkatkan kecekapan tenaga, tetapi analisis data sahaja tidak melaksanakan perubahan atau membuktikan kemajuan ke arah sasaran 7.3."
+            },
+            "source_ids": [
+              "onet-task:15-2051.00:21823",
+              "onet-task:15-2051.00:21836",
+              "onet-skill:15-2051.00",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "check evidence, assumptions and unintended effects before selecting an approach.",
+              "zh": "在选择方案前核对证据、假设及可能的非预期影响。",
+              "ms": "menyemak bukti, andaian dan kesan yang tidak dijangka sebelum memilih pendekatan."
+            }
+          }
+        ],
+        "skill_03": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "For an energy-efficiency project, a data scientist can analyze building or industrial energy-use data, validate patterns and communicate candidate efficiency opportunities to engineers and operators.",
+              "zh": "在能效项目中，数据科学家可分析建筑或工业能耗数据、验证数据模式，并向工程师和运营人员说明潜在的能效改进机会。",
+              "ms": "Dalam projek kecekapan tenaga, saintis data boleh menganalisis data penggunaan tenaga bangunan atau industri, mengesahkan corak dan menerangkan peluang kecekapan yang berpotensi kepada jurutera dan pengendali."
+            },
+            "contribution": {
+              "en": "This is a conditional project-team inference: analysis may inform actions that improve energy efficiency, but data analysis alone does not implement changes or demonstrate progress toward target 7.3.",
+              "zh": "这是项目团队的条件性推断：分析结果可能为提升能效的行动提供依据，但数据分析本身不会实施改进，也不能证明已推动目标 7.3 的进展。",
+              "ms": "Ini inferens bersyarat pasukan projek: analisis mungkin memaklumkan tindakan untuk meningkatkan kecekapan tenaga, tetapi analisis data sahaja tidak melaksanakan perubahan atau membuktikan kemajuan ke arah sasaran 7.3."
+            },
+            "source_ids": [
+              "onet-task:15-2051.00:21823",
+              "onet-task:15-2051.00:21836",
+              "onet-skill:15-2051.00",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "make and verify calculations or quantitative comparisons relevant to the task.",
+              "zh": "完成相关任务所需的计算或定量比较，并核验结果。",
+              "ms": "membuat dan menyemak pengiraan atau perbandingan kuantitatif yang berkaitan dengan tugas."
+            }
+          }
+        ],
+        "skill_04": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "For an energy-efficiency project, a data scientist can analyze building or industrial energy-use data, validate patterns and communicate candidate efficiency opportunities to engineers and operators.",
+              "zh": "在能效项目中，数据科学家可分析建筑或工业能耗数据、验证数据模式，并向工程师和运营人员说明潜在的能效改进机会。",
+              "ms": "Dalam projek kecekapan tenaga, saintis data boleh menganalisis data penggunaan tenaga bangunan atau industri, mengesahkan corak dan menerangkan peluang kecekapan yang berpotensi kepada jurutera dan pengendali."
+            },
+            "contribution": {
+              "en": "This is a conditional project-team inference: analysis may inform actions that improve energy efficiency, but data analysis alone does not implement changes or demonstrate progress toward target 7.3.",
+              "zh": "这是项目团队的条件性推断：分析结果可能为提升能效的行动提供依据，但数据分析本身不会实施改进，也不能证明已推动目标 7.3 的进展。",
+              "ms": "Ini inferens bersyarat pasukan projek: analisis mungkin memaklumkan tindakan untuk meningkatkan kecekapan tenaga, tetapi analisis data sahaja tidak melaksanakan perubahan atau membuktikan kemajuan ke arah sasaran 7.3."
+            },
+            "source_ids": [
+              "onet-task:15-2051.00:21823",
+              "onet-task:15-2051.00:21836",
+              "onet-skill:15-2051.00",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "implement or test a computational step that supports the task.",
+              "zh": "实现或测试支持该任务的计算步骤。",
+              "ms": "melaksanakan atau menguji langkah pengkomputeran yang menyokong tugas."
+            }
+          }
+        ],
+        "knowledge_01": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "For an energy-efficiency project, a data scientist can analyze building or industrial energy-use data, validate patterns and communicate candidate efficiency opportunities to engineers and operators.",
+              "zh": "在能效项目中，数据科学家可分析建筑或工业能耗数据、验证数据模式，并向工程师和运营人员说明潜在的能效改进机会。",
+              "ms": "Dalam projek kecekapan tenaga, saintis data boleh menganalisis data penggunaan tenaga bangunan atau industri, mengesahkan corak dan menerangkan peluang kecekapan yang berpotensi kepada jurutera dan pengendali."
+            },
+            "contribution": {
+              "en": "This is a conditional project-team inference: analysis may inform actions that improve energy efficiency, but data analysis alone does not implement changes or demonstrate progress toward target 7.3.",
+              "zh": "这是项目团队的条件性推断：分析结果可能为提升能效的行动提供依据，但数据分析本身不会实施改进，也不能证明已推动目标 7.3 的进展。",
+              "ms": "Ini inferens bersyarat pasukan projek: analisis mungkin memaklumkan tindakan untuk meningkatkan kecekapan tenaga, tetapi analisis data sahaja tidak melaksanakan perubahan atau membuktikan kemajuan ke arah sasaran 7.3."
+            },
+            "source_ids": [
+              "onet-task:15-2051.00:21823",
+              "onet-task:15-2051.00:21836",
+              "onet-skill:15-2051.00",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use relevant computer concepts when carrying out the occupational task.",
+              "zh": "执行该职业任务时运用相关计算机知识。",
+              "ms": "menggunakan pengetahuan komputer yang berkaitan semasa menjalankan tugas pekerjaan."
+            }
+          }
+        ],
+        "knowledge_02": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "For an energy-efficiency project, a data scientist can analyze building or industrial energy-use data, validate patterns and communicate candidate efficiency opportunities to engineers and operators.",
+              "zh": "在能效项目中，数据科学家可分析建筑或工业能耗数据、验证数据模式，并向工程师和运营人员说明潜在的能效改进机会。",
+              "ms": "Dalam projek kecekapan tenaga, saintis data boleh menganalisis data penggunaan tenaga bangunan atau industri, mengesahkan corak dan menerangkan peluang kecekapan yang berpotensi kepada jurutera dan pengendali."
+            },
+            "contribution": {
+              "en": "This is a conditional project-team inference: analysis may inform actions that improve energy efficiency, but data analysis alone does not implement changes or demonstrate progress toward target 7.3.",
+              "zh": "这是项目团队的条件性推断：分析结果可能为提升能效的行动提供依据，但数据分析本身不会实施改进，也不能证明已推动目标 7.3 的进展。",
+              "ms": "Ini inferens bersyarat pasukan projek: analisis mungkin memaklumkan tindakan untuk meningkatkan kecekapan tenaga, tetapi analisis data sahaja tidak melaksanakan perubahan atau membuktikan kemajuan ke arah sasaran 7.3."
+            },
+            "source_ids": [
+              "onet-task:15-2051.00:21823",
+              "onet-task:15-2051.00:21836",
+              "onet-skill:15-2051.00",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "apply mathematical concepts to interpret or verify task results.",
+              "zh": "运用数学概念解释或核验任务结果。",
+              "ms": "menggunakan konsep matematik untuk mentafsir atau mengesahkan hasil tugas."
+            }
+          }
+        ]
+      },
+      "plan_area_ids": [
+        "skill_01",
+        "skill_03",
+        "skill_04",
+        "knowledge_01",
+        "knowledge_02"
+      ]
     },
     "15-1211.00": {
-      "status": "not_in_active_official_six",
-      "mappings": [],
+      "status": "analyst_reviewed",
+      "mappings": [
+        {
+          "sdg_id": "9",
+          "target_id": "9.1",
+          "relation_type": "Conditional, analyst-reviewed potential contribution",
+          "scenario": {
+            "en": "When a systems analyst designs or integrates information systems for essential public services, the work may support reliable and resilient digital infrastructure.",
+            "zh": "当系统分析师为基本公共服务设计或集成信息系统时，这项工作可能支持可靠且有韧性的数字基础设施。",
+            "ms": "Apabila penganalisis sistem mereka bentuk atau menyepadukan sistem maklumat untuk perkhidmatan awam penting, kerja itu mungkin menyokong infrastruktur digital yang boleh dipercayai dan berdaya tahan."
+          },
+          "contribution": {
+            "en": "This is a conditional link: the occupation task supports system design and integration, while contribution to resilient infrastructure depends on the specific service, deployment and access outcomes.",
+            "zh": "此关联有条件：职业任务支持系统设计与集成；是否有助于韧性基础设施，取决于具体服务、部署方式和可及性结果。",
+            "ms": "Hubungan ini bersyarat: tugas pekerjaan menyokong reka bentuk dan penyepaduan sistem, manakala sumbangan kepada infrastruktur berdaya tahan bergantung pada perkhidmatan, pelaksanaan dan hasil akses yang khusus."
+          },
+          "source_ids": [
+            "onet-task:15-1211.00:analyze-systems",
+            "onet-task:15-1211.00:coordinate-systems",
+            "un-target:9.1"
+          ],
+          "source_checked_on": "2026-10-23"
+        }
+      ],
       "skills": {}
     },
     "15-1252.00": {
-      "status": "not_in_active_official_six",
-      "mappings": [],
-      "skills": {}
+      "status": "analyst_reviewed",
+      "mappings": [
+        {
+          "sdg_id": "4",
+          "target_id": "4.5",
+          "relation_type": "Conditional, analyst-reviewed potential contribution",
+          "scenario": {
+            "en": "In an educational product context, a software developer can build and test screen-reader-compatible learning interfaces and accessible course content with disabled learners. Accessibility implementation may help reduce barriers to learning access.",
+            "zh": "在教育产品场景中，软件开发人员可与残障学习者共同开发并测试兼容屏幕阅读器的学习界面和无障碍课程内容。落实无障碍设计可能帮助减少学习障碍。",
+            "ms": "Dalam konteks produk pendidikan, pembangun perisian boleh membina dan menguji antara muka pembelajaran serta kandungan kursus yang serasi dengan pembaca skrin bersama pelajar kurang upaya. Pelaksanaan kebolehcapaian mungkin membantu mengurangkan halangan pembelajaran."
+          },
+          "contribution": {
+            "en": "This is a conditional project-team inference: accessible software may support equal access to education for learners with disabilities when it is co-designed, tested and adopted. It does not establish improved enrolment or learning outcomes.",
+            "zh": "这是项目团队的条件性推断：当无障碍软件经过共同设计、测试并实际采用时，可能支持残障学习者平等获得教育机会；这不证明入学或学习成效已经改善。",
+            "ms": "Ini inferens bersyarat pasukan projek: perisian yang boleh diakses mungkin menyokong akses pendidikan yang saksama untuk pelajar kurang upaya apabila direka bersama, diuji dan digunakan. Ini tidak membuktikan peningkatan penyertaan atau hasil pembelajaran."
+          },
+          "source_ids": [
+            "onet-task:15-1252.00:21662",
+            "onet-task:15-1252.00:21669",
+            "onet-skill:15-1252.00",
+            "un-target:4.5",
+            "w3c-wcag-2.2"
+          ],
+          "source_checked_on": "2026-10-23"
+        }
+      ],
+      "skills": {
+        "skill_01": [
+          {
+            "sdg_id": "4",
+            "target_id": "4.5",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "In an educational product context, a software developer can build and test screen-reader-compatible learning interfaces and accessible course content with disabled learners. Accessibility implementation may help reduce barriers to learning access.",
+              "zh": "在教育产品场景中，软件开发人员可与残障学习者共同开发并测试兼容屏幕阅读器的学习界面和无障碍课程内容。落实无障碍设计可能帮助减少学习障碍。",
+              "ms": "Dalam konteks produk pendidikan, pembangun perisian boleh membina dan menguji antara muka pembelajaran serta kandungan kursus yang serasi dengan pembaca skrin bersama pelajar kurang upaya. Pelaksanaan kebolehcapaian mungkin membantu mengurangkan halangan pembelajaran."
+            },
+            "contribution": {
+              "en": "This is a conditional project-team inference: accessible software may support equal access to education for learners with disabilities when it is co-designed, tested and adopted. It does not establish improved enrolment or learning outcomes.",
+              "zh": "这是项目团队的条件性推断：当无障碍软件经过共同设计、测试并实际采用时，可能支持残障学习者平等获得教育机会；这不证明入学或学习成效已经改善。",
+              "ms": "Ini inferens bersyarat pasukan projek: perisian yang boleh diakses mungkin menyokong akses pendidikan yang saksama untuk pelajar kurang upaya apabila direka bersama, diuji dan digunakan. Ini tidak membuktikan peningkatan penyertaan atau hasil pembelajaran."
+            },
+            "source_ids": [
+              "onet-task:15-1252.00:21662",
+              "onet-task:15-1252.00:21669",
+              "onet-skill:15-1252.00",
+              "un-target:4.5",
+              "w3c-wcag-2.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "check evidence, assumptions and unintended effects before selecting an approach.",
+              "zh": "在选择方案前核对证据、假设及可能的非预期影响。",
+              "ms": "menyemak bukti, andaian dan kesan yang tidak dijangka sebelum memilih pendekatan."
+            }
+          }
+        ],
+        "skill_03": [
+          {
+            "sdg_id": "4",
+            "target_id": "4.5",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "In an educational product context, a software developer can build and test screen-reader-compatible learning interfaces and accessible course content with disabled learners. Accessibility implementation may help reduce barriers to learning access.",
+              "zh": "在教育产品场景中，软件开发人员可与残障学习者共同开发并测试兼容屏幕阅读器的学习界面和无障碍课程内容。落实无障碍设计可能帮助减少学习障碍。",
+              "ms": "Dalam konteks produk pendidikan, pembangun perisian boleh membina dan menguji antara muka pembelajaran serta kandungan kursus yang serasi dengan pembaca skrin bersama pelajar kurang upaya. Pelaksanaan kebolehcapaian mungkin membantu mengurangkan halangan pembelajaran."
+            },
+            "contribution": {
+              "en": "This is a conditional project-team inference: accessible software may support equal access to education for learners with disabilities when it is co-designed, tested and adopted. It does not establish improved enrolment or learning outcomes.",
+              "zh": "这是项目团队的条件性推断：当无障碍软件经过共同设计、测试并实际采用时，可能支持残障学习者平等获得教育机会；这不证明入学或学习成效已经改善。",
+              "ms": "Ini inferens bersyarat pasukan projek: perisian yang boleh diakses mungkin menyokong akses pendidikan yang saksama untuk pelajar kurang upaya apabila direka bersama, diuji dan digunakan. Ini tidak membuktikan peningkatan penyertaan atau hasil pembelajaran."
+            },
+            "source_ids": [
+              "onet-task:15-1252.00:21662",
+              "onet-task:15-1252.00:21669",
+              "onet-skill:15-1252.00",
+              "un-target:4.5",
+              "w3c-wcag-2.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "make and verify calculations or quantitative comparisons relevant to the task.",
+              "zh": "完成相关任务所需的计算或定量比较，并核验结果。",
+              "ms": "membuat dan menyemak pengiraan atau perbandingan kuantitatif yang berkaitan dengan tugas."
+            }
+          }
+        ],
+        "skill_04": [
+          {
+            "sdg_id": "4",
+            "target_id": "4.5",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "In an educational product context, a software developer can build and test screen-reader-compatible learning interfaces and accessible course content with disabled learners. Accessibility implementation may help reduce barriers to learning access.",
+              "zh": "在教育产品场景中，软件开发人员可与残障学习者共同开发并测试兼容屏幕阅读器的学习界面和无障碍课程内容。落实无障碍设计可能帮助减少学习障碍。",
+              "ms": "Dalam konteks produk pendidikan, pembangun perisian boleh membina dan menguji antara muka pembelajaran serta kandungan kursus yang serasi dengan pembaca skrin bersama pelajar kurang upaya. Pelaksanaan kebolehcapaian mungkin membantu mengurangkan halangan pembelajaran."
+            },
+            "contribution": {
+              "en": "This is a conditional project-team inference: accessible software may support equal access to education for learners with disabilities when it is co-designed, tested and adopted. It does not establish improved enrolment or learning outcomes.",
+              "zh": "这是项目团队的条件性推断：当无障碍软件经过共同设计、测试并实际采用时，可能支持残障学习者平等获得教育机会；这不证明入学或学习成效已经改善。",
+              "ms": "Ini inferens bersyarat pasukan projek: perisian yang boleh diakses mungkin menyokong akses pendidikan yang saksama untuk pelajar kurang upaya apabila direka bersama, diuji dan digunakan. Ini tidak membuktikan peningkatan penyertaan atau hasil pembelajaran."
+            },
+            "source_ids": [
+              "onet-task:15-1252.00:21662",
+              "onet-task:15-1252.00:21669",
+              "onet-skill:15-1252.00",
+              "un-target:4.5",
+              "w3c-wcag-2.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "implement or test a computational step that supports the task.",
+              "zh": "实现或测试支持该任务的计算步骤。",
+              "ms": "melaksanakan atau menguji langkah pengkomputeran yang menyokong tugas."
+            }
+          }
+        ],
+        "knowledge_01": [
+          {
+            "sdg_id": "4",
+            "target_id": "4.5",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "In an educational product context, a software developer can build and test screen-reader-compatible learning interfaces and accessible course content with disabled learners. Accessibility implementation may help reduce barriers to learning access.",
+              "zh": "在教育产品场景中，软件开发人员可与残障学习者共同开发并测试兼容屏幕阅读器的学习界面和无障碍课程内容。落实无障碍设计可能帮助减少学习障碍。",
+              "ms": "Dalam konteks produk pendidikan, pembangun perisian boleh membina dan menguji antara muka pembelajaran serta kandungan kursus yang serasi dengan pembaca skrin bersama pelajar kurang upaya. Pelaksanaan kebolehcapaian mungkin membantu mengurangkan halangan pembelajaran."
+            },
+            "contribution": {
+              "en": "This is a conditional project-team inference: accessible software may support equal access to education for learners with disabilities when it is co-designed, tested and adopted. It does not establish improved enrolment or learning outcomes.",
+              "zh": "这是项目团队的条件性推断：当无障碍软件经过共同设计、测试并实际采用时，可能支持残障学习者平等获得教育机会；这不证明入学或学习成效已经改善。",
+              "ms": "Ini inferens bersyarat pasukan projek: perisian yang boleh diakses mungkin menyokong akses pendidikan yang saksama untuk pelajar kurang upaya apabila direka bersama, diuji dan digunakan. Ini tidak membuktikan peningkatan penyertaan atau hasil pembelajaran."
+            },
+            "source_ids": [
+              "onet-task:15-1252.00:21662",
+              "onet-task:15-1252.00:21669",
+              "onet-skill:15-1252.00",
+              "un-target:4.5",
+              "w3c-wcag-2.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use relevant computer concepts when carrying out the occupational task.",
+              "zh": "执行该职业任务时运用相关计算机知识。",
+              "ms": "menggunakan pengetahuan komputer yang berkaitan semasa menjalankan tugas pekerjaan."
+            }
+          }
+        ],
+        "knowledge_02": [
+          {
+            "sdg_id": "4",
+            "target_id": "4.5",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "In an educational product context, a software developer can build and test screen-reader-compatible learning interfaces and accessible course content with disabled learners. Accessibility implementation may help reduce barriers to learning access.",
+              "zh": "在教育产品场景中，软件开发人员可与残障学习者共同开发并测试兼容屏幕阅读器的学习界面和无障碍课程内容。落实无障碍设计可能帮助减少学习障碍。",
+              "ms": "Dalam konteks produk pendidikan, pembangun perisian boleh membina dan menguji antara muka pembelajaran serta kandungan kursus yang serasi dengan pembaca skrin bersama pelajar kurang upaya. Pelaksanaan kebolehcapaian mungkin membantu mengurangkan halangan pembelajaran."
+            },
+            "contribution": {
+              "en": "This is a conditional project-team inference: accessible software may support equal access to education for learners with disabilities when it is co-designed, tested and adopted. It does not establish improved enrolment or learning outcomes.",
+              "zh": "这是项目团队的条件性推断：当无障碍软件经过共同设计、测试并实际采用时，可能支持残障学习者平等获得教育机会；这不证明入学或学习成效已经改善。",
+              "ms": "Ini inferens bersyarat pasukan projek: perisian yang boleh diakses mungkin menyokong akses pendidikan yang saksama untuk pelajar kurang upaya apabila direka bersama, diuji dan digunakan. Ini tidak membuktikan peningkatan penyertaan atau hasil pembelajaran."
+            },
+            "source_ids": [
+              "onet-task:15-1252.00:21662",
+              "onet-task:15-1252.00:21669",
+              "onet-skill:15-1252.00",
+              "un-target:4.5",
+              "w3c-wcag-2.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "apply mathematical concepts to interpret or verify task results.",
+              "zh": "运用数学概念解释或核验任务结果。",
+              "ms": "menggunakan konsep matematik untuk mentafsir atau mengesahkan hasil tugas."
+            }
+          }
+        ]
+      },
+      "plan_area_ids": [
+        "skill_01",
+        "skill_03",
+        "skill_04",
+        "knowledge_01",
+        "knowledge_02"
+      ]
     },
     "17-2199.03": {
       "status": "analyst_reviewed",
@@ -2987,6 +3489,55 @@
       "knowledge_07",
       "skill_05"
     ],
-    "17-2199.03": []
+    "17-2199.03": [],
+    "15-1252.00": [],
+    "15-2051.00": []
+  },
+  "targets": {
+    "3.4": {
+      "en": "By 2030, reduce by one third premature mortality from non-communicable diseases through prevention and treatment and promote mental health and well-being.",
+      "zh": "到2030年，通过预防和治疗，将非传染性疾病导致的过早死亡减少三分之一，并促进心理健康和福祉。",
+      "ms": "Menjelang 2030, mengurangkan sebanyak satu pertiga kematian pramatang akibat penyakit tidak berjangkit melalui pencegahan dan rawatan serta menggalakkan kesihatan mental dan kesejahteraan."
+    },
+    "4.5": {
+      "en": "By 2030, eliminate gender disparities in education and ensure equal access to all levels of education and vocational training for vulnerable people, including persons with disabilities.",
+      "zh": "到2030年，消除教育中的性别差异，确保弱势群体（包括残障人士）平等获得各级教育和职业培训。",
+      "ms": "Menjelang 2030, menghapuskan jurang gender dalam pendidikan dan memastikan akses sama rata kepada semua peringkat pendidikan serta latihan vokasional bagi golongan rentan, termasuk orang kurang upaya."
+    },
+    "6.3": {
+      "en": "By 2030, improve water quality by reducing pollution, eliminating dumping, minimizing hazardous chemical releases, halving untreated wastewater and increasing recycling and safe reuse.",
+      "zh": "到2030年，通过减少污染、消除倾倒、尽量减少有害化学物质排放、将未经处理的废水比例减半，并大幅增加回收和安全再利用，改善水质。",
+      "ms": "Menjelang 2030, meningkatkan kualiti air dengan mengurangkan pencemaran, menghapuskan pembuangan, meminimumkan pelepasan bahan kimia berbahaya, mengurangkan separuh air sisa tidak dirawat serta meningkatkan kitar semula dan guna semula yang selamat."
+    },
+    "7.3": {
+      "en": "By 2030, double the global rate of improvement in energy efficiency.",
+      "zh": "到2030年，使全球能源效率改善速度提高一倍。",
+      "ms": "Menjelang 2030, menggandakan kadar peningkatan kecekapan tenaga global."
+    },
+    "9.1": {
+      "en": "Develop quality, reliable, sustainable and resilient infrastructure, including regional and transborder infrastructure, to support economic development and human well-being, with affordable and equitable access for all.",
+      "zh": "建设优质、可靠、可持续且有韧性的基础设施（包括区域和跨境基础设施），支持经济发展与人类福祉，并确保人人可负担且公平地使用。",
+      "ms": "Membangunkan infrastruktur berkualiti, boleh dipercayai, mampan dan berdaya tahan, termasuk infrastruktur serantau dan rentas sempadan, untuk menyokong pembangunan ekonomi dan kesejahteraan manusia dengan akses yang mampu dibayar dan saksama untuk semua."
+    },
+    "9.4": {
+      "en": "By 2030, upgrade infrastructure and retrofit industries to make them sustainable, with increased resource-use efficiency and greater adoption of clean and environmentally sound technologies and processes.",
+      "zh": "到2030年，升级基础设施并改造工业，使其更可持续，提高资源利用效率，并更多采用清洁且环境友好的技术和工艺。",
+      "ms": "Menjelang 2030, menaik taraf infrastruktur dan mengubah suai industri supaya mampan, dengan kecekapan penggunaan sumber yang lebih tinggi serta penggunaan teknologi dan proses yang bersih dan mesra alam."
+    },
+    "12.2": {
+      "en": "By 2030, achieve the sustainable management and efficient use of natural resources.",
+      "zh": "到2030年，实现自然资源的可持续管理和高效利用。",
+      "ms": "Menjelang 2030, mencapai pengurusan mampan dan penggunaan sumber semula jadi yang cekap."
+    },
+    "12.4": {
+      "en": "By 2020, achieve the environmentally sound management of chemicals and all wastes throughout their life cycle and significantly reduce their release to air, water and soil.",
+      "zh": "到2020年，按照商定的国际框架，在整个生命周期内实现化学品和所有废弃物的环境友好型管理，并大幅减少其向空气、水和土壤的释放。",
+      "ms": "Menjelang 2020, mencapai pengurusan bahan kimia dan semua sisa yang mesra alam sepanjang kitar hayatnya serta mengurangkan dengan ketara pelepasannya ke udara, air dan tanah."
+    },
+    "12.6": {
+      "en": "Encourage companies, especially large and transnational companies, to adopt sustainable practices and to integrate sustainability information into their reporting cycle.",
+      "zh": "鼓励企业（尤其是大型和跨国企业）采用可持续做法，并将可持续发展信息纳入其报告周期。",
+      "ms": "Menggalakkan syarikat, terutamanya syarikat besar dan transnasional, mengamalkan amalan mampan dan memasukkan maklumat kemampanan dalam kitaran pelaporan mereka."
+    }
   }
 }

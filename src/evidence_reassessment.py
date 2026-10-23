@@ -166,14 +166,14 @@ def render_evidence_reassessment(st: Any, assessment: dict, official_loader: Cal
         changes = []
         for row in rows:
             old = prior[row['code']]
-            for scenario in ('moderate', 'fast'):
-                for kind in ('score', 'rank'):
-                    before = old[scenario].value if kind == 'score' else old[scenario + '_rank']
-                    after = row[scenario].value if kind == 'score' else row[scenario + '_rank']
-                    changes.append({'Career': career_name(row['code'], row['title']), 'Measure': scenario.title() + ' ' + kind,
-                                    'Previous': before if before is not None else 'Unavailable',
-                                    'Current': after if after is not None else 'Unavailable',
-                                    'Change': after - before if before is not None and after is not None else 'Unavailable'})
+            for kind in ('score', 'rank'):
+                before = old['moderate'].value if kind == 'score' else old['moderate_rank']
+                after = row['moderate'].value if kind == 'score' else row['moderate_rank']
+                changes.append({'Career': career_name(row['code'], row['title']),
+                                'Measure': 'Matched to your profile ' + kind,
+                                'Previous': before if before is not None else 'Unavailable',
+                                'Current': after if after is not None else 'Unavailable',
+                                'Change': after - before if before is not None and after is not None else 'Unavailable'})
         with st.expander(tr('Trend refresh · previous / current')):
             st.caption(tr('Same confirmed profile and synthetic requirements; only trend snapshots differ. Ranks cover available careers only.'))
             st.table(table_text(changes))
@@ -184,16 +184,13 @@ def render_evidence_reassessment(st: Any, assessment: dict, official_loader: Cal
                 reasons = tuple(dict.fromkeys((*role.get('data_issues', []), *official_row['moderate'].issues)))
                 if reasons:
                     st.warning(translate_error(career_name(role['code'], role['title']) + tr(' · Official ranking blocked: ') + '; '.join(reasons)))
-    scenario_label = localized_selectbox(st, tr('Scenario for career-switch suggestion'), ('Moderate', 'Fast disruption'),
-                                  key='evidence_scenario', format_func=translated_options())
-    scenario = 'moderate' if scenario_label == 'Moderate' else 'fast'
-    ranked = [row for row in rows if row[scenario + '_rank'] is not None]
+    ranked = [row for row in rows if row['moderate_rank'] is not None]
     selected = st.session_state.get('learning_role') or assessment.get('selected_role')
     if ranked and selected:
-        top = min(ranked, key=lambda row: row[scenario + '_rank'])['code']
+        top = min(ranked, key=lambda row: row['moderate_rank'])['code']
         if top != selected:
-            st.info(tr('The current {scenario} ranking favours {career}. Your selected career and plan remain unchanged until you confirm a switch.', scenario=display_text(scenario_label), career=names[top]))
+            st.info(tr('The current profile-matched ranking favours {career}. Your selected career and plan remain unchanged until you confirm a switch.', career=names[top]))
             if st.button(tr('Confirm switch to ') + names[top], key='evidence_confirm_switch'):
                 confirm_career_switch(st.session_state, top)
-    st.caption(tr('Evidence changes affect T and scenario scores, not skill gaps. Plans change only when you confirm a different career or edit your profile/time budget. Equal or clipped counts may leave ranks unchanged.'))
+    st.caption(tr('Evidence changes affect T and the profile-match score, not skill gaps. Plans change only when you confirm a different career or edit your profile/time budget. Equal or clipped counts may leave ranks unchanged.'))
     return rows

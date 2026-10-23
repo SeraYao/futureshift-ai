@@ -61,8 +61,11 @@ def readable_plan(assessment: dict, plan: dict, completion: dict, labels: dict) 
              tr('Career ID: {code} · Plan ID: {plan}', code=role['code'], plan=plan['id']),
              role['identity_source_url'], '', tr(OFFICIAL_NOTICE if role.get('data_status') == 'official_derived' else NOTICE),
              tr('Four weeks · {hours} hours per week', hours=plan['weekly_hours']), '',
-             tr('Learning resources are matched to stable skill IDs. Language describes the source material, not this interface. Completion does not raise match scores or prove skill mastery.'), '',
-             tr('Moderate = 85% personal fit + 15% trend; Fast = 65% personal fit + 35% trend. These are unvalidated sensitivity assumptions, not probabilities or employment forecasts.')]
+             tr('Learning resources are matched to stable skill IDs. Language describes the source material, not this interface. Completion does not raise match scores or prove skill mastery.')]
+    if role.get('data_status') == 'official_derived':
+        lines += ['', tr('Official career ordering uses personal fit only; it does not include employment-trend adjustment.')]
+    else:
+        lines += ['', tr('Matched to your profile uses the existing 85% personal-fit + 15% trend formula. This is an unvalidated prototype weighting, not a probability or employment forecast.')]
     from src.learning_plan import resources_for_plan, STAGE_INSTRUCTIONS
     resources = resources_for_plan(plan)
     if resources:
@@ -77,8 +80,10 @@ def readable_plan(assessment: dict, plan: dict, completion: dict, labels: dict) 
     source = assessment.get('recommendation_source', 'Official cross-domain careers' if role.get('data_status') == 'official_derived' else 'Synthetic demo')
     lines += ['', tr('Ranking basis: {source}', source=display_text(source))]
     row = next(row for row in assessment.get('recommendation_rows', assessment['rows']) if row['code'] == role['code'])
-    for name, score in (('Personal fit', row['P']), ('Trend signal', row['trend']['score']),
-                        ('Moderate score', row['moderate']), ('Fast score', row['fast'])):
+    score_items = [('Personal fit', row['P']), ('Trend signal', row['trend']['score'])]
+    if role.get('data_status') != 'official_derived':
+        score_items.append(('Matched to your profile', row['moderate']))
+    for name, score in score_items:
         lines.append(f"- {display_text(name)}: {score.value:.2f}" if score.value is not None else
                      f"- {display_text(name)}: {display_value('Unavailable')}")
     snapshot = assessment.get('recommendation_snapshots', {}).get(role['code'])

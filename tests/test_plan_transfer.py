@@ -211,6 +211,8 @@ class PlanTransferUITests(unittest.TestCase):
                 self.assertIn(CATALOGS[language]['Write a small program that summarizes an invented numeric list; test empty and unusual inputs.'], text)
                 self.assertIn('- [x]', text)
                 self.assertIn(CATALOGS[language]['Verified learning resources'], text)
+                self.assertIn(CATALOGS[language]['Matched to your profile'], text)
+                self.assertNotIn('Fast', text)
                 self.assertIn(CATALOGS[language]['This week: {step}'].split('{step}')[0].strip(), text)
                 for resource in json.loads(baseline)['learning_resources']:
                     self.assertIn(resource['url'], text)

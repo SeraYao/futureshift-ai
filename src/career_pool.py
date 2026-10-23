@@ -5,6 +5,7 @@ from src.i18n import tr, career_name, table_text, display_text, localized_select
 from src.official_labor_evidence import (
     BLS_TABLE_URL, CAREERS as LABOR_CAREERS, exact_comparison, load_snapshot, refresh_snapshot,
 )
+from src.sdg import render_sdg_result_card
 
 CATALOG_VERSION = 'official-cross-domain-v1'
 
@@ -108,6 +109,8 @@ def render_official(st, profile, draft, dataset, labels, render_role, client_fac
             'Personal fit': row['P'].value, 'Rank': row['personal_rank'],
         })
     st.table(table_text(coverage_rows))
+    for row in eligible:
+        render_sdg_result_card(st, row['code'], row['title'])
     render_official_labor_evidence(st, eligible, dataset)
     roles = {r['code']: r for r in dataset['roles']}
     for row in eligible:
@@ -130,9 +133,9 @@ def render_official(st, profile, draft, dataset, labels, render_role, client_fac
 
 
 def render_official_labor_evidence(st, rows, dataset):
-    """Display BLS source evidence and a separate, exact-match sensitivity cohort."""
+    """Display one exact-match BLS Result and a folded weight-sensitivity check."""
     st.subheader(tr('U.S. employment projections'))
-    st.caption(tr('These are U.S. employment projections, not observed history or Malaysian hiring demand. All six careers retain their personal-fit ranking. Only exact SOC matches enter this three-career sensitivity comparison.'))
+    st.caption(tr('Career directory, profile matching, BLS evidence and SDG links'))
     st.caption(tr('This evidence does not track AI capability progress. AI exposure is separate from replacement risk and is not included in these calculations.'))
     if st.button(tr('Refresh official employment evidence'), key='refresh_official_employment_evidence'):
         try:
@@ -158,28 +161,43 @@ def render_official_labor_evidence(st, rows, dataset):
                   v0=snapshot['release_date'], v1=snapshot['period'], v2=snapshot['geography'],
                   v3=snapshot['retrieved_at']))
     st.markdown(tr('[BLS occupational projections](https://www.bls.gov/emp/tables/occupational-projections-and-characteristics.htm) · [O*NET-SOC 2019 to 2018 SOC crosswalk](https://www.onetcenter.org/taxonomy/2019/soc.html)'))
-    st.info(tr('Sensitivity analysis only: the two columns combine personal fit and one BLS employment-projection indicator using stated weights. They are not two forecasts, probability estimates, or replacements for the six-career personal-fit ranking.'))
     comparison = exact_comparison(rows, snapshot)
     titles = {role['code']: role['title'] for role in dataset['roles']}
     table = []
     for item in comparison:
-        a, b = item['scenarios']
+        result = item['result']
         table.append({
             'Career': career_name(item['code'], titles[item['code']]),
             'Personal fit P (0–100)': round(item['personal_fit'], 2),
             'BLS projected employment change (%)': item['projection_percent'],
-            'Projection normalized within these 3 roles (0–100)': round(item['normalized_projection'], 2),
-            'Scenario A personal contribution (80% P)': round(a['personal_contribution'], 2),
-            'Scenario A BLS contribution (20%)': round(a['projection_contribution'], 2),
-            'Scenario A combined (80% P / 20% BLS)': round(a['combined'], 2),
-            'Scenario A rank': a['rank'],
-            'Scenario B personal contribution (60% P)': round(b['personal_contribution'], 2),
-            'Scenario B BLS contribution (40%)': round(b['projection_contribution'], 2),
-            'Scenario B combined (60% P / 40% BLS)': round(b['combined'], 2),
-            'Scenario B rank': b['rank'],
+            'Normalized BLS evidence (0–100)': round(item['normalized_projection'], 2),
+            'Personal contribution (80%)': round(result['personal_contribution'], 2),
+            'BLS contribution (20%)': round(result['projection_contribution'], 2),
+            'Result': round(result['combined'], 2),
+            'Result rank': result['rank'],
         })
+    st.markdown('#### ' + tr('Result'))
+    st.caption(tr('Result formula: 80% × personal fit + 20% × normalized BLS employment-projection evidence. The 20% weight is an unvalidated product assumption, not an empirically calibrated weight or a probability. This three-career cohort is not mixed with the other careers, which retain personal-fit rankings only.'))
     st.table(table_text(table))
-    st.caption(tr('Normalization: 100 × (x − minimum) ÷ (maximum − minimum), calculated only across these three exact SOC matches. If all values tie, each normalized value is 50. Weights 20% and 40% are explicit sensitivity assumptions, not empirically calibrated. Contributions: (1 − weight) × personal fit P and weight × normalized BLS indicator.'))
+    st.caption(tr('Normalization: 100 × (x − minimum) ÷ (maximum − minimum), calculated only across these three exact SOC matches. If all values tie, each normalized value is 50. Contributions shown above are 80% × P and 20% × normalized BLS evidence.'))
+
+    with st.expander(tr('Assumption variation test')):
+        st.caption(tr('This test raises the external-evidence weight to 40% (60% personal fit / 40% normalized BLS evidence) to check ranking sensitivity. It is not a second future scenario or forecast, and it does not replace the Result above.'))
+        result_ranks = {item['code']: item['result']['rank'] for item in comparison}
+        sensitivity_ranks = {item['code']: item['sensitivity']['rank'] for item in comparison}
+        if result_ranks == sensitivity_ranks:
+            st.info(tr('Rankings are stable within the current assumption range.'))
+        else:
+            st.caption(tr('A positive rank movement means the career moved up under the 40% sensitivity test.'))
+            sensitivity_rows = []
+            for item in comparison:
+                sensitivity_rows.append({
+                    'Career': career_name(item['code'], titles[item['code']]),
+                    'Result rank (20%)': item['result']['rank'],
+                    'Rank at 40% evidence weight': item['sensitivity']['rank'],
+                    'Rank movement': item['sensitivity']['rank_change'],
+                })
+            st.table(table_text(sensitivity_rows))
 
     aggregate_codes = [code for code, career in LABOR_CAREERS.items() if career['mapping'] != 'exact']
     st.info(tr('Career-level BLS evidence is unavailable for: {careers}. Any aggregate rows below are context only and do not enter the comparison.',
@@ -213,7 +231,7 @@ def render_official_labor_evidence(st, rows, dataset):
                         period=snapshot['period'], value=projection['employment_change_percent']))
             st.markdown(f"[BLS source]({BLS_TABLE_URL}) · [O*NET-SOC crosswalk]({snapshot['crosswalk']['source_url']})")
 
-    st.markdown('#### ' + tr('Choose from this sensitivity comparison'))
+    st.markdown('#### ' + tr('Choose from this Result'))
     codes = [item['code'] for item in comparison]
     selected = localized_selectbox(
         st, tr('Career from the comparison'), codes,

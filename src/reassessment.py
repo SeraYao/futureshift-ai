@@ -50,9 +50,8 @@ def compare_results(before: list[dict], after: list[dict]) -> list[dict]:
             ('Interest similarity', previous['I'].value, row['I'].value),
             ('Personal fit', previous['P'].value, row['P'].value),
             ('Trend signal', previous['trend']['score'].value, row['trend']['score'].value),
-            *[(scenario.title() + ' ' + kind, previous[scenario + '_rank'] if kind == 'rank'
-               else previous[scenario].value, row[scenario + '_rank'] if kind == 'rank'
-               else row[scenario].value) for scenario in ('moderate', 'fast') for kind in ('rank', 'score')],
+            ('Matched to your profile score', previous['moderate'].value, row['moderate'].value),
+            ('Matched to your profile rank', previous['moderate_rank'], row['moderate_rank']),
         ]:
             measures[name] = {'before': a, 'after': b, 'delta': None if a is None or b is None else b-a,
                               'status': 'Unavailable' if a is None or b is None else 'Unchanged' if a == b else 'Changed'}

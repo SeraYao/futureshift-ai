@@ -8,12 +8,12 @@ from pathlib import Path
 from typing import Any
 
 from src.scoring import (
-    FAST_LAMBDA, MODERATE_LAMBDA, SCORING_VERSION, Score, github_trend, rank_roles,
+    MODERATE_LAMBDA, SCORING_VERSION, Score, github_trend, rank_roles,
 )
 
 from src.onboarding import render_onboarding
 from src.pathway import render_pathway
-from src.sdg import render_sdg_details, render_sdg_preview
+from src.sdg import render_sdg_details, render_sdg_preview, render_sdg_result_card
 
 from src.github_trends import (
     GitHubTrends, MAPPING_RECORDED_ON, MAPPING_STATUS, ROLE_TOPICS, evidence_score, shared_client,
@@ -211,11 +211,10 @@ def render_role(st: Any, row: dict, role: dict, profile: dict | None = None, *, 
         p, t = row['P'].value, row['trend']['score'].value
         direction = 'raises' if t > p else 'lowers' if t < p else 'leaves unchanged'
         if real_trends:
-            st.write(tr('Personal fit P: {personal:.2f}; GitHub activity T: {trend:.2f}. Moderate trend adjustment λ×(T−P): {moderate:+.2f}; Fast: {fast:+.2f}.', personal=p, trend=t, moderate=row['moderate'].value-p, fast=row['fast'].value-p))
+            st.write(tr('Personal fit P: {personal:.2f}; GitHub activity T: {trend:.2f}; trend adjustment λ×(T−P): {adjustment:+.2f}.', personal=p, trend=t, adjustment=row['moderate'].value-p))
         else:
-            st.write(tr('Your skill and knowledge coverage, together with your RIASEC similarity, produce a personal fit of {v0:.2f}. The synthetic technical activity score is {v1:.2f}. Giving that signal more weight {v2} this role’s score in the fast scenario.', v0=p, v1=t, v2=display_text(direction)))
-        st.write(tr('Moderate: **{v0}** (rank {v1}) · Fast: **{v2}** (rank {v3})', v0=display_value(display_score(row['moderate'])), v1=row['moderate_rank'], v2=display_value(display_score(row['fast'])), v3=row['fast_rank']))
-        st.caption(tr('Scenario sensitivity · Fast − Moderate: {v0:+.2f} points · Rank movement: {v1:+d} (positive means higher in Fast).', v0=row['score_delta'], v1=row['rank_delta']))
+            st.write(tr('Your skill and knowledge coverage, together with your RIASEC similarity, produce a personal fit of {v0:.2f}. The synthetic technical activity score is {v1:.2f}; the displayed profile match uses the existing 85% personal-fit and 15% trend weights.', v0=p, v1=t))
+        st.write(tr('Matched to your profile: **{v0}** (rank {v1})', v0=display_value(display_score(row['moderate'])), v1=row['moderate_rank']))
     elif not official:
         for issue in dict.fromkeys(row['moderate'].issues):
             st.warning(translate_error(tr('Cannot rank this role: ') + issue))
@@ -345,24 +344,20 @@ def render_simulation(st: Any) -> None:
         st.json(profile, expanded=False)
     rows = rank_roles(profile, roles, trends)
     eligible = [row for row in rows if row['moderate_rank'] is not None]
-    st.subheader(tr('02 / Two scenarios. More perspective.'))
-    st.write(tr('Both scenarios use the same confirmed synthetic profile, requirements and trends. Only the trend weight changes. Scores describe prototype fit, not career outlook probabilities.'))
+    st.subheader(tr('Matched to your profile'))
+    st.write(tr('This synthetic demonstration uses the confirmed profile and fixed demo inputs. The existing result is 85% personal fit + 15% synthetic technical activity; it is not a career-outlook probability or employment forecast.'))
     if len(eligible) < 5:
         st.info(translate_error(tr('{v0} of {v1} demo roles can be ranked; showing all available results rather than inventing five recommendations.', v0=len(eligible), v1=len(roles))))
-    for column, scenario, label, weight in zip(st.columns(2), ('moderate', 'fast'),
-            ('Moderate', 'Fast disruption'), (MODERATE_LAMBDA, FAST_LAMBDA)):
-        with column:
-            st.markdown(tr('### {v0}', v0=display_text(label)))
-            st.caption(tr('{v0:.0%} personal fit + {v1:.0%} technical activity', v0=1 - weight, v1=weight))
-            selected = sorted(eligible, key=lambda r: r[scenario + '_rank'])[:5]
-            for row in selected:
-                st.markdown(tr('**{v0:02d} · {v1}**', v0=row[scenario + '_rank'], v1=career_name(row['code'], row['title'])))
-                st.progress(row[scenario].value / 100,
-                            text=tr('{v0:.2f} / 100 · {v1}', v0=row[scenario].value, v1=row['code']))
-                render_sdg_preview(st, row['code'])
+    st.caption(tr('{v0:.0%} personal fit + {v1:.0%} technical activity',
+                  v0=1 - MODERATE_LAMBDA, v1=MODERATE_LAMBDA))
+    selected = sorted(eligible, key=lambda r: r['moderate_rank'])[:5]
+    for row in selected:
+        st.markdown(tr('**{v0:02d} · {v1}**', v0=row['moderate_rank'], v1=career_name(row['code'], row['title'])))
+        st.progress(row['moderate'].value / 100,
+                    text=tr('{v0:.2f} / 100 · {v1}', v0=row['moderate'].value, v1=row['code']))
+        render_sdg_result_card(st, row['code'], row['title'])
     st.subheader(tr('03 / Understand each match'))
-    shown = {r['code'] for scenario in ('moderate', 'fast')
-             for r in sorted(eligible, key=lambda r: r[scenario + '_rank'])[:5]}
+    shown = {row['code'] for row in selected}
     roles_by_code = {role['code']: role for role in roles}
     for row in rows:
         if row['code'] in shown or row['moderate_rank'] is None:
@@ -375,9 +370,8 @@ def render_simulation(st: Any) -> None:
                 'P = 0.70 × S_capability + 0.30 × I\n'
                 'T_k = 50 + 50 × clip(log2((Recent + 20)/(Previous + 20)), -1, 1)\n'
                 'T = weighted average of mapped topic scores\n'
-                'Match = (1 − lambda) × P + lambda × T\n'
-                'Moderate: lambda = 0.15 | Fast disruption: lambda = 0.35')
-        st.write(tr('These weights and smoothing parameter 20 are unvalidated prototype assumptions. Technical activity is not job demand, wages or employment growth. Self-ratings and occupational requirements are different measurement systems; normalization does not validate their equivalence. Scenario sensitivity is not statistical confidence. Missing inputs block complete ranking; no values are imputed.'))
+                'Matched to your profile = 0.85 × P + 0.15 × T')
+        st.write(tr('These weights and smoothing parameter 20 are unvalidated prototype assumptions. Technical activity is not job demand, wages or employment growth. Self-ratings and occupational requirements are different measurement systems; normalization does not validate their equivalence. Missing inputs block complete ranking; no values are imputed.'))
         st.write(tr('Scoring in this mode uses only the three demo JSON files. SDG associations are separate explanatory metadata and do not affect scores. All edits are local simulation inputs; the original fixtures are not overwritten. Career choices remain yours.'))
 
 

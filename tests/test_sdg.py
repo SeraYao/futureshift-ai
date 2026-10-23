@@ -7,7 +7,8 @@ import app
 from src.i18n import CATALOGS, LANGUAGES, set_language, validate_catalogs
 from src.learning_plan import PRACTICE
 from src.official_labor_evidence import CAREERS
-from src.sdg import CATALOG, associations, skill_associations, render_sdg_details, render_local_sdg
+from src.sdg import (CATALOG, CAREER_IDS, associations, skill_associations,
+                     render_sdg_details, render_local_sdg, validate_career_coverage)
 from src.scoring import rank_roles
 
 
@@ -16,22 +17,30 @@ class SDGDataTests(unittest.TestCase):
         set_language('en')
     def test_six_official_roles_and_plan_skill_ids_are_reviewed_or_explicitly_unmapped(self):
         validate_catalogs()
-        self.assertEqual(set(CAREERS), set(CATALOG['unmapped_skill_ids']))
+        displayed_codes = set(CAREERS) | {'15-1252.00', '15-2051.00'}
+        self.assertEqual(displayed_codes, set(CATALOG['unmapped_skill_ids']))
+        self.assertEqual(CAREER_IDS, {r['code'] for r in app.load_onet()['roles']})
+        self.assertEqual(validate_career_coverage(), CAREER_IDS)
         roles={role['code']:role for role in app.load_onet()['roles']}
         self.assertEqual(len(CAREERS),6)
-        for code in CAREERS:
+        for code in displayed_codes:
             record=CATALOG['roles'][code]
             self.assertEqual(record['status'],'analyst_reviewed')
             self.assertTrue(associations(code))
+            self.assertTrue(record['mappings'])
+            self.assertEqual(record['mappings'][0]['source_checked_on'], '2026-10-23')
             mapped=set(record['skills'])
             unmapped=set(CATALOG['unmapped_skill_ids'][code])
-            role_areas=set(roles[code]['skills'])|set(roles[code]['knowledge'])
+            role_areas=(set(roles[code]['skills'])|set(roles[code]['knowledge'])) if code in CAREERS else set(record.get('plan_area_ids', []))
             possible=set()
-            for group in ('skills','knowledge'):
-                for area,item in roles[code][group].items():
-                    if area in PRACTICE and not item.get('issues') and not any(
-                            source.get('issues') for source in item.get('sources',{}).values()):
-                        possible.add(area)
+            if code in CAREERS:
+                for group in ('skills','knowledge'):
+                    for area,item in roles[code][group].items():
+                        if area in PRACTICE and not item.get('issues') and not any(
+                                source.get('issues') for source in item.get('sources',{}).values()):
+                            possible.add(area)
+            else:
+                possible=set(record.get('plan_area_ids', []))
             self.assertEqual(mapped|unmapped,possible)
             self.assertFalse(mapped & unmapped)
             for area in mapped:
@@ -60,9 +69,9 @@ class SDGDataTests(unittest.TestCase):
         self.assertIn(code, mapping['source_ids'][0])
 
     def test_every_target_is_in_the_official_allowlist_and_has_target_link(self):
-        expected={'6.3','7.3','9.1','9.4','12.2','12.4','12.6'}
+        expected={'3.4','4.5','6.3','7.3','9.1','9.4','12.2','12.4','12.6'}
         found=set()
-        for code in CAREERS:
+        for code in CAREER_IDS:
             for mapping in associations(code):
                 found.add(mapping['target_id'])
             for area in CATALOG['roles'][code]['skills']:
@@ -102,12 +111,64 @@ class SDGPageTests(unittest.TestCase):
         return page
 
     def test_main_flow_uses_local_mappings_without_ai_configuration(self):
-        page=self.page();page.button(key='pathway_sample').click().run()
+        from streamlit.testing.v1 import AppTest
+        page=AppTest.from_file(str(app.ROOT/'app.py')).run()
+        page.button(key='scenario_explore').click().run()
+        page.button(key='pathway_sample').click().run()
         self.assertFalse(page.exception)
-        self.assertEqual(len([m.value for m in page.markdown if 'data-sdg-preview=' in m.value]),6)
+        result_cards=[m.value for m in page.markdown if 'data-sdg-result=' in m.value]
+        self.assertEqual(len(result_cards),6)
+        self.assertTrue(all(any(code in text for text in result_cards) for code in CAREERS))
         self.assertTrue(any('Reviewed SDG associations' in m.value for m in page.markdown))
         self.assertFalse(any('SDG AI is not configured' in e.value for e in page.info))
         self.assertFalse(any('Generate SDG analysis' in b.label for b in page.button))
+        for language in LANGUAGES:
+            page.selectbox(key='ui_language').set_value(language).run()
+            self.assertFalse(page.exception)
+            visible='\n'.join(str(item.value) for kind in ('markdown','text','caption')
+                               for item in page.get(kind))
+            cards=[item.value for item in page.markdown if 'data-sdg-result=' in item.value]
+            self.assertEqual(len(cards),6)
+            mapping=associations('15-2031.00')[0]
+            self.assertIn(mapping['contribution'][language],visible)
+            goal=CATALOG['goals'][mapping['sdg_id']]['name']
+            self.assertIn(CATALOGS[language][goal],visible)
+            self.assertNotIn('SDG mapping pending validation',visible)
+
+    def test_synthetic_trend_demo_uses_stable_ids_and_local_sdg_mappings(self):
+        from streamlit.testing.v1 import AppTest
+        page=AppTest.from_file(str(app.ROOT/'app.py')).run()
+        page.radio(key='page_mode').set_value('Synthetic simulation').run()
+        page.checkbox(key='simulation_confirm').check()
+        page.button[0].click().run()
+        self.assertFalse(page.exception)
+        previews='\n'.join(x.value for x in page.markdown if 'data-sdg-result=' in x.value)
+        for code in ('15-2051.00','15-2031.00','15-1252.00'):
+            self.assertIn(f'data-sdg-result="{code}"',previews)
+            self.assertTrue(associations(code))
+        all_text='\n'.join(x.value for x in page.markdown)
+        self.assertIn('4.5',all_text)
+        self.assertIn('7.3',all_text)
+        self.assertNotIn('No reviewed SDG mapping available',all_text)
+        for language in LANGUAGES:
+            page.selectbox(key='ui_language').set_value(language).run()
+            self.assertFalse(page.exception)
+            localized='\n'.join(str(item.value) for kind in ('markdown','text','caption')
+                                 for item in page.get(kind))
+            for code in ('15-2051.00','15-2031.00','15-1252.00'):
+                self.assertIn(code,'\n'.join(item.value for item in page.markdown
+                                              if 'data-sdg-result=' in item.value))
+            mapping=associations('15-2051.00')[0]
+            self.assertIn(mapping['contribution'][language],localized)
+
+    def test_synthetic_career_catalog_places_all_three_mappings_by_results(self):
+        page=self.page();page.button(key='pathway_sample').click().run()
+        self.assertFalse(page.exception)
+        self.assertEqual(page.radio(key='career_catalog_mode').value,'Synthetic demo')
+        cards='\n'.join(x.value for x in page.markdown if 'data-sdg-result=' in x.value)
+        for code in ('15-2051.00','15-2031.00','15-1252.00'):
+            self.assertIn(code,cards)
+            self.assertTrue(associations(code))
 
     def test_local_mappings_and_expanded_sources_render_in_all_languages(self):
         from streamlit.testing.v1 import AppTest
@@ -117,7 +178,7 @@ class SDGPageTests(unittest.TestCase):
             page.selectbox(key='ui_language').set_value(language).run()
             self.assertFalse(page.exception)
             self.assertTrue(any(CATALOGS[language]['Reviewed SDG associations'] in x.value for x in page.markdown))
-            for code in CAREERS:
+            for code in CAREER_IDS:
                 role_block=next(item for item in page.expander if item.label.startswith(code+' · '))
                 text='\n'.join(x.value for x in role_block.markdown)
                 for mapping in associations(code):
@@ -125,6 +186,23 @@ class SDGPageTests(unittest.TestCase):
                     source=CATALOG['sources'][mapping['source_ids'][0]]
                     self.assertIn(source['url'],text)
             self.assertNotIn('AI analysis · career and skill links to SDG targets','\n'.join(x.value for x in page.markdown))
+
+    def test_software_and_data_science_demo_ids_show_reviewed_local_mappings(self):
+        from unittest.mock import MagicMock
+        for language in LANGUAGES:
+            set_language(language)
+            for code, target, expected_area_ids in (
+                ('15-1252.00','4.5',{'skill_01','skill_03','skill_04','knowledge_01','knowledge_02'}),
+                ('15-2051.00','7.3',{'skill_01','skill_03','skill_04','knowledge_01','knowledge_02'}),
+            ):
+                st=MagicMock(); st.session_state={'ui_language':language}
+                render_sdg_details(st,code,{},sorted(expected_area_ids),{})
+                text='\n'.join(str(call.args[0]) for call in st.markdown.call_args_list + st.write.call_args_list)
+                self.assertIn(target,text)
+                self.assertIn(CATALOG['roles'][code]['mappings'][0]['scenario'][language],text)
+                for area in expected_area_ids:
+                    self.assertTrue(skill_associations(code,area))
+        set_language('en')
 
     def test_selected_plan_skill_has_its_own_mapping_or_explicit_gap(self):
         from unittest.mock import MagicMock

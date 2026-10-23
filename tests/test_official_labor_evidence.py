@@ -104,11 +104,59 @@ class OfficialLaborEvidenceTests(unittest.TestCase):
         a, b = {item['code']: item for item in before}, {item['code']: item for item in after}
         self.assertEqual(set(a), {'15-1212.00', '15-2031.00', '17-2081.00'})
         self.assertNotEqual(a['15-1212.00']['normalized_projection'], b['15-1212.00']['normalized_projection'])
-        self.assertNotEqual(a['17-2081.00']['scenarios'][1]['combined'],
-                            b['17-2081.00']['scenarios'][1]['combined'])
-        self.assertNotEqual(a['15-1212.00']['scenarios'][1]['rank'],
-                            b['15-1212.00']['scenarios'][1]['rank'])
+        self.assertNotEqual(a['17-2081.00']['result']['combined'],
+                            b['17-2081.00']['result']['combined'])
+        self.assertNotEqual(a['15-1212.00']['result']['rank'],
+                            b['15-1212.00']['result']['rank'])
         self.assertEqual(a['15-1212.00']['personal_fit'], b['15-1212.00']['personal_fit'])
+
+    def test_weight_sensitivity_reports_stable_and_changed_rankings(self):
+        from types import SimpleNamespace
+        rows = [{'code': code, 'P': SimpleNamespace(value=value)} for code, value in (
+            ('15-1212.00', 89.7374621023427),
+            ('15-2031.00', 81.51301495081809),
+            ('17-2081.00', 84.31462510599013),
+        )]
+        snapshot = load_snapshot()
+        stable = exact_comparison(rows, snapshot)
+        for item in stable:
+            self.assertEqual(item['result']['weight'], 0.20)
+            self.assertAlmostEqual(item['result']['personal_contribution'], 0.80 * item['personal_fit'])
+            self.assertAlmostEqual(item['result']['projection_contribution'], 0.20 * item['normalized_projection'])
+            self.assertAlmostEqual(item['result']['combined'],
+                                   item['result']['personal_contribution'] + item['result']['projection_contribution'])
+        self.assertEqual({x['result']['rank'] for x in stable},
+                         {x['sensitivity']['rank'] for x in stable})
+
+        # Controlled hypothetical personal-fit values exercise the UI's changed-rank branch.
+        changed_rows = [{'code': code, 'P': SimpleNamespace(value=value)} for code, value in (
+            ('15-1212.00', 60), ('15-2031.00', 85), ('17-2081.00', 70),
+        )]
+        changed = exact_comparison(changed_rows, snapshot)
+        self.assertNotEqual({x['code']: x['result']['rank'] for x in changed},
+                            {x['code']: x['sensitivity']['rank'] for x in changed})
+
+    def test_sensitivity_ui_explains_stability_or_only_shows_rank_delta(self):
+        from types import SimpleNamespace
+        from unittest.mock import MagicMock, patch
+        from src.career_pool import render_official_labor_evidence
+        snapshot = load_snapshot()
+        titles = [{'code': code, 'title': item['title']} for code, item in CAREERS.items()]
+        def render(values):
+            rows = [{'code': code, 'P': SimpleNamespace(value=value)} for code, value in values]
+            st = MagicMock(); st.session_state = {}
+            with patch('src.career_pool.load_snapshot', return_value=snapshot):
+                render_official_labor_evidence(st, rows, {'roles': titles})
+            return st
+        stable = render([('15-1212.00', 89.74), ('15-2031.00', 81.51), ('17-2081.00', 84.31)])
+        self.assertTrue(any('Rankings are stable within the current assumption range.' in str(call)
+                            for call in stable.info.call_args_list))
+        self.assertEqual(stable.table.call_count, 1)  # Main Result only
+        changed = render([('15-1212.00', 60), ('15-2031.00', 85), ('17-2081.00', 70)])
+        self.assertEqual(changed.table.call_count, 2)  # Result plus rank movement only
+        sensitivity_table = changed.table.call_args_list[-1].args[0]
+        self.assertEqual(set(sensitivity_table[0]), {
+            'Career', 'Result rank (20%)', 'Rank at 40% evidence weight', 'Rank movement'})
 
     def test_app_shows_three_exact_evidence_cards_and_preserves_plan_progress(self):
         from streamlit.testing.v1 import AppTest
@@ -120,7 +168,13 @@ class OfficialLaborEvidenceTests(unittest.TestCase):
         evidence = next(rows for rows in tables if rows and 'BLS projected employment change (%)' in rows[0])
         self.assertEqual(len(evidence), 3)
         self.assertEqual({row['BLS projected employment change (%)'] for row in evidence}, {21.0, 11.9, 6.3})
+        self.assertTrue(all('Result' in row and 'Personal contribution (80%)' in row
+                            and 'BLS contribution (20%)' in row for row in evidence))
+        self.assertFalse(any('Scenario A' in str(row) or 'Scenario B' in str(row) for row in evidence))
+        self.assertTrue(any('Rankings are stable within the current assumption range.' in item.value
+                            for item in page.info))
         self.assertTrue(any('Aggregate reference only' in item.label for item in page.get('expander')))
+        self.assertTrue(any('Assumption variation test' in item.label for item in page.get('expander')))
         page.selectbox(key='learning_role').set_value('15-2031.00').run()
         box = next(item for item in page.checkbox if item.key.startswith('learning_check_'))
         box.check().run()
@@ -135,6 +189,19 @@ class OfficialLaborEvidenceTests(unittest.TestCase):
             page.selectbox(key='ui_language').set_value(language).run()
             self.assertFalse(page.exception)
             self.assertEqual(page.session_state['learning_role'], '17-2081.00')
+            tables = [element.value.to_dict('records') for element in page.table
+                      if element.value is not None and len(element.value.to_dict('records'))]
+            evidence = next(table for table in tables
+                            if 'BLS projected employment change (%)' in table[0]
+                            or 'BLS 预测就业变化（%）' in table[0]
+                            or 'Perubahan pekerjaan unjuran BLS (%)' in table[0])
+            result_heading = {'en':'Result', 'zh':'结果', 'ms':'Keputusan'}[language]
+            self.assertIn(result_heading, evidence[0])
+            self.assertTrue(any(
+                {'en':'Rankings are stable within the current assumption range.',
+                 'zh':'在当前假设范围内，排名保持稳定。',
+                 'ms':'Kedudukan kekal stabil dalam julat andaian semasa.'}[language] in item.value
+                for item in page.info))
             for plan_id, completed in old_progress.items():
                 self.assertEqual(page.session_state['learning_progress'][plan_id], completed)
 

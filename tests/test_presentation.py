@@ -93,7 +93,7 @@ class VisitorPresentationTests(unittest.TestCase):
             page.button[0].click().run(timeout=30)
             self.assertFalse(page.exception)
             simulation=self.check_disclosures(page)
-            self.assertEqual(len(page.get('progress')),6)
+            self.assertEqual(len(page.get('progress')),3)
             self.assertTrue(any('synthetic demonstration data' in warning.value for warning in page.warning))
             self.assertFalse(any('Fixture snapshot:' in str(getattr(node,'value','')) for node in simulation))
             page=AppTest.from_file(str(app.ROOT/'scripts/onet_audit.py')).run(timeout=30)

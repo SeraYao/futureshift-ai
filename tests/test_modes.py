@@ -151,7 +151,7 @@ class StreamlitModeTests(unittest.TestCase):
         page.button[0].click().run(timeout=30)
         self.assertFalse(page.exception)
         before = [bar.value for bar in page.get('progress')]
-        self.assertEqual(len(before), 6)
+        self.assertEqual(len(before), 3)
         page.number_input(key='simulation_recent_synthetic-data-science').set_value(2000)
         page.button[0].click().run(timeout=30)
         self.assertFalse(page.exception)

@@ -45,8 +45,8 @@ class ComparisonTests(unittest.TestCase):
         for comparison in comparisons:
             self.assertEqual(comparison['measures']['Trend signal']['status'], 'Unchanged')
             self.assertGreater(comparison['measures']['Skills coverage']['delta'], 0)
-            self.assertIn('Moderate rank', comparison['measures'])
-            self.assertIn('Fast score', comparison['measures'])
+            self.assertIn('Matched to your profile rank', comparison['measures'])
+            self.assertIn('Matched to your profile score', comparison['measures'])
         new_row = next(row for row in new_rows if row['code'] == role['code'])
         changes = task_changes(plan, build_plan(new_row, role, 10))
         self.assertTrue(changes['removed'])
@@ -63,7 +63,7 @@ class ComparisonTests(unittest.TestCase):
         profile['riasec'] = [0] * 6
         rows = rank_roles(profile, roles['roles'], trends['topics'])
         for comparison in compare_results(rows, rows):
-            self.assertIsNone(comparison['measures']['Moderate score']['delta'])
+            self.assertIsNone(comparison['measures']['Matched to your profile score']['delta'])
             self.assertEqual(comparison['measures']['Personal fit']['status'], 'Unavailable')
             self.assertEqual(comparison['measures']['Capability']['status'], 'Unchanged')
 

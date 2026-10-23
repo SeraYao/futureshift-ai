@@ -172,10 +172,12 @@ class MainTrendPageTests(unittest.TestCase):
             self.assertEqual(old[code]['knowledge'], new[code]['knowledge'])
             if code != '15-2051.00':
                 self.assertEqual(old[code]['moderate'], new[code]['moderate'])
-        main_table = next(t.value for t in page.table if 'Moderate score' in t.value.columns)
+        main_table = next(t.value for t in page.table if 'Matched to your profile' in t.value.columns)
         ds = main_table[main_table['Career'] == 'Data Scientists'].iloc[0]
-        self.assertAlmostEqual(ds['Moderate score'], new['15-2051.00']['moderate'].value)
-        self.assertTrue(any('1. Data Scientists' in m.value for m in page.markdown))
+        self.assertAlmostEqual(ds['Matched to your profile'], new['15-2051.00']['moderate'].value)
+        self.assertFalse(any('Fast disruption' in item.label for item in page.selectbox))
+        self.assertFalse(any(item.key == 'evidence_scenario' for item in page.selectbox))
+        self.assertEqual(main_table[main_table['Career'] == 'Data Scientists'].iloc[0]['Rank'], 1)
         self.assertEqual(page.selectbox(key='learning_role').value, '15-1252.00')
         self.assertEqual(current['plans']['15-1252.00'], plan)
         self.assertTrue(any('Official ranking blocked' in w.value for w in page.warning))

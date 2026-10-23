@@ -250,11 +250,11 @@ def refresh_snapshot(path: Path = SNAPSHOT_PATH, *, fetch: Callable[[str], bytes
     return candidate
 
 
-def exact_comparison(rows: list[dict], snapshot: dict, weights: tuple[float, float] = (0.20, 0.40)) -> list[dict]:
-    """Compute transparent within-three sensitivity comparisons; no forecast or global rank."""
+def exact_comparison(rows: list[dict], snapshot: dict, sensitivity_weight: float = 0.40) -> list[dict]:
+    """Compute the single 80/20 Result plus a separate 40%-weight sensitivity test."""
     validate_snapshot(snapshot)
-    if len(weights) != 2 or any(not 0 <= w <= 1 for w in weights):
-        raise ValueError('Scenario weights must be two values between 0 and 1')
+    if not 0 <= sensitivity_weight <= 1:
+        raise ValueError('Sensitivity weight must be between 0 and 1')
     exact = [row for row in rows if row['code'] in snapshot['careers']
              and snapshot['careers'][row['code']]['mapping_precision'] == 'exact'
              and row['P'].value is not None]
@@ -268,18 +268,30 @@ def exact_comparison(rows: list[dict], snapshot: dict, weights: tuple[float, flo
     output = []
     for row in exact:
         code, personal, trend = row['code'], row['P'].value, normalized[row['code']]
+        result_weight = 0.20
         output.append({
             'code': code, 'personal_fit': personal, 'projection_percent': raw[code],
             'normalized_projection': trend,
-            'scenarios': [{
-                'weight': weight,
-                'personal_contribution': (1-weight)*personal,
-                'projection_contribution': weight*trend,
-                'combined': (1-weight)*personal + weight*trend,
-            } for weight in weights],
+            'result': {
+                'weight': result_weight,
+                'personal_contribution': (1-result_weight)*personal,
+                'projection_contribution': result_weight*trend,
+                'combined': (1-result_weight)*personal + result_weight*trend,
+            },
+            'sensitivity': {
+                'weight': sensitivity_weight,
+                'personal_contribution': (1-sensitivity_weight)*personal,
+                'projection_contribution': sensitivity_weight*trend,
+                'combined': (1-sensitivity_weight)*personal + sensitivity_weight*trend,
+            },
         })
-    for scenario_index in range(2):
-        ordered = sorted(output, key=lambda item: (-item['scenarios'][scenario_index]['combined'], item['code']))
+    for cohort in ('result', 'sensitivity'):
+        ordered = sorted(output, key=lambda item: (-item[cohort]['combined'], item['code']))
         for rank, item in enumerate(ordered, 1):
-            item['scenarios'][scenario_index]['rank'] = rank
+            item[cohort]['rank'] = rank
+    result_ranks = {item['code']:item['result']['rank'] for item in output}
+    for item in output:
+        item['sensitivity']['rank_change'] = (
+            result_ranks[item['code']] - item['sensitivity']['rank']
+        )
     return sorted(output, key=lambda item: item['code'])

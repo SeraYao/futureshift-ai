@@ -357,10 +357,18 @@ class LanguagePageTests(unittest.TestCase):
                 self.assertEqual(set(page.selectbox(key='learning_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).options), set(names.values()))
                 self.assertEqual(set(page.selectbox(key='evidence_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).options), set(names.values()))
                 table = next(t.value for t in page.table if self.text(language, 'Career') in t.value.columns
-                             and self.text(language, 'Moderate score') in t.value.columns)
+                             and self.text(language, 'Matched to your profile') in t.value.columns)
                 self.assertEqual(set(table[self.text(language, 'Career')]), set(names.values()))
+                self.assertTrue(any(self.text(language, 'Matched to your profile') in item.value
+                                    for item in page.markdown))
+                fast_labels = {'en': ('Fast disruption', 'Fast score', 'Fast rank'),
+                               'zh': ('快速冲击', '快速情景', '快速得分', '快速排名'),
+                               'ms': ('Gangguan pantas', 'Skor pantas', 'Kedudukan pantas')}[language]
+                visible = '\n'.join(item.value for kind in ('markdown', 'subheader', 'caption', 'info', 'warning')
+                                    for item in page.get(kind))
+                for label in fast_labels:
+                    self.assertNotIn(label, visible)
                 for code, name in names.items():
-                    self.assertTrue(any(name in item.value for item in page.markdown))
                     self.assertTrue(any(name in item.label for item in page.expander))
                 self.assertTrue(any(self.text(language, CAREER_LABELS['15-2051.00'][1]) == m.value for m in page.markdown))
                 self.assertEqual(len(page.get('download_button')), 2)
@@ -400,7 +408,7 @@ class LanguagePageTests(unittest.TestCase):
                     page.checkbox(key='simulation_confirm').check()
                     page.button[0].click().run()
                 assert_absent(page)
-                self.assertEqual(len(page.get('progress')), 6)
+                self.assertEqual(len(page.get('progress')), 3)
 
     def test_simulation_and_audit_all_languages_without_requests(self):
         page = self.page()
@@ -416,8 +424,13 @@ class LanguagePageTests(unittest.TestCase):
             self.assertFalse(any('O*NET' in item.value for item in page.info))
             self.assertEqual(page.session_state['simulation_profile'], profile)
             self.assertEqual(page.session_state['simulation_trends'], trends)
-            self.assertEqual(len(page.get('progress')), 6)
+            self.assertEqual(len(page.get('progress')), 3)
             self.assertTrue(any(item.value == self.text(code, '01 / Your demo profile') for item in page.subheader))
+            self.assertTrue(any(item.value == self.text(code, 'Matched to your profile') for item in page.subheader))
+            visible = '\n'.join(item.value for kind in ('markdown', 'subheader', 'caption', 'info', 'warning')
+                                for item in page.get(kind))
+            obsolete = {'en':'Fast disruption', 'zh':'快速冲击', 'ms':'Gangguan pantas'}[code]
+            self.assertNotIn(obsolete, visible)
             from streamlit.testing.v1 import AppTest
             audit = AppTest.from_file(str(app.ROOT/'scripts/onet_audit.py')).run()
             self.switch(audit, code)
