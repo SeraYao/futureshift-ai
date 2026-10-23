@@ -646,5 +646,8 @@
   "summary not a literal excerpt": "summary not a literal excerpt",
   "questionnaire name absent from evidence": "questionnaire name absent from evidence",
   "AI timeout error. The AI service may still be cold starting. No profile was changed; please retry manually later.": "AI timeout error. The AI service may still be cold starting. No profile was changed; please retry manually later.",
-  "AI_TIMEOUT_SECONDS must be a positive integer from 1 to 3600. No profile was changed.": "AI_TIMEOUT_SECONDS must be a positive integer from 1 to 3600. No profile was changed."
+  "AI_TIMEOUT_SECONDS must be a positive integer from 1 to 3600. No profile was changed.": "AI_TIMEOUT_SECONDS must be a positive integer from 1 to 3600. No profile was changed.",
+  "AI returned an unknown questionnaire field. Retry extraction or use the questionnaire. No profile was changed.": "AI returned an unknown questionnaire field. Retry extraction or use the questionnaire. No profile was changed.",
+  "AI returned conflicting entries for the same questionnaire field. Retry extraction or fill that field manually. No profile was changed.": "AI returned conflicting entries for the same questionnaire field. Retry extraction or fill that field manually. No profile was changed.",
+  "No supported questionnaire facts were found. Continue to the questionnaire to add your answers.": "No supported questionnaire facts were found. Continue to the questionnaire to add your answers."
 }

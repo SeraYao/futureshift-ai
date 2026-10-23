@@ -646,5 +646,8 @@
   "summary not a literal excerpt": "ringkasan bukan petikan literal",
   "questionnaire name absent from evidence": "nama kemahiran atau pengetahuan soal selidik tiada dalam bukti",
   "AI timeout error. The AI service may still be cold starting. No profile was changed; please retry manually later.": "Perkhidmatan AI mungkin masih dalam proses permulaan sejuk. Profil tidak diubah; sila cuba semula secara manual kemudian.",
-  "AI_TIMEOUT_SECONDS must be a positive integer from 1 to 3600. No profile was changed.": "AI_TIMEOUT_SECONDS mesti integer positif dari 1 hingga 3600. Profil tidak diubah."
+  "AI_TIMEOUT_SECONDS must be a positive integer from 1 to 3600. No profile was changed.": "AI_TIMEOUT_SECONDS mesti integer positif dari 1 hingga 3600. Profil tidak diubah.",
+  "AI returned an unknown questionnaire field. Retry extraction or use the questionnaire. No profile was changed.": "AI memulangkan medan soal selidik yang tidak dikenali. Cuba pengekstrakan semula atau gunakan soal selidik. Tiada profil diubah.",
+  "AI returned conflicting entries for the same questionnaire field. Retry extraction or fill that field manually. No profile was changed.": "AI memulangkan entri bercanggah untuk medan soal selidik yang sama. Cuba pengekstrakan semula atau isi medan itu secara manual. Tiada profil diubah.",
+  "No supported questionnaire facts were found. Continue to the questionnaire to add your answers.": "Tiada fakta soal selidik yang disokong ditemui. Teruskan ke soal selidik untuk menambah jawapan anda."
 }

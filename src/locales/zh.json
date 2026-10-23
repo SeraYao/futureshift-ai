@@ -646,5 +646,8 @@
   "summary not a literal excerpt": "经历摘要不是证据中的字面摘录",
   "questionnaire name absent from evidence": "证据未包含问卷规定的技能或知识名称",
   "AI timeout error. The AI service may still be cold starting. No profile was changed; please retry manually later.": "AI 服务仍可能正在冷启动。本次未修改画像，请稍后手动重试。",
-  "AI_TIMEOUT_SECONDS must be a positive integer from 1 to 3600. No profile was changed.": "AI_TIMEOUT_SECONDS 必须为 1–3600 的正整数。本次未修改画像。"
+  "AI_TIMEOUT_SECONDS must be a positive integer from 1 to 3600. No profile was changed.": "AI_TIMEOUT_SECONDS 必须为 1–3600 的正整数。本次未修改画像。",
+  "AI returned an unknown questionnaire field. Retry extraction or use the questionnaire. No profile was changed.": "AI 返回了未知问卷字段。请重试提取或填写问卷。画像未改变。",
+  "AI returned conflicting entries for the same questionnaire field. Retry extraction or fill that field manually. No profile was changed.": "AI 对同一问卷字段返回了相互冲突的条目。请重试提取或手动填写该字段。画像未改变。",
+  "No supported questionnaire facts were found. Continue to the questionnaire to add your answers.": "未发现有依据的问卷信息。请继续填写问卷，补充你的答案。"
 }

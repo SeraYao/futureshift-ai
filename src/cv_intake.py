@@ -171,6 +171,8 @@ def render_cv_intake(st: Any, labels: dict, levels: tuple, *, expanded: bool = F
                 st.rerun()
             return
         st.subheader(tr('Review CV-supported fields'))
+        if not any(review[group] for group in ('education', 'skills', 'knowledge', 'experience')):
+            st.info(tr('No supported questionnaire facts were found. Continue to the questionnaire to add your answers.'))
         st.caption(tr('Evidence and quoted source text are shown in their original language.'))
         st.caption(tr('Edit supported categories and enter your own ability ratings. A CV mention is not a skill score. Missing fields remain unanswered; existing manual answers are retained unless you explicitly replace them.'))
         if review.get('unverified_fields'):

@@ -207,3 +207,5 @@ RunPod 配置须使用该部署实际提供的 OpenAI-compatible Chat Completion
 CV 请求超时可能源于 RunPod 冷启动。页面明确提示“AI 服务仍可能正在冷启动。本次未修改画像，请稍后手动重试。”；失败不写入画像，不自动重试，避免重复请求与额外费用。不记录或展示 API key、Authorization、简历正文或模型原始响应。修改环境变量后需重新启动 Streamlit 进程。
 
 2026-10-23 真实服务复核见 [CV_SERVICE_DIAGNOSIS.md](CV_SERVICE_DIAGNOSIS.md)。冷启动并非该次排查已确认的历史超时原因。`src.cv_client` / `src.cv_intake` 日志仅包含阶段、耗时、字符/字节数量、HTTP 状态和异常类型。HTTPS 连接阶段单独记录连接/TLS 耗时；连接成功后的 `request_open` 超时表示等待响应头阶段，`body_read` 表示读取响应体阶段。连接/TLS 阶段尚不细分 TCP 与 TLS 的超时。`scripts/check_cv_service.py` 是显式运行的付费真实服务检查：只桥接 AppTest 尚不支持的上传控件，使用合成 PDF，真实执行解析、发送同意、HTTP 请求和证据校验，无自动重试。
+
+后续未知/重复字段修复与真实确认写入验证见 [CV_FIELD_DIAGNOSIS.md](CV_FIELD_DIAGNOSIS.md)：生成约定直接来自问卷的字段和选项；精确相同条目去重，未知字段和冲突条目分别拒绝，不猜测 ID 映射。真实检查脚本已覆盖用户自评、确认前不写画像、确认后才应用字段。

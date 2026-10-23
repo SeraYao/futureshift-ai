@@ -99,6 +99,74 @@ class PDFTests(unittest.TestCase):
 class AIClientTests(unittest.TestCase):
     """Consent enforced at the client boundary, with local redaction and strict evidence checks."""
 
+    def test_identical_duplicates_are_deduplicated_before_group_limit(self):
+        document = extraction()
+        document['education'] *= 2
+        document['skills'] *= 12
+        document['knowledge'] *= 2
+        with self.assertLogs('src.cv_client', level='INFO') as logs:
+            result = validate_extraction(document, SOURCE, app.LABELS)
+        self.assertEqual(result, validate_extraction(extraction(), SOURCE, app.LABELS))
+        self.assertIn('issue=identical_duplicate group=skills index=1 first_index=0 field=skill_04',
+                      '\n'.join(logs.output))
+
+    def test_unknown_wrong_group_and_alias_fields_are_never_guessed(self):
+        for key in ('skill_99', 'skill_4', 'SKILL_04', 'Programming', '编程', 'knowledge_02',
+                    'PRIVATE CV FIELD private@example.com'):
+            document = extraction()
+            document['skills'][0]['field'] = key
+            with self.subTest(key=key), self.assertLogs('src.cv_client', level='WARNING') as logs:
+                with self.assertRaisesRegex(CVError, 'unknown questionnaire field'):
+                    validate_extraction(document, SOURCE, app.LABELS)
+            records = '\n'.join(logs.output)
+            self.assertIn('issue=unknown group=skills index=0', records)
+            self.assertNotIn('private@example.com', records)
+
+    def test_conflicting_values_or_evidence_require_manual_resolution(self):
+        for group, changed in (('education', {'value': 'Engineering'}),
+                               ('skills', {'evidence': 'Programming'})):
+            document = extraction()
+            document[group].append({**document[group][0], **changed})
+            original = deepcopy(document)
+            with self.subTest(group=group), self.assertLogs('src.cv_client', level='WARNING') as logs:
+                with self.assertRaisesRegex(CVError, 'conflicting entries'):
+                    validate_extraction(document, SOURCE, app.LABELS)
+            self.assertIn('issue=conflicting_duplicate', '\n'.join(logs.output))
+            self.assertEqual(document, original)
+
+    def test_normal_response_and_prompt_schema_match_questionnaire(self):
+        from src.cv_client import extraction_schema, allowed_fields
+        from src.pathway import BACKGROUND, SKILLS, KNOWLEDGE
+        schema = extraction_schema()['properties']
+        self.assertEqual(schema['skills']['items']['properties']['field']['enum'], list(SKILLS))
+        self.assertEqual(schema['knowledge']['items']['properties']['field']['enum'], list(KNOWLEDGE))
+        for choice in schema['education']['items']['oneOf']:
+            props = choice['properties']
+            self.assertEqual(props['value']['enum'], list(BACKGROUND[props['field']['const']]))
+        send = Mock(return_value=reply())
+        result = extract_with_ai(SOURCE, True, app.LABELS, config=CONFIG, opener=send)
+        self.assertEqual(result['skills'], extraction()['skills'])
+        prompt = json.loads(send.call_args.args[0].data)['messages'][0]['content']
+        self.assertIn('Each field ID may appear ONLY ONCE', prompt)
+        self.assertNotIn('skill_XX', prompt)
+        self.assertNotIn('knowledge_XX', prompt)
+        self.assertEqual(set(allowed_fields()['skills']), set(SKILLS))
+
+    def test_live_regression_education_category_is_not_a_field_id(self):
+        """Real synthetic responses put Computing in education.field, not value."""
+        document = extraction()
+        document['education'][0]['field'] = 'Computing'
+        with self.assertLogs('src.cv_client', level='WARNING') as logs:
+            with self.assertRaisesRegex(CVError, 'unknown questionnaire field'):
+                validate_extraction(document, SOURCE, app.LABELS)
+        self.assertIn('issue=unknown group=education index=0', '\n'.join(logs.output))
+        from src.cv_client import extraction_schema
+        alternatives = extraction_schema()['properties']['education']['items']['oneOf']
+        self.assertNotIn('Computing', [choice['properties']['field']['const'] for choice in alternatives])
+        study = next(choice for choice in alternatives if choice['properties']['field']['const'] ==
+                     'Current or completed field of study')
+        self.assertIn('Computing', study['properties']['value']['enum'])
+
     def test_safe_stage_logs_and_body_read_timeout(self):
         response = reply()
         response.read.side_effect = TimeoutError('PRIVATE RESPONSE AND KEY')
@@ -307,6 +375,37 @@ class MappingTests(unittest.TestCase):
 @unittest.skipUnless(importlib.util.find_spec('streamlit'), 'Streamlit not installed')
 class CVPageTests(unittest.TestCase):
     """Verify entry points, consent, review, cancel and confirm using Streamlit interactions."""
+
+    def test_field_validation_failures_keep_upload_consent_and_manual_retry(self):
+        from streamlit.testing.v1 import AppTest
+        for issue in ('unknown', 'conflicting'):
+            document = extraction()
+            if issue == 'unknown':
+                document['education'][0]['field'] = 'Computing'
+            else:
+                document['education'].append({**document['education'][0], 'value': 'Engineering'})
+            uploaded = BytesIO(b'%PDF-1.7 synthetic')
+            uploaded.name = 'synthetic.pdf'
+            def upload(label, **kwargs):
+                return uploaded if kwargs.get('key', '').startswith('cv_pdf_upload_') else None
+            with self.subTest(issue=issue), \
+                 patch('streamlit.file_uploader', side_effect=upload), \
+                 patch('src.cv_intake.extract_pdf', return_value=SOURCE), \
+                 patch('src.cv_intake.AIConfig.from_env', return_value=CONFIG), \
+                 patch('urllib.request.OpenerDirector.open', return_value=reply(json.dumps(document))) as send:
+                page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run(), entry='cv')
+                next(box for box in page.checkbox if box.key.startswith('cv_consent_')).check().run()
+                page.button(key='cv_extract').click().run()
+                self.assertFalse(page.exception)
+                self.assertIn(issue, page.session_state['cv_notice'])
+                self.assertEqual(page.session_state['pathway_draft'], {})
+                self.assertNotIn('cv_review', page.session_state)
+                self.assertFalse(page.session_state['cv_extract_busy'])
+                self.assertEqual(page.session_state.get('cv_upload_generation', 0), 0)
+                self.assertTrue(next(box for box in page.checkbox if box.key.startswith('cv_consent_')).value)
+                self.assertFalse(page.button(key='cv_extract').disabled)
+                page.run()
+                send.assert_called_once()
 
     def test_upload_empty_profile_failure_retry_and_busy(self):
         """Parse a real PDF and retry without uploading again or filling in a profile."""
@@ -663,3 +762,37 @@ class CVRegressionTests(unittest.TestCase):
         result = extract_with_ai(text, True, app.LABELS, config=CONFIG, opener=Mock(return_value=reply()))
         self.assertTrue(result['skills'])
         self.assertEqual(result['unverified_fields'], [])
+    def test_partial_response_omitted_groups_are_not_required_answers(self):
+        document = {'skills': [{'field': 'skill_04', 'evidence': 'Programming'}]}
+        result = validate_extraction(document, 'Skills: Programming', app.LABELS)
+        self.assertEqual(result['skills'], document['skills'])
+        self.assertEqual(result['education'], [])
+        self.assertEqual(result['knowledge'], [])
+        self.assertIn('knowledge_02', result['unconfirmed_fields'])
+        self.assertIn('R1', result['unconfirmed_fields'])
+        self.assertEqual(document, {'skills': [{'field': 'skill_04', 'evidence': 'Programming'}]})
+
+    def test_partial_pdf_review_preserves_existing_answers_and_manual_completion(self):
+        from scripts.check_cv_service import main
+        from contextlib import redirect_stdout
+        from io import StringIO
+        result = {'skills': [{'field': 'skill_04', 'evidence': 'Programming'}]}
+        output = StringIO()
+        with patch('sys.argv', ['check_cv_service', '--partial']), \
+             patch('src.cv_intake.AIConfig.from_env', return_value=CONFIG), \
+             patch('urllib.request.OpenerDirector.open', return_value=reply(json.dumps(result))) as send, \
+             redirect_stdout(output):
+            self.assertEqual(main(), 0)
+        send.assert_called_once()
+        self.assertIn('"manual_completion_verified": true', output.getvalue())
+
+    def test_partial_response_keeps_structural_and_evidence_errors(self):
+        for document in ({}, {'unexpected': []}, {'skills': None}, {'skills': {}},
+                         {'skills': [{'field': 'skill_04'}]},
+                         {'skills': [{'field': 'skill_04', 'evidence': 42}]},
+                         {'skills': [], 'unconfirmed_fields': None}):
+            with self.subTest(document=document), self.assertRaises(CVError):
+                validate_extraction(document, 'Programming', app.LABELS)
+        empty = validate_extraction({'skills': []}, 'No questionnaire facts stated.', app.LABELS)
+        self.assertFalse(any(empty[group] for group in ('education', 'skills', 'knowledge', 'experience')))
+        self.assertIn('skill_04', empty['unconfirmed_fields'])
