@@ -17,6 +17,18 @@ from src.sdg_ai import SDGCache, context_for, generate_mapping
 from src.cv_client import AIConfig, request_json
 
 
+def mapping_result(value):
+    """Accept a raw validated mapping or the cache entry that wraps it."""
+    if not isinstance(value,dict):
+        raise ValueError('Unexpected SDG result type')
+    if set(value)=={'career_code','entries'}:
+        return value
+    nested=value.get('result')
+    if isinstance(nested,dict) and set(nested)=={'career_code','entries'}:
+        return nested
+    raise ValueError('Unexpected SDG result shape')
+
+
 def main():
     logging.basicConfig(level=logging.INFO,format='%(name)s %(message)s')
     profile=confirmed_profile(sample_answers());data=load_onet()
@@ -37,14 +49,15 @@ def main():
                     return document
                 return generate_mapping(ctx,cfg,transport=transport)
             entry,hit=cache.generate(context,config,generator=generator)
+            document=mapping_result(entry)
             # Fail loudly if any refresh or language render attempts another request.
             def no_request(*args):raise AssertionError('Cache missed; unexpected duplicate request')
             cached,hit_again=cache.generate(context,config,generator=no_request)
-            assert hit_again and cached==entry
+            assert hit_again and mapping_result(cached)==document
             print(json.dumps({'real_service':not hit,'cache_hit_initially':hit,'cache_reuse':hit_again,
                 'career':code,'model':entry['model'],'elapsed_seconds':round(monotonic()-started,2),
                 'entries':[{k:e[k] for k in ('item_id','status','task_source_id','target_id','source_ids')}
-                           for e in entry['result']['entries']]},ensure_ascii=False),flush=True)
+                           for e in document['entries']]},ensure_ascii=False),flush=True)
         except Exception as exc:
             # Error type and allowlisted validation codes only, never provider prose.
             from src.sdg_ai import SDGError

@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "dataset": "BLS Occupational Projections Table 1.2",
+  "source_url": "https://www.bls.gov/emp/tables/occupational-projections-and-characteristics.htm",
+  "download_url": "https://www.bls.gov/emp/ind-occ-matrix/occupation.xlsx",
+  "release_date": "2026-08-27",
+  "period": "2025-2035",
+  "base_year": 2025,
+  "target_year": 2035,
+  "geography": "United States",
+  "metric": "Employment change, percent (projected)",
+  "unit": "employment in thousands; change is percent",
+  "access_method": "official_html_table_extract",
+  "retrieved_at": "2026-10-23T05:52:22+00:00",
+  "retrieval_note": "Official BLS HTML table and O*NET crosswalk page were readable; direct XLSX retrieval returned HTTP 403 in the audit environment. Values below are transcribed from the rendered official table, not fabricated or interpolated.",
+  "crosswalk": {
+    "name": "O*NET-SOC 2019 to 2018 SOC",
+    "source_url": "https://www.onetcenter.org/taxonomy/2019/soc.html",
+    "version": "O*NET-SOC 2019 / SOC 2018",
+    "retrieved_at": "2026-10-23T05:52:22+00:00"
+  },
+  "careers": {
+    "13-1199.05": {
+      "title": "Sustainability Specialists",
+      "mapping": "aggregate",
+      "onet_title": "Sustainability Specialists",
+      "soc_code": "13-1199",
+      "soc_title": "Business Operations Specialists, All Other",
+      "mapping_precision": "aggregate",
+      "projection": {
+        "title": "Business operations specialists, all other",
+        "soc_code": "13-1199",
+        "occupation_type": "Line item",
+        "employment_start_thousands": 1157.6,
+        "employment_target_thousands": 1202.3,
+        "employment_change_thousands": 44.7,
+        "employment_change_percent": 3.9,
+        "annual_openings_thousands": 98.7
+      }
+    },
+    "15-1212.00": {
+      "title": "Information Security Analysts",
+      "mapping": "exact",
+      "onet_title": "Information Security Analysts",
+      "soc_code": "15-1212",
+      "soc_title": "Information Security Analysts",
+      "mapping_precision": "exact",
+      "projection": {
+        "title": "Information security analysts",
+        "soc_code": "15-1212",
+        "occupation_type": "Line item",
+        "employment_start_thousands": 192.9,
+        "employment_target_thousands": 233.4,
+        "employment_change_thousands": 40.6,
+        "employment_change_percent": 21.0,
+        "annual_openings_thousands": 14.1
+      }
+    },
+    "15-2031.00": {
+      "title": "Operations Research Analysts",
+      "mapping": "exact",
+      "onet_title": "Operations Research Analysts",
+      "soc_code": "15-2031",
+      "soc_title": "Operations Research Analysts",
+      "mapping_precision": "exact",
+      "projection": {
+        "title": "Operations research analysts",
+        "soc_code": "15-2031",
+        "occupation_type": "Line item",
+        "employment_start_thousands": 113.1,
+        "employment_target_thousands": 126.6,
+        "employment_change_thousands": 13.5,
+        "employment_change_percent": 11.9,
+        "annual_openings_thousands": 7.5
+      }
+    },
+    "17-2081.00": {
+      "title": "Environmental Engineers",
+      "mapping": "exact",
+      "onet_title": "Environmental Engineers",
+      "soc_code": "17-2081",
+      "soc_title": "Environmental Engineers",
+      "mapping_precision": "exact",
+      "projection": {
+        "title": "Environmental engineers",
+        "soc_code": "17-2081",
+        "occupation_type": "Line item",
+        "employment_start_thousands": 39.1,
+        "employment_target_thousands": 41.6,
+        "employment_change_thousands": 2.4,
+        "employment_change_percent": 6.3,
+        "annual_openings_thousands": 2.3
+      }
+    },
+    "17-2199.03": {
+      "title": "Energy Engineers, Except Wind and Solar",
+      "mapping": "aggregate",
+      "onet_title": "Energy Engineers, Except Wind and Solar",
+      "soc_code": "17-2199",
+      "soc_title": "Engineers, All Other",
+      "mapping_precision": "aggregate",
+      "projection": {
+        "title": "Engineers, all other",
+        "soc_code": "17-2199",
+        "occupation_type": "Line item",
+        "employment_start_thousands": 166.7,
+        "employment_target_thousands": 173.0,
+        "employment_change_thousands": 6.2,
+        "employment_change_percent": 3.7,
+        "annual_openings_thousands": 8.8
+      }
+    },
+    "17-2199.08": {
+      "title": "Robotics Engineers",
+      "mapping": "aggregate",
+      "onet_title": "Robotics Engineers",
+      "soc_code": "17-2199",
+      "soc_title": "Engineers, All Other",
+      "mapping_precision": "aggregate",
+      "projection": {
+        "title": "Engineers, all other",
+        "soc_code": "17-2199",
+        "occupation_type": "Line item",
+        "employment_start_thousands": 166.7,
+        "employment_target_thousands": 173.0,
+        "employment_change_thousands": 6.2,
+        "employment_change_percent": 3.7,
+        "annual_openings_thousands": 8.8
+      }
+    }
+  }
+}

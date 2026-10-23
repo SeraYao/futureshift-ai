@@ -144,3 +144,4 @@ __pycache__/
 
 /data/cache/sdg_ai.json
 /data/cache/sdg_ai.tmp
+/data/official_labor_evidence.json.tmp

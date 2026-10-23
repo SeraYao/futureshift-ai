@@ -48,6 +48,13 @@ class SDGValidationTests(unittest.TestCase):
             doc=response(self.context,linked=linked)
             self.assertEqual(validate_mapping(doc,self.context),doc)
 
+    def test_diagnostic_accepts_raw_and_cached_result_shapes(self):
+        from scripts.check_sdg_service import mapping_result
+        doc=response(self.context)
+        self.assertEqual(mapping_result(doc),doc)
+        self.assertEqual(mapping_result({'result':doc,'model':'test-model'}),doc)
+        with self.assertRaises(ValueError):mapping_result({'result':{'wrong':True}})
+
     def test_target_identifiers_are_not_mistaken_for_statistics(self):
         doc=response(self.context)
         doc['entries'][0]['explanation']={'en':'Could support SDG 7.3.', 'zh':'可支持 SDG 7.3。', 'ms':'Boleh menyokong SDG 7.3.'}
@@ -156,9 +163,11 @@ class SDGValidationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             cache=SDGCache(Path(tmp)/'cache.json')
             original_generate=cache.generate
-            calls=[]
+            calls=[];busy_during_calls=[]
             def generation(ctx,c):
                 calls.append(ctx['career_code'])
+                from streamlit import session_state
+                busy_during_calls.append(session_state.get('sdg_busy_'+cache_key(ctx,c),False))
                 if len(calls)==1:raise CVError('AI timeout error.')
                 return original_generate(ctx,c,generator=lambda ctx,c:response(ctx,linked=False))
             with patch('src.cv_client.AIConfig.from_env',return_value=config),patch('src.sdg_ai.SDGCache',return_value=cache),patch.object(cache,'generate',side_effect=generation):
@@ -176,6 +185,7 @@ class SDGValidationTests(unittest.TestCase):
                 page.run();self.assertEqual(len(calls),1)
                 page.button(key='sdg_generate_17-2199.03').click().run()
                 self.assertEqual(len(calls),2)
+                self.assertEqual(busy_during_calls,[True,True])
                 self.assertFalse(page.exception)
                 for language in ('zh','ms','en'):
                     page.selectbox(key='ui_language').set_value(language).run()
