@@ -56,9 +56,24 @@ def context_for(role, area_ids):
 
 
 def cache_key(context, config):
-    return hashlib.sha256(json.dumps({'context':context,'model':config.model,
+    return _cache_key_for_identity(context, _cache_identity(context, config))
+
+
+def _context_fingerprint(context):
+    return hashlib.sha256(json.dumps(context, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+
+
+def _cache_identity(context, config):
+    """Non-secret cache metadata that permits validated reads without a live AI config."""
+    return {'context_hash':_context_fingerprint(context), 'model':config.model,
         'endpoint_hash':hashlib.sha256(config.base_url.encode()).hexdigest(),
-        'prompt_version':PROMPT_VERSION,'validator_version':VALIDATOR_VERSION},
+        'prompt_version':PROMPT_VERSION,'validator_version':VALIDATOR_VERSION}
+
+
+def _cache_key_for_identity(context, identity):
+    return hashlib.sha256(json.dumps({'context':context,'model':identity['model'],
+        'endpoint_hash':identity['endpoint_hash'],
+        'prompt_version':identity['prompt_version'],'validator_version':identity['validator_version']},
         sort_keys=True,ensure_ascii=False).encode()).hexdigest()
 
 
@@ -209,7 +224,7 @@ class SDGCache:
     def __init__(self,path=CACHE_PATH):
         self.path=Path(path)
 
-    def get(self,context,config):
+    def get(self,context,config=None):
         with _LOCK:
             try:
                 document=json.loads(self.path.read_text())
@@ -217,15 +232,61 @@ class SDGCache:
                 return None
             except (OSError,ValueError):
                 raise SDGError('invalid_cache') from None
-            entry=document.get(cache_key(context,config)) if isinstance(document,dict) else None
+            if not isinstance(document,dict):
+                raise SDGError('invalid_cache')
+            if config is None:
+                context_hash=_context_fingerprint(context)
+                candidates=[]
+                for stored_key,entry in document.items():
+                    identity=entry.get('cache_identity') if isinstance(entry,dict) else None
+                    if not isinstance(identity,dict) or identity.get('context_hash')!=context_hash:
+                        continue
+                    try:
+                        if (identity.get('prompt_version')!=PROMPT_VERSION
+                                or identity.get('validator_version')!=VALIDATOR_VERSION
+                                or identity.get('model')!=entry.get('model')
+                                or entry.get('prompt_version')!=PROMPT_VERSION
+                                or not re.fullmatch(r'[0-9a-f]{64}',identity.get('endpoint_hash',''))
+                                or stored_key!=_cache_key_for_identity(context,identity)):
+                            raise SDGError('invalid_cache')
+                        validate_mapping(entry['result'],context)
+                        created=entry.get('created_at','')
+                        if not isinstance(created,str):
+                            raise SDGError('invalid_cache')
+                    except (KeyError,TypeError,SDGError):
+                        raise SDGError('invalid_cache') from None
+                    candidates.append((created,entry))
+                return deepcopy(max(candidates,key=lambda pair:pair[0])[1]) if candidates else None
+
+            key=cache_key(context,config)
+            entry=document.get(key)
             if entry is None:return None
             try:
                 validate_mapping(entry['result'],context)
                 if entry['model']!=config.model or entry['prompt_version']!=PROMPT_VERSION:
                     raise SDGError('invalid_cache')
+                identity=_cache_identity(context,config)
+                if entry.get('cache_identity',identity)!=identity:
+                    raise SDGError('invalid_cache')
             except (KeyError,TypeError,SDGError):
                 raise SDGError('invalid_cache') from None
+            if 'cache_identity' not in entry:
+                # Migrate an older exact-key hit only after the original configured
+                # key and response have passed all current checks. The added metadata
+                # contains hashes/model/version only; it never stores endpoint or key.
+                entry['cache_identity']=identity
+                document[key]=entry
+                try:
+                    self._write(document)
+                except OSError:
+                    logger.warning('sdg_cache stage=identity_migration_failed career=%s',context['career_code'])
             return deepcopy(entry)
+
+    def _write(self,document):
+        self.path.parent.mkdir(parents=True,exist_ok=True)
+        temporary=self.path.with_suffix('.tmp')
+        temporary.write_text(json.dumps(document,ensure_ascii=False))
+        temporary.replace(self.path)
 
     def generate(self,context,config,*,generator=generate_mapping):
         # Lock spans one explicit request: simultaneous identical submissions reuse success.
@@ -236,17 +297,15 @@ class SDGCache:
             started=monotonic()
             result=validate_mapping(generator(context,config),context)
             entry={'result':result,'model':config.model,'prompt_version':PROMPT_VERSION,
+                   'cache_identity':_cache_identity(context,config),
                    'created_at':datetime.now(timezone.utc).isoformat()}
             try:
                 previous=json.loads(self.path.read_text()) if self.path.exists() else {}
                 if not isinstance(previous,dict):previous={}
             except (OSError,ValueError):previous={}
             previous[cache_key(context,config)]=entry
-            self.path.parent.mkdir(parents=True,exist_ok=True)
-            temporary=self.path.with_suffix('.tmp')
             try:
-                temporary.write_text(json.dumps(previous,ensure_ascii=False))
-                temporary.replace(self.path)
+                self._write(previous)
             except OSError:
                 raise SDGError('cache_write_failed') from None
             logger.info('sdg_ai stage=validated career=%s items=%d elapsed_ms=%d',

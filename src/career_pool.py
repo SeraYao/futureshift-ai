@@ -58,7 +58,8 @@ def official_ranking(profile, dataset):
             'skills': f"{len(source['skills']) - len(_not_relevant_dimensions(source) & set(source['skills']))}/{len(source['skills'])}",
             'knowledge': f"{len(source['knowledge']) - len(_not_relevant_dimensions(source) & set(source['knowledge']))}/{len(source['knowledge'])}",
             'interests': f"{len(source.get('riasec', []))}/6",
-            'omitted': [display_text(source[g][key]['name']) for g in ('skills', 'knowledge')
+            # Keep canonical source labels in assessment state; translate only when rendered.
+            'omitted': [source[g][key]['name'] for g in ('skills', 'knowledge')
                         for key in sorted(_not_relevant_dimensions(source) & set(source.get(g, {})))],
         }
     eligible = [r for r in rows if r['P'].value is not None and not quality_issues(roles[r['code']])]
@@ -92,13 +93,21 @@ def render_official(st, profile, draft, dataset, labels, render_role, client_fac
     st.warning(tr('Limited questionnaire coverage: 11 skills, 7 knowledge areas and RIASEC. Unasked abilities, credentials, experience requirements and other knowledge are not scored or treated as zero. These are exploration suggestions, not qualification assessments.'))
     st.caption(tr('Official expert knowledge ratings may omit optional precision statistics. Blank flags are preserved as unavailable precision, never relabelled as N; explicit suppression and relevance blocks remain enforced.'))
     st.warning(tr('Some official matches use partial questionnaire coverage. Coverage is shown per career; scores with different omitted dimensions are exploratory and not fully comparable. Not Relevant areas are excluded from that career denominator, never treated as zero.'))
-    st.table(table_text([{'Career': career_name(r['code'], r['title']), 'Questionnaire coverage':
-                          tr('{v0} skills · {v1} knowledge · {v2} interests{v3}',
-                             v0=r['assessment_coverage']['skills'], v1=r['assessment_coverage']['knowledge'],
-                             v2=r['assessment_coverage']['interests'],
-                             v3=(' · excludes ' + ', '.join(r['assessment_coverage']['omitted']))
-                             if r['assessment_coverage']['omitted'] else ''),
-                          'Personal fit': r['P'].value, 'Rank': r['personal_rank']} for r in eligible]))
+    coverage_rows = []
+    for row in eligible:
+        omitted = row['assessment_coverage']['omitted']
+        omitted_note = (' · ' + tr('Excluded from coverage: {v0}',
+                                   v0=', '.join(display_text(key) for key in omitted))
+                        if omitted else '')
+        coverage_rows.append({
+            'Career': career_name(row['code'], row['title']),
+            'Questionnaire coverage': tr('{v0} skills · {v1} knowledge · {v2} interests{v3}',
+                                         v0=row['assessment_coverage']['skills'],
+                                         v1=row['assessment_coverage']['knowledge'],
+                                         v2=row['assessment_coverage']['interests'], v3=omitted_note),
+            'Personal fit': row['P'].value, 'Rank': row['personal_rank'],
+        })
+    st.table(table_text(coverage_rows))
     render_official_labor_evidence(st, eligible, dataset)
     roles = {r['code']: r for r in dataset['roles']}
     for row in eligible:
@@ -116,8 +125,8 @@ def render_official(st, profile, draft, dataset, labels, render_role, client_fac
     render_learning_plan(st, eligible, roles, labels, draft.get('Weekly learning time'), current,
                          st.session_state.get('pathway_previous'))
 
-    from src.sdg import render_dynamic_sdg
-    render_dynamic_sdg(st, eligible, roles, labels, current)
+    from src.sdg import render_local_sdg
+    render_local_sdg(st, eligible, roles, labels, current)
 
 
 def render_official_labor_evidence(st, rows, dataset):

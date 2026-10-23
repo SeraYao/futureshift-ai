@@ -81,6 +81,23 @@ class PlanTransferTests(unittest.TestCase):
         self.assertEqual(state['pathway_previous']['plans'][plan['role_code']]['completion'][plan['tasks'][0]['id']], True)
         self.assertNotEqual(state['pathway_assessment']['rows'], state['pathway_previous']['rows'])
 
+    def test_all_weekly_budgets_round_trip_with_correct_week_totals(self) -> None:
+        assessment, _, _ = fixture()
+        role=assessment['roles']['roles'][0]
+        row=next(item for item in assessment['rows'] if item['code']==role['code'])
+        for hours in (3,5,8,10):
+            with self.subTest(hours=hours):
+                plan=build_plan(row,role,hours)
+                text=export_plan(assessment,plan,{})
+                document=json.loads(text)
+                self.assertEqual(document['weekly_hours'],hours)
+                self.assertEqual(document['plan']['weekly_hours'],hours)
+                for week in range(1,5):
+                    tasks=[task for task in document['plan']['tasks'] if task['week']==week]
+                    self.assertEqual(sum(task['minutes'] for task in tasks),hours*60)
+                restored=validate_saved_plan(text.encode(),app.load_demo)
+                self.assertEqual(restored['plan'],plan)
+
     def test_invalid_versions_fields_types_and_tampering(self) -> None:
         """Bad schemas, nonboolean completion, altered tasks, scores or fixtures are rejected."""
         assessment, plan, completion = fixture()

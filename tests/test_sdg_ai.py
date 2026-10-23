@@ -143,6 +143,27 @@ class SDGValidationTests(unittest.TestCase):
             self.assertNotEqual(cache_key(context('17-2081.00'),self.config),cache_key(self.context,self.config))
         set_language('en')
 
+    def test_validated_cache_remains_readable_without_ai_configuration(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            cache=SDGCache(Path(tmp)/'cache.json')
+            entry,_=cache.generate(self.context,self.config,generator=lambda ctx,config:response(ctx))
+            document=json.loads(cache.path.read_text())
+            document[cache_key(self.context,self.config)].pop('cache_identity')
+            cache.path.write_text(json.dumps(document))
+
+            # A configured, exact-key read safely migrates the previous cache entry.
+            migrated=cache.get(self.context,self.config)
+            self.assertEqual(migrated['result'],entry['result'])
+            self.assertIn('cache_identity',migrated)
+            self.assertEqual(cache.get(self.context,None),migrated)
+
+            changed=context(areas=('skill_01',))
+            self.assertIsNone(cache.get(changed,None))
+            document=json.loads(cache.path.read_text())
+            document[cache_key(self.context,self.config)]['result']['entries'][0]['target_id']='99.1'
+            cache.path.write_text(json.dumps(document))
+            with self.assertRaises(SDGError):cache.get(self.context,None)
+
     def test_failed_generation_never_cached_and_manual_retry_works(self):
         with tempfile.TemporaryDirectory() as tmp:
             cache=SDGCache(Path(tmp)/'cache.json');calls=[]
@@ -157,39 +178,14 @@ class SDGValidationTests(unittest.TestCase):
             cache.path.write_text(json.dumps(doc))
             with self.assertRaises(SDGError):cache.get(self.context,self.config)
 
-    def test_actual_ui_failure_retry_and_state_preservation(self):
+    def test_primary_ui_uses_local_mappings_without_ai_configuration(self):
         from streamlit.testing.v1 import AppTest
-        config=self.config
-        with tempfile.TemporaryDirectory() as tmp:
-            cache=SDGCache(Path(tmp)/'cache.json')
-            original_generate=cache.generate
-            calls=[];busy_during_calls=[]
-            def generation(ctx,c):
-                calls.append(ctx['career_code'])
-                from streamlit import session_state
-                busy_during_calls.append(session_state.get('sdg_busy_'+cache_key(ctx,c),False))
-                if len(calls)==1:raise CVError('AI timeout error.')
-                return original_generate(ctx,c,generator=lambda ctx,c:response(ctx,linked=False))
-            with patch('src.cv_client.AIConfig.from_env',return_value=config),patch('src.sdg_ai.SDGCache',return_value=cache),patch.object(cache,'generate',side_effect=generation):
-                page=AppTest.from_file(str(ROOT/'app.py')).run()
-                page.button(key='scenario_explore').click().run()
-                page.button(key='pathway_sample').click().run()
-                page.selectbox(key='learning_role').set_value('17-2199.03').run()
-                task=next(b for b in page.checkbox if b.key.startswith('learning_check_'));task.check().run()
-                assessment=deepcopy(page.session_state['pathway_assessment']);progress=deepcopy(page.session_state['learning_progress'])
-                self.assertEqual(calls,[])
-                page.button(key='sdg_generate_17-2199.03').click().run()
-                self.assertFalse(page.exception)
-                self.assertFalse(page.button(key='sdg_generate_17-2199.03').disabled)
-                self.assertTrue(any('timed out' in v.value for v in page.warning))
-                page.run();self.assertEqual(len(calls),1)
-                page.button(key='sdg_generate_17-2199.03').click().run()
-                self.assertEqual(len(calls),2)
-                self.assertEqual(busy_during_calls,[True,True])
-                self.assertFalse(page.exception)
-                for language in ('zh','ms','en'):
-                    page.selectbox(key='ui_language').set_value(language).run()
-                    self.assertFalse(page.exception)
-                    self.assertEqual(page.session_state['pathway_assessment'],assessment)
-                    self.assertEqual(page.session_state['learning_progress'],progress)
-                self.assertEqual(len(calls),2)
+        calls=[]
+        with patch('src.cv_client.AIConfig.from_env',side_effect=AssertionError('SDG UI must not inspect AI config')):
+            page=AppTest.from_file(str(ROOT/'app.py')).run()
+            page.button(key='scenario_explore').click().run()
+            page.button(key='pathway_sample').click().run()
+            self.assertFalse(page.exception)
+            self.assertTrue(any('Reviewed SDG associations' in item.value for item in page.markdown))
+            self.assertFalse(any('Generate SDG analysis' in item.label for item in page.button))
+            self.assertFalse(calls)

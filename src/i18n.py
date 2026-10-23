@@ -108,6 +108,11 @@ def set_language(code: str) -> None:
     _language.set(code)
 
 
+def current_language() -> str:
+    """Return the locale selected for this render without reading UI/session state."""
+    return _language.get()
+
+
 def tr(key: str, **values: Any) -> str:
     """Translate an authored message; format values without modifying original data."""
     language = _language.get()

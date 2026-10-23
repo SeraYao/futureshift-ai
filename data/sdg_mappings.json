@@ -1,103 +1,2992 @@
 {
-  "version": "sdg-associations-v1",
-  "color_source": "https://www.un.org/sustainabledevelopment/wp-content/uploads/2023/09/E_SDG_Guidelines_Sep20238.pdf",
+  "version": "local-analyst-reviewed-v1",
+  "checked_on": "2026-10-23",
+  "directory_scope": "six active official careers",
   "goals": {
     "6": {
       "name": "Clean water and sanitation",
       "color": "#26BDE2"
     },
-    "7": {
-      "name": "Affordable and clean energy",
-      "color": "#FCC30B"
+    "9": {
+      "name": "Industry, innovation and infrastructure",
+      "color": "#FD6925"
     },
     "12": {
       "name": "Responsible consumption and production",
       "color": "#BF8B2E"
+    },
+    "7": {
+      "name": "Affordable and clean energy",
+      "color": "#FCC30B"
+    }
+  },
+  "target_goal": {
+    "6.3": "6",
+    "9.1": "9",
+    "9.4": "9",
+    "12.2": "12",
+    "12.4": "12",
+    "12.6": "12",
+    "7.3": "7"
+  },
+  "sources": {
+    "onet-skill:13-1199.05": {
+      "title": "O*NET occupation and skill record · 13-1199.05",
+      "url": "https://www.onetonline.org/link/summary/13-1199.05#Skills",
+      "source_type": "official_occupation_data",
+      "excerpt": "Occupation-specific skills and knowledge are from the bundled O*NET-derived snapshot; the target relationship is the project team’s interpretation."
+    },
+    "un-target:12.6": {
+      "title": "United Nations SDG target 12.6",
+      "url": "https://sdgs.un.org/goals/goal12",
+      "source_type": "official_target_definition",
+      "excerpt": "Official UN target definition: Encourage companies to adopt sustainable practices and to integrate sustainability information into their reporting cycle."
+    },
+    "un-target:12.2": {
+      "title": "United Nations SDG target 12.2",
+      "url": "https://sdgs.un.org/goals/goal12",
+      "source_type": "official_target_definition",
+      "excerpt": "Official UN target definition: By 2030, achieve the sustainable management and efficient use of natural resources."
+    },
+    "onet-task:13-1199.05:15976": {
+      "title": "O*NET occupational task",
+      "url": "https://www.onetonline.org/link/details/13-1199.05#Tasks",
+      "source_type": "official_occupation_task",
+      "excerpt": "Develop reports or presentations to communicate the effectiveness of sustainability initiatives."
+    },
+    "onet-task:13-1199.05:15980": {
+      "title": "O*NET occupational task",
+      "url": "https://www.onetonline.org/link/details/13-1199.05#Tasks",
+      "source_type": "official_occupation_task",
+      "excerpt": "Monitor or track sustainability indicators, such as energy usage, natural resource usage, waste generation, and recycling."
+    },
+    "onet-skill:15-1212.00": {
+      "title": "O*NET occupation and skill record · 15-1212.00",
+      "url": "https://www.onetonline.org/link/summary/15-1212.00#Skills",
+      "source_type": "official_occupation_data",
+      "excerpt": "Occupation-specific skills and knowledge are from the bundled O*NET-derived snapshot; the target relationship is the project team’s interpretation."
+    },
+    "un-target:9.1": {
+      "title": "United Nations SDG target 9.1",
+      "url": "https://sdgs.un.org/goals/goal9",
+      "source_type": "official_target_definition",
+      "excerpt": "Official UN target definition: Develop quality, reliable, sustainable and resilient infrastructure, including regional and transborder infrastructure, to support economic development and human well-being, with a focus on affordable and equitable access for all."
+    },
+    "onet-task:15-1212.00:5314": {
+      "title": "O*NET occupational task",
+      "url": "https://www.onetonline.org/link/details/15-1212.00#Tasks",
+      "source_type": "official_occupation_task",
+      "excerpt": "Develop plans to safeguard computer files against accidental or unauthorized modification, destruction, or disclosure and to meet emergency data processing needs."
+    },
+    "onet-skill:15-2031.00": {
+      "title": "O*NET occupation and skill record · 15-2031.00",
+      "url": "https://www.onetonline.org/link/summary/15-2031.00#Skills",
+      "source_type": "official_occupation_data",
+      "excerpt": "Occupation-specific skills and knowledge are from the bundled O*NET-derived snapshot; the target relationship is the project team’s interpretation."
+    },
+    "onet-task:15-2031.00:7377": {
+      "title": "O*NET occupational task",
+      "url": "https://www.onetonline.org/link/details/15-2031.00#Tasks",
+      "source_type": "official_occupation_task",
+      "excerpt": "Formulate mathematical or simulation models of problems, relating constants and variables, restrictions, alternatives, conflicting objectives, and their numerical parameters."
+    },
+    "onet-skill:17-2081.00": {
+      "title": "O*NET occupation and skill record · 17-2081.00",
+      "url": "https://www.onetonline.org/link/summary/17-2081.00#Skills",
+      "source_type": "official_occupation_data",
+      "excerpt": "Occupation-specific skills and knowledge are from the bundled O*NET-derived snapshot; the target relationship is the project team’s interpretation."
+    },
+    "un-target:6.3": {
+      "title": "United Nations SDG target 6.3",
+      "url": "https://sdgs.un.org/goals/goal6",
+      "source_type": "official_target_definition",
+      "excerpt": "Official UN target definition: By 2030, improve water quality by reducing pollution, eliminating dumping and minimizing release of hazardous chemicals and materials, halving the proportion of untreated wastewater and substantially increasing recycling and safe reuse globally."
+    },
+    "un-target:12.4": {
+      "title": "United Nations SDG target 12.4",
+      "url": "https://sdgs.un.org/goals/goal12",
+      "source_type": "official_target_definition",
+      "excerpt": "Official UN target definition: By 2020, achieve the environmentally sound management of chemicals and all wastes throughout their life cycle, in accordance with agreed international frameworks, and significantly reduce their release to air, water and soil in order to minimize their adverse impacts on human health and the environment."
+    },
+    "onet-task:17-2081.00:15210": {
+      "title": "O*NET occupational task",
+      "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+      "source_type": "official_occupation_task",
+      "excerpt": "Design, or supervise the design of, systems, processes, or equipment for control, management, or remediation of water, air, or soil quality."
+    },
+    "onet-task:17-2081.00:1379": {
+      "title": "O*NET occupational task",
+      "url": "https://www.onetonline.org/link/details/17-2081.00#Tasks",
+      "source_type": "official_occupation_task",
+      "excerpt": "Develop site-specific health and safety protocols, such as spill contingency plans or methods for loading or transporting waste."
+    },
+    "onet-skill:17-2199.08": {
+      "title": "O*NET occupation and skill record · 17-2199.08",
+      "url": "https://www.onetonline.org/link/summary/17-2199.08#Skills",
+      "source_type": "official_occupation_data",
+      "excerpt": "Occupation-specific skills and knowledge are from the bundled O*NET-derived snapshot; the target relationship is the project team’s interpretation."
+    },
+    "un-target:9.4": {
+      "title": "United Nations SDG target 9.4",
+      "url": "https://sdgs.un.org/goals/goal9",
+      "source_type": "official_target_definition",
+      "excerpt": "Official UN target definition: By 2030, upgrade infrastructure and retrofit industries to make them sustainable, with increased resource-use efficiency and greater adoption of clean and environmentally sound technologies and industrial processes, with all countries taking action in accordance with their respective capabilities."
+    },
+    "onet-task:17-2199.08:19668": {
+      "title": "O*NET occupational task",
+      "url": "https://www.onetonline.org/link/details/17-2199.08#Tasks",
+      "source_type": "official_occupation_task",
+      "excerpt": "Design robotics applications for manufacturers of green products, such as wind turbines or solar panels, to increase production time, eliminate waste, or reduce costs."
+    },
+    "un-target:7.3": {
+      "title": "United Nations SDG target 7.3",
+      "url": "https://sdgs.un.org/goals/goal7",
+      "source_type": "official_target_definition",
+      "excerpt": "Official UN target definition: By 2030, double the global rate of improvement in energy efficiency."
+    },
+    "onet-task:17-2199.03:20855": {
+      "title": "O*NET occupational task",
+      "url": "https://www.onetonline.org/link/details/17-2199.03#Tasks",
+      "source_type": "official_occupation_task",
+      "excerpt": "Conduct energy audits to evaluate energy use and to identify conservation and cost reduction measures."
+    },
+    "onet-skill:17-2199.03": {
+      "title": "O*NET occupation and skill record · 17-2199.03",
+      "url": "https://www.onetonline.org/link/summary/17-2199.03#Skills",
+      "source_type": "official_occupation_data",
+      "excerpt": "Occupation-specific skills and knowledge are from the bundled O*NET-derived snapshot; the target relationship is the project team’s interpretation."
     }
   },
   "roles": {
     "13-1199.05": {
-      "status": "source_checked",
+      "status": "analyst_reviewed",
       "mappings": [
         {
           "sdg_id": "12",
           "target_id": "12.6",
-          "relation_type": "Potential contribution",
-          "reason": "In corporate sustainability work, tracking environmental indicators and reporting on initiatives can support sustainable practices and reporting under target 12.6.",
-          "occupation_source": "https://www.onetonline.org/link/summary/13-1199.05#Tasks",
-          "target_source": "https://unstats.un.org/sdgs/metadata/?Target=12.6",
-          "source_checked_on": "2026-10-22",
-          "task_summary": "Develop reports or presentations to communicate the effectiveness of sustainability initiatives."
+          "relation_type": "Conditional, analyst-reviewed potential contribution",
+          "scenario": {
+            "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+            "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+            "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+          },
+          "contribution": {
+            "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+            "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+            "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+          },
+          "source_ids": [
+            "onet-task:13-1199.05:15976",
+            "onet-skill:13-1199.05",
+            "un-target:12.6"
+          ],
+          "source_checked_on": "2026-10-23"
+        },
+        {
+          "sdg_id": "12",
+          "target_id": "12.2",
+          "relation_type": "Conditional, analyst-reviewed potential contribution",
+          "scenario": {
+            "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+            "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+            "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+          },
+          "contribution": {
+            "en": "The link is conditional: only an application that demonstrably improves sustainable management or efficient use of natural resources is relevant to this target.",
+            "zh": "此联系有条件：只有能够实际改善自然资源可持续管理或高效利用的应用才与该目标相关。",
+            "ms": "Hubungan ini bersyarat: hanya aplikasi yang benar-benar meningkatkan pengurusan mampan atau penggunaan sumber semula jadi yang cekap berkaitan dengan sasaran ini."
+          },
+          "source_ids": [
+            "onet-task:13-1199.05:15980",
+            "onet-skill:13-1199.05",
+            "un-target:12.2"
+          ],
+          "source_checked_on": "2026-10-23"
         }
-      ]
-    },
-    "15-1211.00": {
-      "status": "pending_validation",
-      "mappings": []
+      ],
+      "skills": {
+        "skill_01": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "check evidence, assumptions and unintended effects before selecting an approach.",
+              "zh": "在选择方案前核对证据、假设及可能的非预期影响。",
+              "ms": "menyemak bukti, andaian dan kesan yang tidak dijangka sebelum memilih pendekatan."
+            }
+          }
+        ],
+        "skill_02": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "compare constraints and alternatives when solving the stated occupational task.",
+              "zh": "解决相应职业任务时比较约束条件与备选方案。",
+              "ms": "membandingkan kekangan dan pilihan semasa menyelesaikan tugas pekerjaan yang dinyatakan."
+            }
+          }
+        ],
+        "skill_03": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "make and verify calculations or quantitative comparisons relevant to the task.",
+              "zh": "完成相关任务所需的计算或定量比较，并核验结果。",
+              "ms": "membuat dan menyemak pengiraan atau perbandingan kuantitatif yang berkaitan dengan tugas."
+            }
+          }
+        ],
+        "skill_04": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "implement or test a computational step that supports the task.",
+              "zh": "实现或测试支持该任务的计算步骤。",
+              "ms": "melaksanakan atau menguji langkah pengkomputeran yang menyokong tugas."
+            }
+          }
+        ],
+        "skill_05": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "distinguish observed scientific evidence from assumptions in the application.",
+              "zh": "在具体应用中区分科学观测证据与假设。",
+              "ms": "membezakan bukti saintifik yang diperhatikan daripada andaian dalam aplikasi."
+            }
+          }
+        ],
+        "skill_06": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "trace how components and changes affect the whole system.",
+              "zh": "分析组件和变化如何影响整个系统。",
+              "ms": "menelusuri bagaimana komponen dan perubahan mempengaruhi keseluruhan sistem."
+            }
+          }
+        ],
+        "skill_07": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "compare operational choices against explicit resource or process constraints.",
+              "zh": "依据明确的资源或流程约束比较运营方案。",
+              "ms": "membandingkan pilihan operasi berdasarkan kekangan sumber atau proses yang jelas."
+            }
+          }
+        ],
+        "skill_08": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "design or revise an artifact for the stated task and its constraints.",
+              "zh": "针对具体任务及其约束设计或修改方案。",
+              "ms": "mereka bentuk atau menyemak hasil kerja berdasarkan tugas dan kekangannya."
+            }
+          }
+        ],
+        "skill_09": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "weigh evidence, risks and trade-offs before recommending an action.",
+              "zh": "提出行动建议前权衡证据、风险和取舍。",
+              "ms": "menimbang bukti, risiko dan pertukaran sebelum mencadangkan tindakan."
+            }
+          }
+        ],
+        "skill_10": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "record methods, assumptions and findings so others can review the work.",
+              "zh": "记录方法、假设和结果，便于他人复核。",
+              "ms": "merekod kaedah, andaian dan dapatan supaya pihak lain boleh menyemak kerja."
+            }
+          }
+        ],
+        "skill_11": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "explain the evidence and limits of the proposed approach to relevant users or decision-makers.",
+              "zh": "向相关使用者或决策者说明方案的证据和局限。",
+              "ms": "menerangkan bukti dan batas pendekatan kepada pengguna atau pembuat keputusan yang berkaitan."
+            }
+          }
+        ],
+        "knowledge_01": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use relevant computer concepts when carrying out the occupational task.",
+              "zh": "执行该职业任务时运用相关计算机知识。",
+              "ms": "menggunakan pengetahuan komputer yang berkaitan semasa menjalankan tugas pekerjaan."
+            }
+          }
+        ],
+        "knowledge_02": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "apply mathematical concepts to interpret or verify task results.",
+              "zh": "运用数学概念解释或核验任务结果。",
+              "ms": "menggunakan konsep matematik untuk mentafsir atau mengesahkan hasil tugas."
+            }
+          }
+        ],
+        "knowledge_03": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "apply engineering or technology principles to the described system or process.",
+              "zh": "将工程或技术原理应用于所述系统或流程。",
+              "ms": "menggunakan prinsip kejuruteraan atau teknologi pada sistem atau proses yang dinyatakan."
+            }
+          }
+        ],
+        "knowledge_04": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use physics concepts to explain or check the relevant system behaviour.",
+              "zh": "使用物理知识解释或检查相关系统行为。",
+              "ms": "menggunakan konsep fizik untuk menerangkan atau menyemak tingkah laku sistem berkaitan."
+            }
+          }
+        ],
+        "knowledge_05": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use chemistry concepts to assess relevant materials, reactions or hazards.",
+              "zh": "运用化学知识评估相关材料、反应或危害。",
+              "ms": "menggunakan konsep kimia untuk menilai bahan, tindak balas atau bahaya yang berkaitan."
+            }
+          }
+        ],
+        "knowledge_06": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use biological concepts to interpret the relevant research or environmental context.",
+              "zh": "运用生物学知识解释相关研究或环境背景。",
+              "ms": "menggunakan konsep biologi untuk mentafsir konteks penyelidikan atau alam sekitar yang berkaitan."
+            }
+          }
+        ],
+        "knowledge_07": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.6",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A sustainability specialist tracks resource-use or waste indicators and communicates initiative results in organizational reporting.",
+              "zh": "可持续发展专员跟踪资源使用或废弃物指标，并在组织报告中说明相关举措的结果。",
+              "ms": "Pakar kemampanan menjejak penunjuk penggunaan sumber atau sisa dan melaporkan hasil inisiatif dalam laporan organisasi."
+            },
+            "contribution": {
+              "en": "Communicating evidence about sustainability initiatives may support company sustainability reporting when the organization uses that information in its reporting cycle.",
+              "zh": "当组织将相关信息纳入报告周期时，沟通可持续发展举措的证据可能支持企业可持续发展报告。",
+              "ms": "Penyampaian bukti tentang inisiatif kemampanan mungkin menyokong pelaporan kemampanan syarikat apabila maklumat itu dimasukkan dalam kitaran pelaporannya."
+            },
+            "source_ids": [
+              "onet-task:13-1199.05:15976",
+              "onet-skill:13-1199.05",
+              "un-target:12.6"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "consider organizational goals, implementation and reporting responsibilities.",
+              "zh": "考虑组织目标、实施过程及报告责任。",
+              "ms": "mempertimbangkan matlamat organisasi, pelaksanaan dan tanggungjawab pelaporan."
+            }
+          }
+        ]
+      }
     },
     "15-1212.00": {
-      "status": "pending_validation",
-      "mappings": []
-    },
-    "15-1252.00": {
-      "status": "pending_validation",
-      "mappings": []
+      "status": "analyst_reviewed",
+      "mappings": [
+        {
+          "sdg_id": "9",
+          "target_id": "9.1",
+          "relation_type": "Conditional, analyst-reviewed potential contribution",
+          "scenario": {
+            "en": "An information security analyst applies safeguards to protect computer files and vital electronic infrastructure, supporting the reliability and resilience of infrastructure where the systems serve that purpose.",
+            "zh": "信息安全分析师采取措施保护计算机文件和重要电子基础设施；当相关系统承担基础设施功能时，这有条件地支持其可靠性与韧性。",
+            "ms": "Penganalisis keselamatan maklumat melindungi fail komputer dan infrastruktur elektronik penting; jika sistem tersebut menyokong infrastruktur, tindakan ini boleh menyokong kebolehpercayaan dan daya tahannya."
+          },
+          "contribution": {
+            "en": "Protecting vital electronic infrastructure may contribute to reliability and resilience when those systems form part of infrastructure services; this is not evidence of wider access.",
+            "zh": "保护重要电子基础设施，在相关系统属于基础设施服务时可能有助于其可靠性与韧性；这不代表扩大了服务覆盖。",
+            "ms": "Perlindungan infrastruktur elektronik penting mungkin menyumbang kepada kebolehpercayaan dan daya tahan apabila sistem tersebut sebahagian daripada perkhidmatan infrastruktur; ini bukan bukti peluasan akses."
+          },
+          "source_ids": [
+            "onet-task:15-1212.00:5314",
+            "onet-skill:15-1212.00",
+            "un-target:9.1"
+          ],
+          "source_checked_on": "2026-10-23"
+        }
+      ],
+      "skills": {
+        "skill_01": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.1",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An information security analyst applies safeguards to protect computer files and vital electronic infrastructure, supporting the reliability and resilience of infrastructure where the systems serve that purpose.",
+              "zh": "信息安全分析师采取措施保护计算机文件和重要电子基础设施；当相关系统承担基础设施功能时，这有条件地支持其可靠性与韧性。",
+              "ms": "Penganalisis keselamatan maklumat melindungi fail komputer dan infrastruktur elektronik penting; jika sistem tersebut menyokong infrastruktur, tindakan ini boleh menyokong kebolehpercayaan dan daya tahannya."
+            },
+            "contribution": {
+              "en": "Protecting vital electronic infrastructure may contribute to reliability and resilience when those systems form part of infrastructure services; this is not evidence of wider access.",
+              "zh": "保护重要电子基础设施，在相关系统属于基础设施服务时可能有助于其可靠性与韧性；这不代表扩大了服务覆盖。",
+              "ms": "Perlindungan infrastruktur elektronik penting mungkin menyumbang kepada kebolehpercayaan dan daya tahan apabila sistem tersebut sebahagian daripada perkhidmatan infrastruktur; ini bukan bukti peluasan akses."
+            },
+            "source_ids": [
+              "onet-task:15-1212.00:5314",
+              "onet-skill:15-1212.00",
+              "un-target:9.1"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "check evidence, assumptions and unintended effects before selecting an approach.",
+              "zh": "在选择方案前核对证据、假设及可能的非预期影响。",
+              "ms": "menyemak bukti, andaian dan kesan yang tidak dijangka sebelum memilih pendekatan."
+            }
+          }
+        ],
+        "skill_02": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.1",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An information security analyst applies safeguards to protect computer files and vital electronic infrastructure, supporting the reliability and resilience of infrastructure where the systems serve that purpose.",
+              "zh": "信息安全分析师采取措施保护计算机文件和重要电子基础设施；当相关系统承担基础设施功能时，这有条件地支持其可靠性与韧性。",
+              "ms": "Penganalisis keselamatan maklumat melindungi fail komputer dan infrastruktur elektronik penting; jika sistem tersebut menyokong infrastruktur, tindakan ini boleh menyokong kebolehpercayaan dan daya tahannya."
+            },
+            "contribution": {
+              "en": "Protecting vital electronic infrastructure may contribute to reliability and resilience when those systems form part of infrastructure services; this is not evidence of wider access.",
+              "zh": "保护重要电子基础设施，在相关系统属于基础设施服务时可能有助于其可靠性与韧性；这不代表扩大了服务覆盖。",
+              "ms": "Perlindungan infrastruktur elektronik penting mungkin menyumbang kepada kebolehpercayaan dan daya tahan apabila sistem tersebut sebahagian daripada perkhidmatan infrastruktur; ini bukan bukti peluasan akses."
+            },
+            "source_ids": [
+              "onet-task:15-1212.00:5314",
+              "onet-skill:15-1212.00",
+              "un-target:9.1"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "compare constraints and alternatives when solving the stated occupational task.",
+              "zh": "解决相应职业任务时比较约束条件与备选方案。",
+              "ms": "membandingkan kekangan dan pilihan semasa menyelesaikan tugas pekerjaan yang dinyatakan."
+            }
+          }
+        ],
+        "skill_03": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.1",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An information security analyst applies safeguards to protect computer files and vital electronic infrastructure, supporting the reliability and resilience of infrastructure where the systems serve that purpose.",
+              "zh": "信息安全分析师采取措施保护计算机文件和重要电子基础设施；当相关系统承担基础设施功能时，这有条件地支持其可靠性与韧性。",
+              "ms": "Penganalisis keselamatan maklumat melindungi fail komputer dan infrastruktur elektronik penting; jika sistem tersebut menyokong infrastruktur, tindakan ini boleh menyokong kebolehpercayaan dan daya tahannya."
+            },
+            "contribution": {
+              "en": "Protecting vital electronic infrastructure may contribute to reliability and resilience when those systems form part of infrastructure services; this is not evidence of wider access.",
+              "zh": "保护重要电子基础设施，在相关系统属于基础设施服务时可能有助于其可靠性与韧性；这不代表扩大了服务覆盖。",
+              "ms": "Perlindungan infrastruktur elektronik penting mungkin menyumbang kepada kebolehpercayaan dan daya tahan apabila sistem tersebut sebahagian daripada perkhidmatan infrastruktur; ini bukan bukti peluasan akses."
+            },
+            "source_ids": [
+              "onet-task:15-1212.00:5314",
+              "onet-skill:15-1212.00",
+              "un-target:9.1"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "make and verify calculations or quantitative comparisons relevant to the task.",
+              "zh": "完成相关任务所需的计算或定量比较，并核验结果。",
+              "ms": "membuat dan menyemak pengiraan atau perbandingan kuantitatif yang berkaitan dengan tugas."
+            }
+          }
+        ],
+        "skill_04": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.1",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An information security analyst applies safeguards to protect computer files and vital electronic infrastructure, supporting the reliability and resilience of infrastructure where the systems serve that purpose.",
+              "zh": "信息安全分析师采取措施保护计算机文件和重要电子基础设施；当相关系统承担基础设施功能时，这有条件地支持其可靠性与韧性。",
+              "ms": "Penganalisis keselamatan maklumat melindungi fail komputer dan infrastruktur elektronik penting; jika sistem tersebut menyokong infrastruktur, tindakan ini boleh menyokong kebolehpercayaan dan daya tahannya."
+            },
+            "contribution": {
+              "en": "Protecting vital electronic infrastructure may contribute to reliability and resilience when those systems form part of infrastructure services; this is not evidence of wider access.",
+              "zh": "保护重要电子基础设施，在相关系统属于基础设施服务时可能有助于其可靠性与韧性；这不代表扩大了服务覆盖。",
+              "ms": "Perlindungan infrastruktur elektronik penting mungkin menyumbang kepada kebolehpercayaan dan daya tahan apabila sistem tersebut sebahagian daripada perkhidmatan infrastruktur; ini bukan bukti peluasan akses."
+            },
+            "source_ids": [
+              "onet-task:15-1212.00:5314",
+              "onet-skill:15-1212.00",
+              "un-target:9.1"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "implement or test a computational step that supports the task.",
+              "zh": "实现或测试支持该任务的计算步骤。",
+              "ms": "melaksanakan atau menguji langkah pengkomputeran yang menyokong tugas."
+            }
+          }
+        ],
+        "skill_06": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.1",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An information security analyst applies safeguards to protect computer files and vital electronic infrastructure, supporting the reliability and resilience of infrastructure where the systems serve that purpose.",
+              "zh": "信息安全分析师采取措施保护计算机文件和重要电子基础设施；当相关系统承担基础设施功能时，这有条件地支持其可靠性与韧性。",
+              "ms": "Penganalisis keselamatan maklumat melindungi fail komputer dan infrastruktur elektronik penting; jika sistem tersebut menyokong infrastruktur, tindakan ini boleh menyokong kebolehpercayaan dan daya tahannya."
+            },
+            "contribution": {
+              "en": "Protecting vital electronic infrastructure may contribute to reliability and resilience when those systems form part of infrastructure services; this is not evidence of wider access.",
+              "zh": "保护重要电子基础设施，在相关系统属于基础设施服务时可能有助于其可靠性与韧性；这不代表扩大了服务覆盖。",
+              "ms": "Perlindungan infrastruktur elektronik penting mungkin menyumbang kepada kebolehpercayaan dan daya tahan apabila sistem tersebut sebahagian daripada perkhidmatan infrastruktur; ini bukan bukti peluasan akses."
+            },
+            "source_ids": [
+              "onet-task:15-1212.00:5314",
+              "onet-skill:15-1212.00",
+              "un-target:9.1"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "trace how components and changes affect the whole system.",
+              "zh": "分析组件和变化如何影响整个系统。",
+              "ms": "menelusuri bagaimana komponen dan perubahan mempengaruhi keseluruhan sistem."
+            }
+          }
+        ],
+        "skill_08": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.1",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An information security analyst applies safeguards to protect computer files and vital electronic infrastructure, supporting the reliability and resilience of infrastructure where the systems serve that purpose.",
+              "zh": "信息安全分析师采取措施保护计算机文件和重要电子基础设施；当相关系统承担基础设施功能时，这有条件地支持其可靠性与韧性。",
+              "ms": "Penganalisis keselamatan maklumat melindungi fail komputer dan infrastruktur elektronik penting; jika sistem tersebut menyokong infrastruktur, tindakan ini boleh menyokong kebolehpercayaan dan daya tahannya."
+            },
+            "contribution": {
+              "en": "Protecting vital electronic infrastructure may contribute to reliability and resilience when those systems form part of infrastructure services; this is not evidence of wider access.",
+              "zh": "保护重要电子基础设施，在相关系统属于基础设施服务时可能有助于其可靠性与韧性；这不代表扩大了服务覆盖。",
+              "ms": "Perlindungan infrastruktur elektronik penting mungkin menyumbang kepada kebolehpercayaan dan daya tahan apabila sistem tersebut sebahagian daripada perkhidmatan infrastruktur; ini bukan bukti peluasan akses."
+            },
+            "source_ids": [
+              "onet-task:15-1212.00:5314",
+              "onet-skill:15-1212.00",
+              "un-target:9.1"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "design or revise an artifact for the stated task and its constraints.",
+              "zh": "针对具体任务及其约束设计或修改方案。",
+              "ms": "mereka bentuk atau menyemak hasil kerja berdasarkan tugas dan kekangannya."
+            }
+          }
+        ],
+        "skill_09": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.1",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An information security analyst applies safeguards to protect computer files and vital electronic infrastructure, supporting the reliability and resilience of infrastructure where the systems serve that purpose.",
+              "zh": "信息安全分析师采取措施保护计算机文件和重要电子基础设施；当相关系统承担基础设施功能时，这有条件地支持其可靠性与韧性。",
+              "ms": "Penganalisis keselamatan maklumat melindungi fail komputer dan infrastruktur elektronik penting; jika sistem tersebut menyokong infrastruktur, tindakan ini boleh menyokong kebolehpercayaan dan daya tahannya."
+            },
+            "contribution": {
+              "en": "Protecting vital electronic infrastructure may contribute to reliability and resilience when those systems form part of infrastructure services; this is not evidence of wider access.",
+              "zh": "保护重要电子基础设施，在相关系统属于基础设施服务时可能有助于其可靠性与韧性；这不代表扩大了服务覆盖。",
+              "ms": "Perlindungan infrastruktur elektronik penting mungkin menyumbang kepada kebolehpercayaan dan daya tahan apabila sistem tersebut sebahagian daripada perkhidmatan infrastruktur; ini bukan bukti peluasan akses."
+            },
+            "source_ids": [
+              "onet-task:15-1212.00:5314",
+              "onet-skill:15-1212.00",
+              "un-target:9.1"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "weigh evidence, risks and trade-offs before recommending an action.",
+              "zh": "提出行动建议前权衡证据、风险和取舍。",
+              "ms": "menimbang bukti, risiko dan pertukaran sebelum mencadangkan tindakan."
+            }
+          }
+        ],
+        "skill_10": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.1",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An information security analyst applies safeguards to protect computer files and vital electronic infrastructure, supporting the reliability and resilience of infrastructure where the systems serve that purpose.",
+              "zh": "信息安全分析师采取措施保护计算机文件和重要电子基础设施；当相关系统承担基础设施功能时，这有条件地支持其可靠性与韧性。",
+              "ms": "Penganalisis keselamatan maklumat melindungi fail komputer dan infrastruktur elektronik penting; jika sistem tersebut menyokong infrastruktur, tindakan ini boleh menyokong kebolehpercayaan dan daya tahannya."
+            },
+            "contribution": {
+              "en": "Protecting vital electronic infrastructure may contribute to reliability and resilience when those systems form part of infrastructure services; this is not evidence of wider access.",
+              "zh": "保护重要电子基础设施，在相关系统属于基础设施服务时可能有助于其可靠性与韧性；这不代表扩大了服务覆盖。",
+              "ms": "Perlindungan infrastruktur elektronik penting mungkin menyumbang kepada kebolehpercayaan dan daya tahan apabila sistem tersebut sebahagian daripada perkhidmatan infrastruktur; ini bukan bukti peluasan akses."
+            },
+            "source_ids": [
+              "onet-task:15-1212.00:5314",
+              "onet-skill:15-1212.00",
+              "un-target:9.1"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "record methods, assumptions and findings so others can review the work.",
+              "zh": "记录方法、假设和结果，便于他人复核。",
+              "ms": "merekod kaedah, andaian dan dapatan supaya pihak lain boleh menyemak kerja."
+            }
+          }
+        ],
+        "skill_11": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.1",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An information security analyst applies safeguards to protect computer files and vital electronic infrastructure, supporting the reliability and resilience of infrastructure where the systems serve that purpose.",
+              "zh": "信息安全分析师采取措施保护计算机文件和重要电子基础设施；当相关系统承担基础设施功能时，这有条件地支持其可靠性与韧性。",
+              "ms": "Penganalisis keselamatan maklumat melindungi fail komputer dan infrastruktur elektronik penting; jika sistem tersebut menyokong infrastruktur, tindakan ini boleh menyokong kebolehpercayaan dan daya tahannya."
+            },
+            "contribution": {
+              "en": "Protecting vital electronic infrastructure may contribute to reliability and resilience when those systems form part of infrastructure services; this is not evidence of wider access.",
+              "zh": "保护重要电子基础设施，在相关系统属于基础设施服务时可能有助于其可靠性与韧性；这不代表扩大了服务覆盖。",
+              "ms": "Perlindungan infrastruktur elektronik penting mungkin menyumbang kepada kebolehpercayaan dan daya tahan apabila sistem tersebut sebahagian daripada perkhidmatan infrastruktur; ini bukan bukti peluasan akses."
+            },
+            "source_ids": [
+              "onet-task:15-1212.00:5314",
+              "onet-skill:15-1212.00",
+              "un-target:9.1"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "explain the evidence and limits of the proposed approach to relevant users or decision-makers.",
+              "zh": "向相关使用者或决策者说明方案的证据和局限。",
+              "ms": "menerangkan bukti dan batas pendekatan kepada pengguna atau pembuat keputusan yang berkaitan."
+            }
+          }
+        ],
+        "knowledge_01": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.1",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An information security analyst applies safeguards to protect computer files and vital electronic infrastructure, supporting the reliability and resilience of infrastructure where the systems serve that purpose.",
+              "zh": "信息安全分析师采取措施保护计算机文件和重要电子基础设施；当相关系统承担基础设施功能时，这有条件地支持其可靠性与韧性。",
+              "ms": "Penganalisis keselamatan maklumat melindungi fail komputer dan infrastruktur elektronik penting; jika sistem tersebut menyokong infrastruktur, tindakan ini boleh menyokong kebolehpercayaan dan daya tahannya."
+            },
+            "contribution": {
+              "en": "Protecting vital electronic infrastructure may contribute to reliability and resilience when those systems form part of infrastructure services; this is not evidence of wider access.",
+              "zh": "保护重要电子基础设施，在相关系统属于基础设施服务时可能有助于其可靠性与韧性；这不代表扩大了服务覆盖。",
+              "ms": "Perlindungan infrastruktur elektronik penting mungkin menyumbang kepada kebolehpercayaan dan daya tahan apabila sistem tersebut sebahagian daripada perkhidmatan infrastruktur; ini bukan bukti peluasan akses."
+            },
+            "source_ids": [
+              "onet-task:15-1212.00:5314",
+              "onet-skill:15-1212.00",
+              "un-target:9.1"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use relevant computer concepts when carrying out the occupational task.",
+              "zh": "执行该职业任务时运用相关计算机知识。",
+              "ms": "menggunakan pengetahuan komputer yang berkaitan semasa menjalankan tugas pekerjaan."
+            }
+          }
+        ],
+        "knowledge_02": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.1",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An information security analyst applies safeguards to protect computer files and vital electronic infrastructure, supporting the reliability and resilience of infrastructure where the systems serve that purpose.",
+              "zh": "信息安全分析师采取措施保护计算机文件和重要电子基础设施；当相关系统承担基础设施功能时，这有条件地支持其可靠性与韧性。",
+              "ms": "Penganalisis keselamatan maklumat melindungi fail komputer dan infrastruktur elektronik penting; jika sistem tersebut menyokong infrastruktur, tindakan ini boleh menyokong kebolehpercayaan dan daya tahannya."
+            },
+            "contribution": {
+              "en": "Protecting vital electronic infrastructure may contribute to reliability and resilience when those systems form part of infrastructure services; this is not evidence of wider access.",
+              "zh": "保护重要电子基础设施，在相关系统属于基础设施服务时可能有助于其可靠性与韧性；这不代表扩大了服务覆盖。",
+              "ms": "Perlindungan infrastruktur elektronik penting mungkin menyumbang kepada kebolehpercayaan dan daya tahan apabila sistem tersebut sebahagian daripada perkhidmatan infrastruktur; ini bukan bukti peluasan akses."
+            },
+            "source_ids": [
+              "onet-task:15-1212.00:5314",
+              "onet-skill:15-1212.00",
+              "un-target:9.1"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "apply mathematical concepts to interpret or verify task results.",
+              "zh": "运用数学概念解释或核验任务结果。",
+              "ms": "menggunakan konsep matematik untuk mentafsir atau mengesahkan hasil tugas."
+            }
+          }
+        ]
+      }
     },
     "15-2031.00": {
-      "status": "pending_validation",
-      "mappings": []
-    },
-    "15-2051.00": {
-      "status": "pending_validation",
-      "mappings": []
+      "status": "analyst_reviewed",
+      "mappings": [
+        {
+          "sdg_id": "12",
+          "target_id": "12.2",
+          "relation_type": "Conditional, analyst-reviewed potential contribution",
+          "scenario": {
+            "en": "An operations research analyst models constraints and alternatives; if the decision explicitly reduces material or natural-resource use, that application may support more efficient resource use.",
+            "zh": "运筹分析师对约束和备选方案建模；若决策明确减少材料或自然资源使用，该应用才可能支持更高效的资源利用。",
+            "ms": "Penganalisis penyelidikan operasi memodelkan kekangan dan pilihan; hanya jika keputusan itu secara jelas mengurangkan penggunaan bahan atau sumber semula jadi, aplikasinya mungkin menyokong penggunaan sumber yang lebih cekap."
+          },
+          "contribution": {
+            "en": "The link is conditional: only an application that demonstrably improves sustainable management or efficient use of natural resources is relevant to this target.",
+            "zh": "此联系有条件：只有能够实际改善自然资源可持续管理或高效利用的应用才与该目标相关。",
+            "ms": "Hubungan ini bersyarat: hanya aplikasi yang benar-benar meningkatkan pengurusan mampan atau penggunaan sumber semula jadi yang cekap berkaitan dengan sasaran ini."
+          },
+          "source_ids": [
+            "onet-task:15-2031.00:7377",
+            "onet-skill:15-2031.00",
+            "un-target:12.2"
+          ],
+          "source_checked_on": "2026-10-23"
+        }
+      ],
+      "skills": {
+        "skill_01": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.2",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An operations research analyst models constraints and alternatives; if the decision explicitly reduces material or natural-resource use, that application may support more efficient resource use.",
+              "zh": "运筹分析师对约束和备选方案建模；若决策明确减少材料或自然资源使用，该应用才可能支持更高效的资源利用。",
+              "ms": "Penganalisis penyelidikan operasi memodelkan kekangan dan pilihan; hanya jika keputusan itu secara jelas mengurangkan penggunaan bahan atau sumber semula jadi, aplikasinya mungkin menyokong penggunaan sumber yang lebih cekap."
+            },
+            "contribution": {
+              "en": "The link is conditional: only an application that demonstrably improves sustainable management or efficient use of natural resources is relevant to this target.",
+              "zh": "此联系有条件：只有能够实际改善自然资源可持续管理或高效利用的应用才与该目标相关。",
+              "ms": "Hubungan ini bersyarat: hanya aplikasi yang benar-benar meningkatkan pengurusan mampan atau penggunaan sumber semula jadi yang cekap berkaitan dengan sasaran ini."
+            },
+            "source_ids": [
+              "onet-task:15-2031.00:7377",
+              "onet-skill:15-2031.00",
+              "un-target:12.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "check evidence, assumptions and unintended effects before selecting an approach.",
+              "zh": "在选择方案前核对证据、假设及可能的非预期影响。",
+              "ms": "menyemak bukti, andaian dan kesan yang tidak dijangka sebelum memilih pendekatan."
+            }
+          }
+        ],
+        "skill_02": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.2",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An operations research analyst models constraints and alternatives; if the decision explicitly reduces material or natural-resource use, that application may support more efficient resource use.",
+              "zh": "运筹分析师对约束和备选方案建模；若决策明确减少材料或自然资源使用，该应用才可能支持更高效的资源利用。",
+              "ms": "Penganalisis penyelidikan operasi memodelkan kekangan dan pilihan; hanya jika keputusan itu secara jelas mengurangkan penggunaan bahan atau sumber semula jadi, aplikasinya mungkin menyokong penggunaan sumber yang lebih cekap."
+            },
+            "contribution": {
+              "en": "The link is conditional: only an application that demonstrably improves sustainable management or efficient use of natural resources is relevant to this target.",
+              "zh": "此联系有条件：只有能够实际改善自然资源可持续管理或高效利用的应用才与该目标相关。",
+              "ms": "Hubungan ini bersyarat: hanya aplikasi yang benar-benar meningkatkan pengurusan mampan atau penggunaan sumber semula jadi yang cekap berkaitan dengan sasaran ini."
+            },
+            "source_ids": [
+              "onet-task:15-2031.00:7377",
+              "onet-skill:15-2031.00",
+              "un-target:12.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "compare constraints and alternatives when solving the stated occupational task.",
+              "zh": "解决相应职业任务时比较约束条件与备选方案。",
+              "ms": "membandingkan kekangan dan pilihan semasa menyelesaikan tugas pekerjaan yang dinyatakan."
+            }
+          }
+        ],
+        "skill_03": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.2",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An operations research analyst models constraints and alternatives; if the decision explicitly reduces material or natural-resource use, that application may support more efficient resource use.",
+              "zh": "运筹分析师对约束和备选方案建模；若决策明确减少材料或自然资源使用，该应用才可能支持更高效的资源利用。",
+              "ms": "Penganalisis penyelidikan operasi memodelkan kekangan dan pilihan; hanya jika keputusan itu secara jelas mengurangkan penggunaan bahan atau sumber semula jadi, aplikasinya mungkin menyokong penggunaan sumber yang lebih cekap."
+            },
+            "contribution": {
+              "en": "The link is conditional: only an application that demonstrably improves sustainable management or efficient use of natural resources is relevant to this target.",
+              "zh": "此联系有条件：只有能够实际改善自然资源可持续管理或高效利用的应用才与该目标相关。",
+              "ms": "Hubungan ini bersyarat: hanya aplikasi yang benar-benar meningkatkan pengurusan mampan atau penggunaan sumber semula jadi yang cekap berkaitan dengan sasaran ini."
+            },
+            "source_ids": [
+              "onet-task:15-2031.00:7377",
+              "onet-skill:15-2031.00",
+              "un-target:12.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "make and verify calculations or quantitative comparisons relevant to the task.",
+              "zh": "完成相关任务所需的计算或定量比较，并核验结果。",
+              "ms": "membuat dan menyemak pengiraan atau perbandingan kuantitatif yang berkaitan dengan tugas."
+            }
+          }
+        ],
+        "skill_04": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.2",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An operations research analyst models constraints and alternatives; if the decision explicitly reduces material or natural-resource use, that application may support more efficient resource use.",
+              "zh": "运筹分析师对约束和备选方案建模；若决策明确减少材料或自然资源使用，该应用才可能支持更高效的资源利用。",
+              "ms": "Penganalisis penyelidikan operasi memodelkan kekangan dan pilihan; hanya jika keputusan itu secara jelas mengurangkan penggunaan bahan atau sumber semula jadi, aplikasinya mungkin menyokong penggunaan sumber yang lebih cekap."
+            },
+            "contribution": {
+              "en": "The link is conditional: only an application that demonstrably improves sustainable management or efficient use of natural resources is relevant to this target.",
+              "zh": "此联系有条件：只有能够实际改善自然资源可持续管理或高效利用的应用才与该目标相关。",
+              "ms": "Hubungan ini bersyarat: hanya aplikasi yang benar-benar meningkatkan pengurusan mampan atau penggunaan sumber semula jadi yang cekap berkaitan dengan sasaran ini."
+            },
+            "source_ids": [
+              "onet-task:15-2031.00:7377",
+              "onet-skill:15-2031.00",
+              "un-target:12.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "implement or test a computational step that supports the task.",
+              "zh": "实现或测试支持该任务的计算步骤。",
+              "ms": "melaksanakan atau menguji langkah pengkomputeran yang menyokong tugas."
+            }
+          }
+        ],
+        "skill_06": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.2",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An operations research analyst models constraints and alternatives; if the decision explicitly reduces material or natural-resource use, that application may support more efficient resource use.",
+              "zh": "运筹分析师对约束和备选方案建模；若决策明确减少材料或自然资源使用，该应用才可能支持更高效的资源利用。",
+              "ms": "Penganalisis penyelidikan operasi memodelkan kekangan dan pilihan; hanya jika keputusan itu secara jelas mengurangkan penggunaan bahan atau sumber semula jadi, aplikasinya mungkin menyokong penggunaan sumber yang lebih cekap."
+            },
+            "contribution": {
+              "en": "The link is conditional: only an application that demonstrably improves sustainable management or efficient use of natural resources is relevant to this target.",
+              "zh": "此联系有条件：只有能够实际改善自然资源可持续管理或高效利用的应用才与该目标相关。",
+              "ms": "Hubungan ini bersyarat: hanya aplikasi yang benar-benar meningkatkan pengurusan mampan atau penggunaan sumber semula jadi yang cekap berkaitan dengan sasaran ini."
+            },
+            "source_ids": [
+              "onet-task:15-2031.00:7377",
+              "onet-skill:15-2031.00",
+              "un-target:12.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "trace how components and changes affect the whole system.",
+              "zh": "分析组件和变化如何影响整个系统。",
+              "ms": "menelusuri bagaimana komponen dan perubahan mempengaruhi keseluruhan sistem."
+            }
+          }
+        ],
+        "skill_07": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.2",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An operations research analyst models constraints and alternatives; if the decision explicitly reduces material or natural-resource use, that application may support more efficient resource use.",
+              "zh": "运筹分析师对约束和备选方案建模；若决策明确减少材料或自然资源使用，该应用才可能支持更高效的资源利用。",
+              "ms": "Penganalisis penyelidikan operasi memodelkan kekangan dan pilihan; hanya jika keputusan itu secara jelas mengurangkan penggunaan bahan atau sumber semula jadi, aplikasinya mungkin menyokong penggunaan sumber yang lebih cekap."
+            },
+            "contribution": {
+              "en": "The link is conditional: only an application that demonstrably improves sustainable management or efficient use of natural resources is relevant to this target.",
+              "zh": "此联系有条件：只有能够实际改善自然资源可持续管理或高效利用的应用才与该目标相关。",
+              "ms": "Hubungan ini bersyarat: hanya aplikasi yang benar-benar meningkatkan pengurusan mampan atau penggunaan sumber semula jadi yang cekap berkaitan dengan sasaran ini."
+            },
+            "source_ids": [
+              "onet-task:15-2031.00:7377",
+              "onet-skill:15-2031.00",
+              "un-target:12.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "compare operational choices against explicit resource or process constraints.",
+              "zh": "依据明确的资源或流程约束比较运营方案。",
+              "ms": "membandingkan pilihan operasi berdasarkan kekangan sumber atau proses yang jelas."
+            }
+          }
+        ],
+        "skill_08": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.2",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An operations research analyst models constraints and alternatives; if the decision explicitly reduces material or natural-resource use, that application may support more efficient resource use.",
+              "zh": "运筹分析师对约束和备选方案建模；若决策明确减少材料或自然资源使用，该应用才可能支持更高效的资源利用。",
+              "ms": "Penganalisis penyelidikan operasi memodelkan kekangan dan pilihan; hanya jika keputusan itu secara jelas mengurangkan penggunaan bahan atau sumber semula jadi, aplikasinya mungkin menyokong penggunaan sumber yang lebih cekap."
+            },
+            "contribution": {
+              "en": "The link is conditional: only an application that demonstrably improves sustainable management or efficient use of natural resources is relevant to this target.",
+              "zh": "此联系有条件：只有能够实际改善自然资源可持续管理或高效利用的应用才与该目标相关。",
+              "ms": "Hubungan ini bersyarat: hanya aplikasi yang benar-benar meningkatkan pengurusan mampan atau penggunaan sumber semula jadi yang cekap berkaitan dengan sasaran ini."
+            },
+            "source_ids": [
+              "onet-task:15-2031.00:7377",
+              "onet-skill:15-2031.00",
+              "un-target:12.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "design or revise an artifact for the stated task and its constraints.",
+              "zh": "针对具体任务及其约束设计或修改方案。",
+              "ms": "mereka bentuk atau menyemak hasil kerja berdasarkan tugas dan kekangannya."
+            }
+          }
+        ],
+        "skill_09": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.2",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An operations research analyst models constraints and alternatives; if the decision explicitly reduces material or natural-resource use, that application may support more efficient resource use.",
+              "zh": "运筹分析师对约束和备选方案建模；若决策明确减少材料或自然资源使用，该应用才可能支持更高效的资源利用。",
+              "ms": "Penganalisis penyelidikan operasi memodelkan kekangan dan pilihan; hanya jika keputusan itu secara jelas mengurangkan penggunaan bahan atau sumber semula jadi, aplikasinya mungkin menyokong penggunaan sumber yang lebih cekap."
+            },
+            "contribution": {
+              "en": "The link is conditional: only an application that demonstrably improves sustainable management or efficient use of natural resources is relevant to this target.",
+              "zh": "此联系有条件：只有能够实际改善自然资源可持续管理或高效利用的应用才与该目标相关。",
+              "ms": "Hubungan ini bersyarat: hanya aplikasi yang benar-benar meningkatkan pengurusan mampan atau penggunaan sumber semula jadi yang cekap berkaitan dengan sasaran ini."
+            },
+            "source_ids": [
+              "onet-task:15-2031.00:7377",
+              "onet-skill:15-2031.00",
+              "un-target:12.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "weigh evidence, risks and trade-offs before recommending an action.",
+              "zh": "提出行动建议前权衡证据、风险和取舍。",
+              "ms": "menimbang bukti, risiko dan pertukaran sebelum mencadangkan tindakan."
+            }
+          }
+        ],
+        "skill_10": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.2",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An operations research analyst models constraints and alternatives; if the decision explicitly reduces material or natural-resource use, that application may support more efficient resource use.",
+              "zh": "运筹分析师对约束和备选方案建模；若决策明确减少材料或自然资源使用，该应用才可能支持更高效的资源利用。",
+              "ms": "Penganalisis penyelidikan operasi memodelkan kekangan dan pilihan; hanya jika keputusan itu secara jelas mengurangkan penggunaan bahan atau sumber semula jadi, aplikasinya mungkin menyokong penggunaan sumber yang lebih cekap."
+            },
+            "contribution": {
+              "en": "The link is conditional: only an application that demonstrably improves sustainable management or efficient use of natural resources is relevant to this target.",
+              "zh": "此联系有条件：只有能够实际改善自然资源可持续管理或高效利用的应用才与该目标相关。",
+              "ms": "Hubungan ini bersyarat: hanya aplikasi yang benar-benar meningkatkan pengurusan mampan atau penggunaan sumber semula jadi yang cekap berkaitan dengan sasaran ini."
+            },
+            "source_ids": [
+              "onet-task:15-2031.00:7377",
+              "onet-skill:15-2031.00",
+              "un-target:12.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "record methods, assumptions and findings so others can review the work.",
+              "zh": "记录方法、假设和结果，便于他人复核。",
+              "ms": "merekod kaedah, andaian dan dapatan supaya pihak lain boleh menyemak kerja."
+            }
+          }
+        ],
+        "skill_11": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.2",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An operations research analyst models constraints and alternatives; if the decision explicitly reduces material or natural-resource use, that application may support more efficient resource use.",
+              "zh": "运筹分析师对约束和备选方案建模；若决策明确减少材料或自然资源使用，该应用才可能支持更高效的资源利用。",
+              "ms": "Penganalisis penyelidikan operasi memodelkan kekangan dan pilihan; hanya jika keputusan itu secara jelas mengurangkan penggunaan bahan atau sumber semula jadi, aplikasinya mungkin menyokong penggunaan sumber yang lebih cekap."
+            },
+            "contribution": {
+              "en": "The link is conditional: only an application that demonstrably improves sustainable management or efficient use of natural resources is relevant to this target.",
+              "zh": "此联系有条件：只有能够实际改善自然资源可持续管理或高效利用的应用才与该目标相关。",
+              "ms": "Hubungan ini bersyarat: hanya aplikasi yang benar-benar meningkatkan pengurusan mampan atau penggunaan sumber semula jadi yang cekap berkaitan dengan sasaran ini."
+            },
+            "source_ids": [
+              "onet-task:15-2031.00:7377",
+              "onet-skill:15-2031.00",
+              "un-target:12.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "explain the evidence and limits of the proposed approach to relevant users or decision-makers.",
+              "zh": "向相关使用者或决策者说明方案的证据和局限。",
+              "ms": "menerangkan bukti dan batas pendekatan kepada pengguna atau pembuat keputusan yang berkaitan."
+            }
+          }
+        ],
+        "knowledge_01": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.2",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An operations research analyst models constraints and alternatives; if the decision explicitly reduces material or natural-resource use, that application may support more efficient resource use.",
+              "zh": "运筹分析师对约束和备选方案建模；若决策明确减少材料或自然资源使用，该应用才可能支持更高效的资源利用。",
+              "ms": "Penganalisis penyelidikan operasi memodelkan kekangan dan pilihan; hanya jika keputusan itu secara jelas mengurangkan penggunaan bahan atau sumber semula jadi, aplikasinya mungkin menyokong penggunaan sumber yang lebih cekap."
+            },
+            "contribution": {
+              "en": "The link is conditional: only an application that demonstrably improves sustainable management or efficient use of natural resources is relevant to this target.",
+              "zh": "此联系有条件：只有能够实际改善自然资源可持续管理或高效利用的应用才与该目标相关。",
+              "ms": "Hubungan ini bersyarat: hanya aplikasi yang benar-benar meningkatkan pengurusan mampan atau penggunaan sumber semula jadi yang cekap berkaitan dengan sasaran ini."
+            },
+            "source_ids": [
+              "onet-task:15-2031.00:7377",
+              "onet-skill:15-2031.00",
+              "un-target:12.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use relevant computer concepts when carrying out the occupational task.",
+              "zh": "执行该职业任务时运用相关计算机知识。",
+              "ms": "menggunakan pengetahuan komputer yang berkaitan semasa menjalankan tugas pekerjaan."
+            }
+          }
+        ],
+        "knowledge_02": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.2",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An operations research analyst models constraints and alternatives; if the decision explicitly reduces material or natural-resource use, that application may support more efficient resource use.",
+              "zh": "运筹分析师对约束和备选方案建模；若决策明确减少材料或自然资源使用，该应用才可能支持更高效的资源利用。",
+              "ms": "Penganalisis penyelidikan operasi memodelkan kekangan dan pilihan; hanya jika keputusan itu secara jelas mengurangkan penggunaan bahan atau sumber semula jadi, aplikasinya mungkin menyokong penggunaan sumber yang lebih cekap."
+            },
+            "contribution": {
+              "en": "The link is conditional: only an application that demonstrably improves sustainable management or efficient use of natural resources is relevant to this target.",
+              "zh": "此联系有条件：只有能够实际改善自然资源可持续管理或高效利用的应用才与该目标相关。",
+              "ms": "Hubungan ini bersyarat: hanya aplikasi yang benar-benar meningkatkan pengurusan mampan atau penggunaan sumber semula jadi yang cekap berkaitan dengan sasaran ini."
+            },
+            "source_ids": [
+              "onet-task:15-2031.00:7377",
+              "onet-skill:15-2031.00",
+              "un-target:12.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "apply mathematical concepts to interpret or verify task results.",
+              "zh": "运用数学概念解释或核验任务结果。",
+              "ms": "menggunakan konsep matematik untuk mentafsir atau mengesahkan hasil tugas."
+            }
+          }
+        ],
+        "knowledge_07": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.2",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An operations research analyst models constraints and alternatives; if the decision explicitly reduces material or natural-resource use, that application may support more efficient resource use.",
+              "zh": "运筹分析师对约束和备选方案建模；若决策明确减少材料或自然资源使用，该应用才可能支持更高效的资源利用。",
+              "ms": "Penganalisis penyelidikan operasi memodelkan kekangan dan pilihan; hanya jika keputusan itu secara jelas mengurangkan penggunaan bahan atau sumber semula jadi, aplikasinya mungkin menyokong penggunaan sumber yang lebih cekap."
+            },
+            "contribution": {
+              "en": "The link is conditional: only an application that demonstrably improves sustainable management or efficient use of natural resources is relevant to this target.",
+              "zh": "此联系有条件：只有能够实际改善自然资源可持续管理或高效利用的应用才与该目标相关。",
+              "ms": "Hubungan ini bersyarat: hanya aplikasi yang benar-benar meningkatkan pengurusan mampan atau penggunaan sumber semula jadi yang cekap berkaitan dengan sasaran ini."
+            },
+            "source_ids": [
+              "onet-task:15-2031.00:7377",
+              "onet-skill:15-2031.00",
+              "un-target:12.2"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "consider organizational goals, implementation and reporting responsibilities.",
+              "zh": "考虑组织目标、实施过程及报告责任。",
+              "ms": "mempertimbangkan matlamat organisasi, pelaksanaan dan tanggungjawab pelaporan."
+            }
+          }
+        ]
+      }
     },
     "17-2081.00": {
-      "status": "source_checked",
+      "status": "analyst_reviewed",
       "mappings": [
         {
           "sdg_id": "6",
           "target_id": "6.3",
-          "relation_type": "Potential contribution",
-          "reason": "In water-quality projects, designing pollution-control or remediation systems can help reduce contaminated discharges, potentially supporting target 6.3.",
-          "occupation_source": "https://www.onetonline.org/link/summary/17-2081.00#Tasks",
-          "target_source": "https://sdgs.un.org/goals/goal6",
-          "source_checked_on": "2026-10-22",
-          "task_summary": "Design systems to control pollution and restore environmental quality, including water quality. (Project paraphrase.)"
+          "relation_type": "Conditional, analyst-reviewed potential contribution",
+          "scenario": {
+            "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+            "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+            "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+          },
+          "contribution": {
+            "en": "Pollution-control or remediation systems can contribute when they reduce pollution or improve water quality; the mapping itself does not measure the outcome.",
+            "zh": "污染控制或修复系统若能减少污染或改善水质，可能对该目标有所贡献；此映射本身不衡量实际结果。",
+            "ms": "Sistem kawalan atau pemulihan pencemaran boleh menyumbang jika mengurangkan pencemaran atau meningkatkan kualiti air; pemetaan ini sendiri tidak mengukur hasilnya."
+          },
+          "source_ids": [
+            "onet-task:17-2081.00:15210",
+            "onet-skill:17-2081.00",
+            "un-target:6.3"
+          ],
+          "source_checked_on": "2026-10-23"
         },
         {
           "sdg_id": "12",
           "target_id": "12.4",
-          "relation_type": "Potential contribution",
-          "reason": "In hazardous-waste projects, documenting waste handling and disposal restrictions can support safer waste management under target 12.4; documentation alone does not demonstrate reduced pollution.",
-          "occupation_source": "https://www.onetonline.org/link/summary/17-2081.00#Tasks",
-          "target_source": "https://unstats.un.org/sdgs/metadata/?Target=12.4",
-          "source_checked_on": "2026-10-22",
-          "task_summary": "Document hazardous-waste handling and constraints on land disposal. (Project paraphrase.)"
+          "relation_type": "Conditional, analyst-reviewed potential contribution",
+          "scenario": {
+            "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+            "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+            "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+          },
+          "contribution": {
+            "en": "Documenting safe handling of hazardous materials can support sound management practices, but documentation alone does not prove reduced releases or harm.",
+            "zh": "记录危险物质的安全处理方式可能支持妥善管理，但仅有文档不能证明排放或危害减少。",
+            "ms": "Dokumentasi pengendalian bahan berbahaya yang selamat boleh menyokong amalan pengurusan yang baik, tetapi dokumentasi sahaja tidak membuktikan pengurangan pelepasan atau kemudaratan."
+          },
+          "source_ids": [
+            "onet-task:17-2081.00:1379",
+            "onet-skill:17-2081.00",
+            "un-target:12.4"
+          ],
+          "source_checked_on": "2026-10-23"
         }
-      ]
+      ],
+      "skills": {
+        "skill_01": [
+          {
+            "sdg_id": "6",
+            "target_id": "6.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Pollution-control or remediation systems can contribute when they reduce pollution or improve water quality; the mapping itself does not measure the outcome.",
+              "zh": "污染控制或修复系统若能减少污染或改善水质，可能对该目标有所贡献；此映射本身不衡量实际结果。",
+              "ms": "Sistem kawalan atau pemulihan pencemaran boleh menyumbang jika mengurangkan pencemaran atau meningkatkan kualiti air; pemetaan ini sendiri tidak mengukur hasilnya."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:15210",
+              "onet-skill:17-2081.00",
+              "un-target:6.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "check evidence, assumptions and unintended effects before selecting an approach.",
+              "zh": "在选择方案前核对证据、假设及可能的非预期影响。",
+              "ms": "menyemak bukti, andaian dan kesan yang tidak dijangka sebelum memilih pendekatan."
+            }
+          }
+        ],
+        "skill_02": [
+          {
+            "sdg_id": "6",
+            "target_id": "6.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Pollution-control or remediation systems can contribute when they reduce pollution or improve water quality; the mapping itself does not measure the outcome.",
+              "zh": "污染控制或修复系统若能减少污染或改善水质，可能对该目标有所贡献；此映射本身不衡量实际结果。",
+              "ms": "Sistem kawalan atau pemulihan pencemaran boleh menyumbang jika mengurangkan pencemaran atau meningkatkan kualiti air; pemetaan ini sendiri tidak mengukur hasilnya."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:15210",
+              "onet-skill:17-2081.00",
+              "un-target:6.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "compare constraints and alternatives when solving the stated occupational task.",
+              "zh": "解决相应职业任务时比较约束条件与备选方案。",
+              "ms": "membandingkan kekangan dan pilihan semasa menyelesaikan tugas pekerjaan yang dinyatakan."
+            }
+          }
+        ],
+        "skill_03": [
+          {
+            "sdg_id": "6",
+            "target_id": "6.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Pollution-control or remediation systems can contribute when they reduce pollution or improve water quality; the mapping itself does not measure the outcome.",
+              "zh": "污染控制或修复系统若能减少污染或改善水质，可能对该目标有所贡献；此映射本身不衡量实际结果。",
+              "ms": "Sistem kawalan atau pemulihan pencemaran boleh menyumbang jika mengurangkan pencemaran atau meningkatkan kualiti air; pemetaan ini sendiri tidak mengukur hasilnya."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:15210",
+              "onet-skill:17-2081.00",
+              "un-target:6.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "make and verify calculations or quantitative comparisons relevant to the task.",
+              "zh": "完成相关任务所需的计算或定量比较，并核验结果。",
+              "ms": "membuat dan menyemak pengiraan atau perbandingan kuantitatif yang berkaitan dengan tugas."
+            }
+          }
+        ],
+        "skill_04": [
+          {
+            "sdg_id": "6",
+            "target_id": "6.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Pollution-control or remediation systems can contribute when they reduce pollution or improve water quality; the mapping itself does not measure the outcome.",
+              "zh": "污染控制或修复系统若能减少污染或改善水质，可能对该目标有所贡献；此映射本身不衡量实际结果。",
+              "ms": "Sistem kawalan atau pemulihan pencemaran boleh menyumbang jika mengurangkan pencemaran atau meningkatkan kualiti air; pemetaan ini sendiri tidak mengukur hasilnya."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:15210",
+              "onet-skill:17-2081.00",
+              "un-target:6.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "implement or test a computational step that supports the task.",
+              "zh": "实现或测试支持该任务的计算步骤。",
+              "ms": "melaksanakan atau menguji langkah pengkomputeran yang menyokong tugas."
+            }
+          }
+        ],
+        "skill_05": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.4",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Documenting safe handling of hazardous materials can support sound management practices, but documentation alone does not prove reduced releases or harm.",
+              "zh": "记录危险物质的安全处理方式可能支持妥善管理，但仅有文档不能证明排放或危害减少。",
+              "ms": "Dokumentasi pengendalian bahan berbahaya yang selamat boleh menyokong amalan pengurusan yang baik, tetapi dokumentasi sahaja tidak membuktikan pengurangan pelepasan atau kemudaratan."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:1379",
+              "onet-skill:17-2081.00",
+              "un-target:12.4"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "distinguish observed scientific evidence from assumptions in the application.",
+              "zh": "在具体应用中区分科学观测证据与假设。",
+              "ms": "membezakan bukti saintifik yang diperhatikan daripada andaian dalam aplikasi."
+            }
+          }
+        ],
+        "skill_06": [
+          {
+            "sdg_id": "6",
+            "target_id": "6.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Pollution-control or remediation systems can contribute when they reduce pollution or improve water quality; the mapping itself does not measure the outcome.",
+              "zh": "污染控制或修复系统若能减少污染或改善水质，可能对该目标有所贡献；此映射本身不衡量实际结果。",
+              "ms": "Sistem kawalan atau pemulihan pencemaran boleh menyumbang jika mengurangkan pencemaran atau meningkatkan kualiti air; pemetaan ini sendiri tidak mengukur hasilnya."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:15210",
+              "onet-skill:17-2081.00",
+              "un-target:6.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "trace how components and changes affect the whole system.",
+              "zh": "分析组件和变化如何影响整个系统。",
+              "ms": "menelusuri bagaimana komponen dan perubahan mempengaruhi keseluruhan sistem."
+            }
+          }
+        ],
+        "skill_07": [
+          {
+            "sdg_id": "6",
+            "target_id": "6.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Pollution-control or remediation systems can contribute when they reduce pollution or improve water quality; the mapping itself does not measure the outcome.",
+              "zh": "污染控制或修复系统若能减少污染或改善水质，可能对该目标有所贡献；此映射本身不衡量实际结果。",
+              "ms": "Sistem kawalan atau pemulihan pencemaran boleh menyumbang jika mengurangkan pencemaran atau meningkatkan kualiti air; pemetaan ini sendiri tidak mengukur hasilnya."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:15210",
+              "onet-skill:17-2081.00",
+              "un-target:6.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "compare operational choices against explicit resource or process constraints.",
+              "zh": "依据明确的资源或流程约束比较运营方案。",
+              "ms": "membandingkan pilihan operasi berdasarkan kekangan sumber atau proses yang jelas."
+            }
+          }
+        ],
+        "skill_08": [
+          {
+            "sdg_id": "6",
+            "target_id": "6.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Pollution-control or remediation systems can contribute when they reduce pollution or improve water quality; the mapping itself does not measure the outcome.",
+              "zh": "污染控制或修复系统若能减少污染或改善水质，可能对该目标有所贡献；此映射本身不衡量实际结果。",
+              "ms": "Sistem kawalan atau pemulihan pencemaran boleh menyumbang jika mengurangkan pencemaran atau meningkatkan kualiti air; pemetaan ini sendiri tidak mengukur hasilnya."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:15210",
+              "onet-skill:17-2081.00",
+              "un-target:6.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "design or revise an artifact for the stated task and its constraints.",
+              "zh": "针对具体任务及其约束设计或修改方案。",
+              "ms": "mereka bentuk atau menyemak hasil kerja berdasarkan tugas dan kekangannya."
+            }
+          }
+        ],
+        "skill_09": [
+          {
+            "sdg_id": "6",
+            "target_id": "6.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Pollution-control or remediation systems can contribute when they reduce pollution or improve water quality; the mapping itself does not measure the outcome.",
+              "zh": "污染控制或修复系统若能减少污染或改善水质，可能对该目标有所贡献；此映射本身不衡量实际结果。",
+              "ms": "Sistem kawalan atau pemulihan pencemaran boleh menyumbang jika mengurangkan pencemaran atau meningkatkan kualiti air; pemetaan ini sendiri tidak mengukur hasilnya."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:15210",
+              "onet-skill:17-2081.00",
+              "un-target:6.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "weigh evidence, risks and trade-offs before recommending an action.",
+              "zh": "提出行动建议前权衡证据、风险和取舍。",
+              "ms": "menimbang bukti, risiko dan pertukaran sebelum mencadangkan tindakan."
+            }
+          }
+        ],
+        "skill_10": [
+          {
+            "sdg_id": "6",
+            "target_id": "6.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Pollution-control or remediation systems can contribute when they reduce pollution or improve water quality; the mapping itself does not measure the outcome.",
+              "zh": "污染控制或修复系统若能减少污染或改善水质，可能对该目标有所贡献；此映射本身不衡量实际结果。",
+              "ms": "Sistem kawalan atau pemulihan pencemaran boleh menyumbang jika mengurangkan pencemaran atau meningkatkan kualiti air; pemetaan ini sendiri tidak mengukur hasilnya."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:15210",
+              "onet-skill:17-2081.00",
+              "un-target:6.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "record methods, assumptions and findings so others can review the work.",
+              "zh": "记录方法、假设和结果，便于他人复核。",
+              "ms": "merekod kaedah, andaian dan dapatan supaya pihak lain boleh menyemak kerja."
+            }
+          }
+        ],
+        "skill_11": [
+          {
+            "sdg_id": "6",
+            "target_id": "6.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Pollution-control or remediation systems can contribute when they reduce pollution or improve water quality; the mapping itself does not measure the outcome.",
+              "zh": "污染控制或修复系统若能减少污染或改善水质，可能对该目标有所贡献；此映射本身不衡量实际结果。",
+              "ms": "Sistem kawalan atau pemulihan pencemaran boleh menyumbang jika mengurangkan pencemaran atau meningkatkan kualiti air; pemetaan ini sendiri tidak mengukur hasilnya."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:15210",
+              "onet-skill:17-2081.00",
+              "un-target:6.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "explain the evidence and limits of the proposed approach to relevant users or decision-makers.",
+              "zh": "向相关使用者或决策者说明方案的证据和局限。",
+              "ms": "menerangkan bukti dan batas pendekatan kepada pengguna atau pembuat keputusan yang berkaitan."
+            }
+          }
+        ],
+        "knowledge_01": [
+          {
+            "sdg_id": "6",
+            "target_id": "6.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Pollution-control or remediation systems can contribute when they reduce pollution or improve water quality; the mapping itself does not measure the outcome.",
+              "zh": "污染控制或修复系统若能减少污染或改善水质，可能对该目标有所贡献；此映射本身不衡量实际结果。",
+              "ms": "Sistem kawalan atau pemulihan pencemaran boleh menyumbang jika mengurangkan pencemaran atau meningkatkan kualiti air; pemetaan ini sendiri tidak mengukur hasilnya."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:15210",
+              "onet-skill:17-2081.00",
+              "un-target:6.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use relevant computer concepts when carrying out the occupational task.",
+              "zh": "执行该职业任务时运用相关计算机知识。",
+              "ms": "menggunakan pengetahuan komputer yang berkaitan semasa menjalankan tugas pekerjaan."
+            }
+          }
+        ],
+        "knowledge_02": [
+          {
+            "sdg_id": "6",
+            "target_id": "6.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Pollution-control or remediation systems can contribute when they reduce pollution or improve water quality; the mapping itself does not measure the outcome.",
+              "zh": "污染控制或修复系统若能减少污染或改善水质，可能对该目标有所贡献；此映射本身不衡量实际结果。",
+              "ms": "Sistem kawalan atau pemulihan pencemaran boleh menyumbang jika mengurangkan pencemaran atau meningkatkan kualiti air; pemetaan ini sendiri tidak mengukur hasilnya."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:15210",
+              "onet-skill:17-2081.00",
+              "un-target:6.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "apply mathematical concepts to interpret or verify task results.",
+              "zh": "运用数学概念解释或核验任务结果。",
+              "ms": "menggunakan konsep matematik untuk mentafsir atau mengesahkan hasil tugas."
+            }
+          }
+        ],
+        "knowledge_03": [
+          {
+            "sdg_id": "6",
+            "target_id": "6.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Pollution-control or remediation systems can contribute when they reduce pollution or improve water quality; the mapping itself does not measure the outcome.",
+              "zh": "污染控制或修复系统若能减少污染或改善水质，可能对该目标有所贡献；此映射本身不衡量实际结果。",
+              "ms": "Sistem kawalan atau pemulihan pencemaran boleh menyumbang jika mengurangkan pencemaran atau meningkatkan kualiti air; pemetaan ini sendiri tidak mengukur hasilnya."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:15210",
+              "onet-skill:17-2081.00",
+              "un-target:6.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "apply engineering or technology principles to the described system or process.",
+              "zh": "将工程或技术原理应用于所述系统或流程。",
+              "ms": "menggunakan prinsip kejuruteraan atau teknologi pada sistem atau proses yang dinyatakan."
+            }
+          }
+        ],
+        "knowledge_04": [
+          {
+            "sdg_id": "6",
+            "target_id": "6.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Pollution-control or remediation systems can contribute when they reduce pollution or improve water quality; the mapping itself does not measure the outcome.",
+              "zh": "污染控制或修复系统若能减少污染或改善水质，可能对该目标有所贡献；此映射本身不衡量实际结果。",
+              "ms": "Sistem kawalan atau pemulihan pencemaran boleh menyumbang jika mengurangkan pencemaran atau meningkatkan kualiti air; pemetaan ini sendiri tidak mengukur hasilnya."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:15210",
+              "onet-skill:17-2081.00",
+              "un-target:6.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use physics concepts to explain or check the relevant system behaviour.",
+              "zh": "使用物理知识解释或检查相关系统行为。",
+              "ms": "menggunakan konsep fizik untuk menerangkan atau menyemak tingkah laku sistem berkaitan."
+            }
+          }
+        ],
+        "knowledge_05": [
+          {
+            "sdg_id": "12",
+            "target_id": "12.4",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Documenting safe handling of hazardous materials can support sound management practices, but documentation alone does not prove reduced releases or harm.",
+              "zh": "记录危险物质的安全处理方式可能支持妥善管理，但仅有文档不能证明排放或危害减少。",
+              "ms": "Dokumentasi pengendalian bahan berbahaya yang selamat boleh menyokong amalan pengurusan yang baik, tetapi dokumentasi sahaja tidak membuktikan pengurangan pelepasan atau kemudaratan."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:1379",
+              "onet-skill:17-2081.00",
+              "un-target:12.4"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use chemistry concepts to assess relevant materials, reactions or hazards.",
+              "zh": "运用化学知识评估相关材料、反应或危害。",
+              "ms": "menggunakan konsep kimia untuk menilai bahan, tindak balas atau bahaya yang berkaitan."
+            }
+          }
+        ],
+        "knowledge_06": [
+          {
+            "sdg_id": "6",
+            "target_id": "6.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Pollution-control or remediation systems can contribute when they reduce pollution or improve water quality; the mapping itself does not measure the outcome.",
+              "zh": "污染控制或修复系统若能减少污染或改善水质，可能对该目标有所贡献；此映射本身不衡量实际结果。",
+              "ms": "Sistem kawalan atau pemulihan pencemaran boleh menyumbang jika mengurangkan pencemaran atau meningkatkan kualiti air; pemetaan ini sendiri tidak mengukur hasilnya."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:15210",
+              "onet-skill:17-2081.00",
+              "un-target:6.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use biological concepts to interpret the relevant research or environmental context.",
+              "zh": "运用生物学知识解释相关研究或环境背景。",
+              "ms": "menggunakan konsep biologi untuk mentafsir konteks penyelidikan atau alam sekitar yang berkaitan."
+            }
+          }
+        ],
+        "knowledge_07": [
+          {
+            "sdg_id": "6",
+            "target_id": "6.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An environmental engineer designs or oversees systems that control or remediate water, air or soil pollution; a separate application documents hazardous-material handling.",
+              "zh": "环境工程师设计或监督控制、修复水、空气或土壤污染的系统；另一类应用记录危险物质的处理过程。",
+              "ms": "Jurutera alam sekitar mereka bentuk atau menyelia sistem kawalan atau pemulihan pencemaran air, udara atau tanah; aplikasi berasingan mendokumenkan pengendalian bahan berbahaya."
+            },
+            "contribution": {
+              "en": "Pollution-control or remediation systems can contribute when they reduce pollution or improve water quality; the mapping itself does not measure the outcome.",
+              "zh": "污染控制或修复系统若能减少污染或改善水质，可能对该目标有所贡献；此映射本身不衡量实际结果。",
+              "ms": "Sistem kawalan atau pemulihan pencemaran boleh menyumbang jika mengurangkan pencemaran atau meningkatkan kualiti air; pemetaan ini sendiri tidak mengukur hasilnya."
+            },
+            "source_ids": [
+              "onet-task:17-2081.00:15210",
+              "onet-skill:17-2081.00",
+              "un-target:6.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "consider organizational goals, implementation and reporting responsibilities.",
+              "zh": "考虑组织目标、实施过程及报告责任。",
+              "ms": "mempertimbangkan matlamat organisasi, pelaksanaan dan tanggungjawab pelaporan."
+            }
+          }
+        ]
+      }
+    },
+    "17-2199.08": {
+      "status": "analyst_reviewed",
+      "mappings": [
+        {
+          "sdg_id": "9",
+          "target_id": "9.4",
+          "relation_type": "Conditional, analyst-reviewed potential contribution",
+          "scenario": {
+            "en": "A robotics engineer designs robotic applications for green-product manufacturing, such as wind turbines or solar panels, where the design reduces waste or improves resource efficiency.",
+            "zh": "机器人工程师为绿色产品制造设计机器人应用，例如风力涡轮机或太阳能板；仅当设计减少浪费或提高资源效率时，才可能产生相关贡献。",
+            "ms": "Jurutera robotik mereka bentuk aplikasi robotik untuk pembuatan produk hijau seperti turbin angin atau panel solar; sumbangan berpotensi hanya wujud jika reka bentuk mengurangkan sisa atau meningkatkan kecekapan sumber."
+          },
+          "contribution": {
+            "en": "A green-product manufacturing application may support resource-efficient and environmentally sound industrial processes if its design achieves those results.",
+            "zh": "绿色产品制造应用若确实实现相关效果，可能支持资源高效、环境友好的工业流程。",
+            "ms": "Aplikasi pembuatan produk hijau mungkin menyokong proses industri yang cekap sumber dan mesra alam jika reka bentuknya mencapai hasil tersebut."
+          },
+          "source_ids": [
+            "onet-task:17-2199.08:19668",
+            "onet-skill:17-2199.08",
+            "un-target:9.4"
+          ],
+          "source_checked_on": "2026-10-23"
+        }
+      ],
+      "skills": {
+        "skill_01": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.4",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A robotics engineer designs robotic applications for green-product manufacturing, such as wind turbines or solar panels, where the design reduces waste or improves resource efficiency.",
+              "zh": "机器人工程师为绿色产品制造设计机器人应用，例如风力涡轮机或太阳能板；仅当设计减少浪费或提高资源效率时，才可能产生相关贡献。",
+              "ms": "Jurutera robotik mereka bentuk aplikasi robotik untuk pembuatan produk hijau seperti turbin angin atau panel solar; sumbangan berpotensi hanya wujud jika reka bentuk mengurangkan sisa atau meningkatkan kecekapan sumber."
+            },
+            "contribution": {
+              "en": "A green-product manufacturing application may support resource-efficient and environmentally sound industrial processes if its design achieves those results.",
+              "zh": "绿色产品制造应用若确实实现相关效果，可能支持资源高效、环境友好的工业流程。",
+              "ms": "Aplikasi pembuatan produk hijau mungkin menyokong proses industri yang cekap sumber dan mesra alam jika reka bentuknya mencapai hasil tersebut."
+            },
+            "source_ids": [
+              "onet-task:17-2199.08:19668",
+              "onet-skill:17-2199.08",
+              "un-target:9.4"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "check evidence, assumptions and unintended effects before selecting an approach.",
+              "zh": "在选择方案前核对证据、假设及可能的非预期影响。",
+              "ms": "menyemak bukti, andaian dan kesan yang tidak dijangka sebelum memilih pendekatan."
+            }
+          }
+        ],
+        "skill_02": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.4",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A robotics engineer designs robotic applications for green-product manufacturing, such as wind turbines or solar panels, where the design reduces waste or improves resource efficiency.",
+              "zh": "机器人工程师为绿色产品制造设计机器人应用，例如风力涡轮机或太阳能板；仅当设计减少浪费或提高资源效率时，才可能产生相关贡献。",
+              "ms": "Jurutera robotik mereka bentuk aplikasi robotik untuk pembuatan produk hijau seperti turbin angin atau panel solar; sumbangan berpotensi hanya wujud jika reka bentuk mengurangkan sisa atau meningkatkan kecekapan sumber."
+            },
+            "contribution": {
+              "en": "A green-product manufacturing application may support resource-efficient and environmentally sound industrial processes if its design achieves those results.",
+              "zh": "绿色产品制造应用若确实实现相关效果，可能支持资源高效、环境友好的工业流程。",
+              "ms": "Aplikasi pembuatan produk hijau mungkin menyokong proses industri yang cekap sumber dan mesra alam jika reka bentuknya mencapai hasil tersebut."
+            },
+            "source_ids": [
+              "onet-task:17-2199.08:19668",
+              "onet-skill:17-2199.08",
+              "un-target:9.4"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "compare constraints and alternatives when solving the stated occupational task.",
+              "zh": "解决相应职业任务时比较约束条件与备选方案。",
+              "ms": "membandingkan kekangan dan pilihan semasa menyelesaikan tugas pekerjaan yang dinyatakan."
+            }
+          }
+        ],
+        "skill_03": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.4",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A robotics engineer designs robotic applications for green-product manufacturing, such as wind turbines or solar panels, where the design reduces waste or improves resource efficiency.",
+              "zh": "机器人工程师为绿色产品制造设计机器人应用，例如风力涡轮机或太阳能板；仅当设计减少浪费或提高资源效率时，才可能产生相关贡献。",
+              "ms": "Jurutera robotik mereka bentuk aplikasi robotik untuk pembuatan produk hijau seperti turbin angin atau panel solar; sumbangan berpotensi hanya wujud jika reka bentuk mengurangkan sisa atau meningkatkan kecekapan sumber."
+            },
+            "contribution": {
+              "en": "A green-product manufacturing application may support resource-efficient and environmentally sound industrial processes if its design achieves those results.",
+              "zh": "绿色产品制造应用若确实实现相关效果，可能支持资源高效、环境友好的工业流程。",
+              "ms": "Aplikasi pembuatan produk hijau mungkin menyokong proses industri yang cekap sumber dan mesra alam jika reka bentuknya mencapai hasil tersebut."
+            },
+            "source_ids": [
+              "onet-task:17-2199.08:19668",
+              "onet-skill:17-2199.08",
+              "un-target:9.4"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "make and verify calculations or quantitative comparisons relevant to the task.",
+              "zh": "完成相关任务所需的计算或定量比较，并核验结果。",
+              "ms": "membuat dan menyemak pengiraan atau perbandingan kuantitatif yang berkaitan dengan tugas."
+            }
+          }
+        ],
+        "skill_04": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.4",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A robotics engineer designs robotic applications for green-product manufacturing, such as wind turbines or solar panels, where the design reduces waste or improves resource efficiency.",
+              "zh": "机器人工程师为绿色产品制造设计机器人应用，例如风力涡轮机或太阳能板；仅当设计减少浪费或提高资源效率时，才可能产生相关贡献。",
+              "ms": "Jurutera robotik mereka bentuk aplikasi robotik untuk pembuatan produk hijau seperti turbin angin atau panel solar; sumbangan berpotensi hanya wujud jika reka bentuk mengurangkan sisa atau meningkatkan kecekapan sumber."
+            },
+            "contribution": {
+              "en": "A green-product manufacturing application may support resource-efficient and environmentally sound industrial processes if its design achieves those results.",
+              "zh": "绿色产品制造应用若确实实现相关效果，可能支持资源高效、环境友好的工业流程。",
+              "ms": "Aplikasi pembuatan produk hijau mungkin menyokong proses industri yang cekap sumber dan mesra alam jika reka bentuknya mencapai hasil tersebut."
+            },
+            "source_ids": [
+              "onet-task:17-2199.08:19668",
+              "onet-skill:17-2199.08",
+              "un-target:9.4"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "implement or test a computational step that supports the task.",
+              "zh": "实现或测试支持该任务的计算步骤。",
+              "ms": "melaksanakan atau menguji langkah pengkomputeran yang menyokong tugas."
+            }
+          }
+        ],
+        "skill_06": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.4",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A robotics engineer designs robotic applications for green-product manufacturing, such as wind turbines or solar panels, where the design reduces waste or improves resource efficiency.",
+              "zh": "机器人工程师为绿色产品制造设计机器人应用，例如风力涡轮机或太阳能板；仅当设计减少浪费或提高资源效率时，才可能产生相关贡献。",
+              "ms": "Jurutera robotik mereka bentuk aplikasi robotik untuk pembuatan produk hijau seperti turbin angin atau panel solar; sumbangan berpotensi hanya wujud jika reka bentuk mengurangkan sisa atau meningkatkan kecekapan sumber."
+            },
+            "contribution": {
+              "en": "A green-product manufacturing application may support resource-efficient and environmentally sound industrial processes if its design achieves those results.",
+              "zh": "绿色产品制造应用若确实实现相关效果，可能支持资源高效、环境友好的工业流程。",
+              "ms": "Aplikasi pembuatan produk hijau mungkin menyokong proses industri yang cekap sumber dan mesra alam jika reka bentuknya mencapai hasil tersebut."
+            },
+            "source_ids": [
+              "onet-task:17-2199.08:19668",
+              "onet-skill:17-2199.08",
+              "un-target:9.4"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "trace how components and changes affect the whole system.",
+              "zh": "分析组件和变化如何影响整个系统。",
+              "ms": "menelusuri bagaimana komponen dan perubahan mempengaruhi keseluruhan sistem."
+            }
+          }
+        ],
+        "skill_07": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.4",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A robotics engineer designs robotic applications for green-product manufacturing, such as wind turbines or solar panels, where the design reduces waste or improves resource efficiency.",
+              "zh": "机器人工程师为绿色产品制造设计机器人应用，例如风力涡轮机或太阳能板；仅当设计减少浪费或提高资源效率时，才可能产生相关贡献。",
+              "ms": "Jurutera robotik mereka bentuk aplikasi robotik untuk pembuatan produk hijau seperti turbin angin atau panel solar; sumbangan berpotensi hanya wujud jika reka bentuk mengurangkan sisa atau meningkatkan kecekapan sumber."
+            },
+            "contribution": {
+              "en": "A green-product manufacturing application may support resource-efficient and environmentally sound industrial processes if its design achieves those results.",
+              "zh": "绿色产品制造应用若确实实现相关效果，可能支持资源高效、环境友好的工业流程。",
+              "ms": "Aplikasi pembuatan produk hijau mungkin menyokong proses industri yang cekap sumber dan mesra alam jika reka bentuknya mencapai hasil tersebut."
+            },
+            "source_ids": [
+              "onet-task:17-2199.08:19668",
+              "onet-skill:17-2199.08",
+              "un-target:9.4"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "compare operational choices against explicit resource or process constraints.",
+              "zh": "依据明确的资源或流程约束比较运营方案。",
+              "ms": "membandingkan pilihan operasi berdasarkan kekangan sumber atau proses yang jelas."
+            }
+          }
+        ],
+        "skill_08": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.4",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A robotics engineer designs robotic applications for green-product manufacturing, such as wind turbines or solar panels, where the design reduces waste or improves resource efficiency.",
+              "zh": "机器人工程师为绿色产品制造设计机器人应用，例如风力涡轮机或太阳能板；仅当设计减少浪费或提高资源效率时，才可能产生相关贡献。",
+              "ms": "Jurutera robotik mereka bentuk aplikasi robotik untuk pembuatan produk hijau seperti turbin angin atau panel solar; sumbangan berpotensi hanya wujud jika reka bentuk mengurangkan sisa atau meningkatkan kecekapan sumber."
+            },
+            "contribution": {
+              "en": "A green-product manufacturing application may support resource-efficient and environmentally sound industrial processes if its design achieves those results.",
+              "zh": "绿色产品制造应用若确实实现相关效果，可能支持资源高效、环境友好的工业流程。",
+              "ms": "Aplikasi pembuatan produk hijau mungkin menyokong proses industri yang cekap sumber dan mesra alam jika reka bentuknya mencapai hasil tersebut."
+            },
+            "source_ids": [
+              "onet-task:17-2199.08:19668",
+              "onet-skill:17-2199.08",
+              "un-target:9.4"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "design or revise an artifact for the stated task and its constraints.",
+              "zh": "针对具体任务及其约束设计或修改方案。",
+              "ms": "mereka bentuk atau menyemak hasil kerja berdasarkan tugas dan kekangannya."
+            }
+          }
+        ],
+        "skill_09": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.4",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A robotics engineer designs robotic applications for green-product manufacturing, such as wind turbines or solar panels, where the design reduces waste or improves resource efficiency.",
+              "zh": "机器人工程师为绿色产品制造设计机器人应用，例如风力涡轮机或太阳能板；仅当设计减少浪费或提高资源效率时，才可能产生相关贡献。",
+              "ms": "Jurutera robotik mereka bentuk aplikasi robotik untuk pembuatan produk hijau seperti turbin angin atau panel solar; sumbangan berpotensi hanya wujud jika reka bentuk mengurangkan sisa atau meningkatkan kecekapan sumber."
+            },
+            "contribution": {
+              "en": "A green-product manufacturing application may support resource-efficient and environmentally sound industrial processes if its design achieves those results.",
+              "zh": "绿色产品制造应用若确实实现相关效果，可能支持资源高效、环境友好的工业流程。",
+              "ms": "Aplikasi pembuatan produk hijau mungkin menyokong proses industri yang cekap sumber dan mesra alam jika reka bentuknya mencapai hasil tersebut."
+            },
+            "source_ids": [
+              "onet-task:17-2199.08:19668",
+              "onet-skill:17-2199.08",
+              "un-target:9.4"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "weigh evidence, risks and trade-offs before recommending an action.",
+              "zh": "提出行动建议前权衡证据、风险和取舍。",
+              "ms": "menimbang bukti, risiko dan pertukaran sebelum mencadangkan tindakan."
+            }
+          }
+        ],
+        "skill_10": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.4",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A robotics engineer designs robotic applications for green-product manufacturing, such as wind turbines or solar panels, where the design reduces waste or improves resource efficiency.",
+              "zh": "机器人工程师为绿色产品制造设计机器人应用，例如风力涡轮机或太阳能板；仅当设计减少浪费或提高资源效率时，才可能产生相关贡献。",
+              "ms": "Jurutera robotik mereka bentuk aplikasi robotik untuk pembuatan produk hijau seperti turbin angin atau panel solar; sumbangan berpotensi hanya wujud jika reka bentuk mengurangkan sisa atau meningkatkan kecekapan sumber."
+            },
+            "contribution": {
+              "en": "A green-product manufacturing application may support resource-efficient and environmentally sound industrial processes if its design achieves those results.",
+              "zh": "绿色产品制造应用若确实实现相关效果，可能支持资源高效、环境友好的工业流程。",
+              "ms": "Aplikasi pembuatan produk hijau mungkin menyokong proses industri yang cekap sumber dan mesra alam jika reka bentuknya mencapai hasil tersebut."
+            },
+            "source_ids": [
+              "onet-task:17-2199.08:19668",
+              "onet-skill:17-2199.08",
+              "un-target:9.4"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "record methods, assumptions and findings so others can review the work.",
+              "zh": "记录方法、假设和结果，便于他人复核。",
+              "ms": "merekod kaedah, andaian dan dapatan supaya pihak lain boleh menyemak kerja."
+            }
+          }
+        ],
+        "skill_11": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.4",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A robotics engineer designs robotic applications for green-product manufacturing, such as wind turbines or solar panels, where the design reduces waste or improves resource efficiency.",
+              "zh": "机器人工程师为绿色产品制造设计机器人应用，例如风力涡轮机或太阳能板；仅当设计减少浪费或提高资源效率时，才可能产生相关贡献。",
+              "ms": "Jurutera robotik mereka bentuk aplikasi robotik untuk pembuatan produk hijau seperti turbin angin atau panel solar; sumbangan berpotensi hanya wujud jika reka bentuk mengurangkan sisa atau meningkatkan kecekapan sumber."
+            },
+            "contribution": {
+              "en": "A green-product manufacturing application may support resource-efficient and environmentally sound industrial processes if its design achieves those results.",
+              "zh": "绿色产品制造应用若确实实现相关效果，可能支持资源高效、环境友好的工业流程。",
+              "ms": "Aplikasi pembuatan produk hijau mungkin menyokong proses industri yang cekap sumber dan mesra alam jika reka bentuknya mencapai hasil tersebut."
+            },
+            "source_ids": [
+              "onet-task:17-2199.08:19668",
+              "onet-skill:17-2199.08",
+              "un-target:9.4"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "explain the evidence and limits of the proposed approach to relevant users or decision-makers.",
+              "zh": "向相关使用者或决策者说明方案的证据和局限。",
+              "ms": "menerangkan bukti dan batas pendekatan kepada pengguna atau pembuat keputusan yang berkaitan."
+            }
+          }
+        ],
+        "knowledge_01": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.4",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A robotics engineer designs robotic applications for green-product manufacturing, such as wind turbines or solar panels, where the design reduces waste or improves resource efficiency.",
+              "zh": "机器人工程师为绿色产品制造设计机器人应用，例如风力涡轮机或太阳能板；仅当设计减少浪费或提高资源效率时，才可能产生相关贡献。",
+              "ms": "Jurutera robotik mereka bentuk aplikasi robotik untuk pembuatan produk hijau seperti turbin angin atau panel solar; sumbangan berpotensi hanya wujud jika reka bentuk mengurangkan sisa atau meningkatkan kecekapan sumber."
+            },
+            "contribution": {
+              "en": "A green-product manufacturing application may support resource-efficient and environmentally sound industrial processes if its design achieves those results.",
+              "zh": "绿色产品制造应用若确实实现相关效果，可能支持资源高效、环境友好的工业流程。",
+              "ms": "Aplikasi pembuatan produk hijau mungkin menyokong proses industri yang cekap sumber dan mesra alam jika reka bentuknya mencapai hasil tersebut."
+            },
+            "source_ids": [
+              "onet-task:17-2199.08:19668",
+              "onet-skill:17-2199.08",
+              "un-target:9.4"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use relevant computer concepts when carrying out the occupational task.",
+              "zh": "执行该职业任务时运用相关计算机知识。",
+              "ms": "menggunakan pengetahuan komputer yang berkaitan semasa menjalankan tugas pekerjaan."
+            }
+          }
+        ],
+        "knowledge_02": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.4",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A robotics engineer designs robotic applications for green-product manufacturing, such as wind turbines or solar panels, where the design reduces waste or improves resource efficiency.",
+              "zh": "机器人工程师为绿色产品制造设计机器人应用，例如风力涡轮机或太阳能板；仅当设计减少浪费或提高资源效率时，才可能产生相关贡献。",
+              "ms": "Jurutera robotik mereka bentuk aplikasi robotik untuk pembuatan produk hijau seperti turbin angin atau panel solar; sumbangan berpotensi hanya wujud jika reka bentuk mengurangkan sisa atau meningkatkan kecekapan sumber."
+            },
+            "contribution": {
+              "en": "A green-product manufacturing application may support resource-efficient and environmentally sound industrial processes if its design achieves those results.",
+              "zh": "绿色产品制造应用若确实实现相关效果，可能支持资源高效、环境友好的工业流程。",
+              "ms": "Aplikasi pembuatan produk hijau mungkin menyokong proses industri yang cekap sumber dan mesra alam jika reka bentuknya mencapai hasil tersebut."
+            },
+            "source_ids": [
+              "onet-task:17-2199.08:19668",
+              "onet-skill:17-2199.08",
+              "un-target:9.4"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "apply mathematical concepts to interpret or verify task results.",
+              "zh": "运用数学概念解释或核验任务结果。",
+              "ms": "menggunakan konsep matematik untuk mentafsir atau mengesahkan hasil tugas."
+            }
+          }
+        ],
+        "knowledge_03": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.4",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A robotics engineer designs robotic applications for green-product manufacturing, such as wind turbines or solar panels, where the design reduces waste or improves resource efficiency.",
+              "zh": "机器人工程师为绿色产品制造设计机器人应用，例如风力涡轮机或太阳能板；仅当设计减少浪费或提高资源效率时，才可能产生相关贡献。",
+              "ms": "Jurutera robotik mereka bentuk aplikasi robotik untuk pembuatan produk hijau seperti turbin angin atau panel solar; sumbangan berpotensi hanya wujud jika reka bentuk mengurangkan sisa atau meningkatkan kecekapan sumber."
+            },
+            "contribution": {
+              "en": "A green-product manufacturing application may support resource-efficient and environmentally sound industrial processes if its design achieves those results.",
+              "zh": "绿色产品制造应用若确实实现相关效果，可能支持资源高效、环境友好的工业流程。",
+              "ms": "Aplikasi pembuatan produk hijau mungkin menyokong proses industri yang cekap sumber dan mesra alam jika reka bentuknya mencapai hasil tersebut."
+            },
+            "source_ids": [
+              "onet-task:17-2199.08:19668",
+              "onet-skill:17-2199.08",
+              "un-target:9.4"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "apply engineering or technology principles to the described system or process.",
+              "zh": "将工程或技术原理应用于所述系统或流程。",
+              "ms": "menggunakan prinsip kejuruteraan atau teknologi pada sistem atau proses yang dinyatakan."
+            }
+          }
+        ],
+        "knowledge_04": [
+          {
+            "sdg_id": "9",
+            "target_id": "9.4",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "A robotics engineer designs robotic applications for green-product manufacturing, such as wind turbines or solar panels, where the design reduces waste or improves resource efficiency.",
+              "zh": "机器人工程师为绿色产品制造设计机器人应用，例如风力涡轮机或太阳能板；仅当设计减少浪费或提高资源效率时，才可能产生相关贡献。",
+              "ms": "Jurutera robotik mereka bentuk aplikasi robotik untuk pembuatan produk hijau seperti turbin angin atau panel solar; sumbangan berpotensi hanya wujud jika reka bentuk mengurangkan sisa atau meningkatkan kecekapan sumber."
+            },
+            "contribution": {
+              "en": "A green-product manufacturing application may support resource-efficient and environmentally sound industrial processes if its design achieves those results.",
+              "zh": "绿色产品制造应用若确实实现相关效果，可能支持资源高效、环境友好的工业流程。",
+              "ms": "Aplikasi pembuatan produk hijau mungkin menyokong proses industri yang cekap sumber dan mesra alam jika reka bentuknya mencapai hasil tersebut."
+            },
+            "source_ids": [
+              "onet-task:17-2199.08:19668",
+              "onet-skill:17-2199.08",
+              "un-target:9.4"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use physics concepts to explain or check the relevant system behaviour.",
+              "zh": "使用物理知识解释或检查相关系统行为。",
+              "ms": "menggunakan konsep fizik untuk menerangkan atau menyemak tingkah laku sistem berkaitan."
+            }
+          }
+        ]
+      }
+    },
+    "19-1029.01": {
+      "status": "not_in_active_official_six",
+      "mappings": [],
+      "skills": {}
+    },
+    "15-2051.00": {
+      "status": "not_in_active_official_six",
+      "mappings": [],
+      "skills": {}
+    },
+    "15-1211.00": {
+      "status": "not_in_active_official_six",
+      "mappings": [],
+      "skills": {}
+    },
+    "15-1252.00": {
+      "status": "not_in_active_official_six",
+      "mappings": [],
+      "skills": {}
     },
     "17-2199.03": {
-      "status": "source_checked",
+      "status": "analyst_reviewed",
       "mappings": [
         {
           "sdg_id": "7",
           "target_id": "7.3",
-          "relation_type": "Potential contribution",
-          "reason": "Energy audits and consumption analysis can identify efficiency improvements in buildings or industrial systems, potentially supporting target 7.3.",
-          "occupation_source": "https://www.onetonline.org/link/summary/17-2199.03#Tasks",
-          "target_source": "https://sdgs.un.org/goals/goal7",
-          "source_checked_on": "2026-10-22",
-          "task_summary": "Conduct energy audits to evaluate energy use and to identify conservation and cost reduction measures."
+          "relation_type": "Conditional, analyst-reviewed potential contribution",
+          "scenario": {
+            "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+            "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+            "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+          },
+          "contribution": {
+            "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+            "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+            "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+          },
+          "source_ids": [
+            "onet-task:17-2199.03:20855",
+            "onet-skill:17-2199.03",
+            "un-target:7.3"
+          ],
+          "source_checked_on": "2026-10-23"
         }
-      ]
-    },
-    "17-2199.08": {
-      "status": "pending_validation",
-      "mappings": []
-    },
-    "19-1029.01": {
-      "status": "pending_validation",
-      "mappings": []
+      ],
+      "skills": {
+        "knowledge_01": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use relevant computer concepts when carrying out the occupational task.",
+              "zh": "执行该职业任务时运用相关计算机知识。",
+              "ms": "menggunakan pengetahuan komputer yang berkaitan semasa menjalankan tugas pekerjaan."
+            }
+          }
+        ],
+        "knowledge_02": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "apply mathematical concepts to interpret or verify task results.",
+              "zh": "运用数学概念解释或核验任务结果。",
+              "ms": "menggunakan konsep matematik untuk mentafsir atau mengesahkan hasil tugas."
+            }
+          }
+        ],
+        "knowledge_03": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "apply engineering or technology principles to the described system or process.",
+              "zh": "将工程或技术原理应用于所述系统或流程。",
+              "ms": "menggunakan prinsip kejuruteraan atau teknologi pada sistem atau proses yang dinyatakan."
+            }
+          }
+        ],
+        "knowledge_04": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use physics concepts to explain or check the relevant system behaviour.",
+              "zh": "使用物理知识解释或检查相关系统行为。",
+              "ms": "menggunakan konsep fizik untuk menerangkan atau menyemak tingkah laku sistem berkaitan."
+            }
+          }
+        ],
+        "knowledge_05": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use chemistry concepts to assess relevant materials, reactions or hazards.",
+              "zh": "运用化学知识评估相关材料、反应或危害。",
+              "ms": "menggunakan konsep kimia untuk menilai bahan, tindak balas atau bahaya yang berkaitan."
+            }
+          }
+        ],
+        "knowledge_06": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "use biological concepts to interpret the relevant research or environmental context.",
+              "zh": "运用生物学知识解释相关研究或环境背景。",
+              "ms": "menggunakan konsep biologi untuk mentafsir konteks penyelidikan atau alam sekitar yang berkaitan."
+            }
+          }
+        ],
+        "knowledge_07": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "consider organizational goals, implementation and reporting responsibilities.",
+              "zh": "考虑组织目标、实施过程及报告责任。",
+              "ms": "mempertimbangkan matlamat organisasi, pelaksanaan dan tanggungjawab pelaporan."
+            }
+          }
+        ],
+        "skill_01": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "check evidence, assumptions and unintended effects before selecting an approach.",
+              "zh": "在选择方案前核对证据、假设及可能的非预期影响。",
+              "ms": "menyemak bukti, andaian dan kesan yang tidak dijangka sebelum memilih pendekatan."
+            }
+          }
+        ],
+        "skill_02": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "compare constraints and alternatives when solving the stated occupational task.",
+              "zh": "解决相应职业任务时比较约束条件与备选方案。",
+              "ms": "membandingkan kekangan dan pilihan semasa menyelesaikan tugas pekerjaan yang dinyatakan."
+            }
+          }
+        ],
+        "skill_03": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "make and verify calculations or quantitative comparisons relevant to the task.",
+              "zh": "完成相关任务所需的计算或定量比较，并核验结果。",
+              "ms": "membuat dan menyemak pengiraan atau perbandingan kuantitatif yang berkaitan dengan tugas."
+            }
+          }
+        ],
+        "skill_04": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "implement or test a computational step that supports the task.",
+              "zh": "实现或测试支持该任务的计算步骤。",
+              "ms": "melaksanakan atau menguji langkah pengkomputeran yang menyokong tugas."
+            }
+          }
+        ],
+        "skill_05": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "distinguish observed scientific evidence from assumptions in the application.",
+              "zh": "在具体应用中区分科学观测证据与假设。",
+              "ms": "membezakan bukti saintifik yang diperhatikan daripada andaian dalam aplikasi."
+            }
+          }
+        ],
+        "skill_06": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "trace how components and changes affect the whole system.",
+              "zh": "分析组件和变化如何影响整个系统。",
+              "ms": "menelusuri bagaimana komponen dan perubahan mempengaruhi keseluruhan sistem."
+            }
+          }
+        ],
+        "skill_07": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "compare operational choices against explicit resource or process constraints.",
+              "zh": "依据明确的资源或流程约束比较运营方案。",
+              "ms": "membandingkan pilihan operasi berdasarkan kekangan sumber atau proses yang jelas."
+            }
+          }
+        ],
+        "skill_08": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "design or revise an artifact for the stated task and its constraints.",
+              "zh": "针对具体任务及其约束设计或修改方案。",
+              "ms": "mereka bentuk atau menyemak hasil kerja berdasarkan tugas dan kekangannya."
+            }
+          }
+        ],
+        "skill_09": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "weigh evidence, risks and trade-offs before recommending an action.",
+              "zh": "提出行动建议前权衡证据、风险和取舍。",
+              "ms": "menimbang bukti, risiko dan pertukaran sebelum mencadangkan tindakan."
+            }
+          }
+        ],
+        "skill_10": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "record methods, assumptions and findings so others can review the work.",
+              "zh": "记录方法、假设和结果，便于他人复核。",
+              "ms": "merekod kaedah, andaian dan dapatan supaya pihak lain boleh menyemak kerja."
+            }
+          }
+        ],
+        "skill_11": [
+          {
+            "sdg_id": "7",
+            "target_id": "7.3",
+            "relation_type": "Conditional, analyst-reviewed potential contribution",
+            "scenario": {
+              "en": "An energy engineer conducts energy audits to evaluate energy use and identify conservation and efficiency improvements.",
+              "zh": "能源工程师开展能源审计，评估能源使用并识别节能和能效改进机会。",
+              "ms": "Jurutera tenaga menjalankan audit tenaga untuk menilai penggunaan tenaga serta mengenal pasti penjimatan dan peningkatan kecekapan."
+            },
+            "contribution": {
+              "en": "Energy audits can identify opportunities to improve energy efficiency; whether changes are implemented and their measured effect are outside this mapping.",
+              "zh": "能源审计可以识别提升能效的机会；改进是否实施及其实际效果不在此映射的验证范围内。",
+              "ms": "Audit tenaga boleh mengenal pasti peluang meningkatkan kecekapan tenaga; pelaksanaan perubahan dan kesan terukurnya tidak disahkan oleh pemetaan ini."
+            },
+            "source_ids": [
+              "onet-task:17-2199.03:20855",
+              "onet-skill:17-2199.03",
+              "un-target:7.3"
+            ],
+            "source_checked_on": "2026-10-23",
+            "skill_use": {
+              "en": "explain the evidence and limits of the proposed approach to relevant users or decision-makers.",
+              "zh": "向相关使用者或决策者说明方案的证据和局限。",
+              "ms": "menerangkan bukti dan batas pendekatan kepada pengguna atau pembuat keputusan yang berkaitan."
+            }
+          }
+        ]
+      }
     }
+  },
+  "unmapped_skill_ids": {
+    "13-1199.05": [],
+    "15-1212.00": [
+      "knowledge_03",
+      "knowledge_04",
+      "knowledge_07",
+      "skill_05",
+      "skill_07"
+    ],
+    "15-2031.00": [
+      "knowledge_03",
+      "knowledge_04",
+      "knowledge_05",
+      "skill_05"
+    ],
+    "17-2081.00": [],
+    "17-2199.08": [
+      "knowledge_05",
+      "knowledge_06",
+      "knowledge_07",
+      "skill_05"
+    ],
+    "17-2199.03": []
   }
 }

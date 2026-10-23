@@ -47,6 +47,17 @@ class PlanRulesTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             build_plan(self.row, self.roles[other['code']], 3)
 
+    def test_every_supported_weekly_budget_sums_per_week(self) -> None:
+        """Task minutes are per-week allocations, not four weeks of work in one week."""
+        for hours in (3, 5, 8, 10):
+            with self.subTest(hours=hours):
+                plan=build_plan(self.row,self.role,hours)
+                self.assertEqual(plan['weekly_hours'],hours)
+                for week in range(1,5):
+                    week_tasks=[task for task in plan['tasks'] if task['week']==week]
+                    self.assertTrue(week_tasks)
+                    self.assertEqual(sum(task['minutes'] for task in week_tasks),hours*60)
+
     def test_blocked_components_items_and_source_flags_excluded(self) -> None:
         """Even a stale positive gap cannot bypass component or field quality blocks."""
         row, role = deepcopy((self.row, self.role))

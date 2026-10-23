@@ -223,6 +223,8 @@ def render_learning_plan(st: Any, rows: list[dict], roles: dict, labels: dict,
     row = next(row for row in rows if row['code'] == code)
     preferred_language = (assessment or {}).get('answers', {}).get('Preferred learning language', 'English')
     plan = build_plan(row, roles[code], hours, preferred_language)
+    from src.sdg import render_sdg_details
+    render_sdg_details(st, code, roles[code], [task['area'] for task in plan['tasks']], labels)
     # Keep completion for unchanged task IDs when a saved v1 plan is upgraded to
     # the resource-aware plan. A different time budget still creates a fresh plan.
     if assessment is not None:
