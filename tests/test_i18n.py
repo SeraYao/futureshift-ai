@@ -172,7 +172,7 @@ class LanguagePageTests(unittest.TestCase):
                 self.switch(page, language)
                 page.button(key='pathway_sample').click().run()
                 self.healthy(page)
-                self.assertTrue(any(item.value == self.text(language, 'Synthetic career matches')
+                self.assertTrue(any(item.value == self.text(language, 'Career matches')
                                     for item in page.subheader))
                 page.selectbox(key='learning_role').set_value('15-2051.00').run()
                 page.selectbox(key='learning_hours').set_value(8).run()
@@ -381,8 +381,8 @@ class LanguagePageTests(unittest.TestCase):
             self.switch(page, code)
             self.assertEqual(page.session_state['pathway_evidence'], evidence)
             self.assertEqual(self.client.opener.call_count, 4)
-            self.assertTrue(any(self.text(code, '#### Evidence-adjusted prototype scenarios') == item.value
-                                for item in page.markdown))
+            self.assertTrue(any(self.text(code, 'Trend evidence for your recommendations') == item.value
+                                for item in page.subheader))
             from streamlit.testing.v1 import AppTest
             audit = AppTest.from_file(str(app.ROOT/'scripts/onet_audit.py')).run()
             self.switch(audit, code)

@@ -40,6 +40,12 @@ def utc_now() -> datetime:
     return datetime.now(timezone.utc)
 
 
+def snapshot_expired(snapshot: dict, current: datetime) -> bool:
+    """Use the same freshness policy for disk caches and pinned session evidence."""
+    age = (current - datetime.fromisoformat(snapshot['fetched_at'])).total_seconds()
+    return age < 0 or age >= CACHE_SECONDS or snapshot['as_of'] != current.date().isoformat()
+
+
 def windows(as_of: date) -> dict[str, dict[str, str]]:
     """Return adjacent complete UTC 90-day windows ending before the as-of day."""
     split = as_of - timedelta(days=90)
@@ -146,9 +152,7 @@ class GitHubTrends:
                 self.cache_error = 'Invalid cached query evidence'
             if snapshot:
                 try:
-                    age = (self.now() - datetime.fromisoformat(snapshot['fetched_at'])).total_seconds()
-                    expired = (age < 0 or age >= CACHE_SECONDS or
-                               snapshot['as_of'] != self.now().date().isoformat())
+                    expired = snapshot_expired(snapshot, self.now())
                 except (ValueError, KeyError, TypeError):
                     snapshot = None
                     self.cache_error = 'Invalid cached snapshot timestamps'

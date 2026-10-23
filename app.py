@@ -170,24 +170,30 @@ def render_breakdown(st: Any, heading: str, breakdown: dict) -> None:
 def render_topic(st: Any, topic: dict) -> None:
     """Show useful synthetic evidence, with stored metadata hidden behind a disclosure."""
     snapshot = topic['snapshot']
+    real = snapshot.get('data_status') == 'github_api'
     st.markdown(tr('**{v0}**', v0=topic['id']))
     st.write(tr('Topic score: {v0} / 100 · Weight: {v1}', v0=display_value(display_score(topic['score'])), v1=topic['weight']))
-    st.table(table_text([{'Window': label, 'Synthetic repositories': snapshot.get(name),
+    st.table(table_text([{'Window': label, tr('Repository count') if real else 'Synthetic repositories': snapshot.get(name),
                'Start (inclusive)': snapshot.get(name + '_window', {}).get('start', 'Missing'),
                'End (exclusive)': snapshot.get(name + '_window', {}).get('end_exclusive', 'Missing')}
               for name, label in (('previous', 'Previous 90 days'), ('recent', 'Recent 90 days'))]))
     if snapshot.get('simulation_edited'):
         st.caption(tr('These counts include your in-session simulation edits.'))
+    if real:
+        for window in ('recent', 'previous'):
+            result = snapshot['results'][window]
+            st.markdown(tr('[Source query: {topic} / {window}]({url})', topic=topic['id'], window=window, url=result['source_url']))
+            st.caption(tr('Fetched (UTC): {date}', date=result['fetched_at']))
     for issue in topic['score'].issues:
         st.warning(translate_error(issue))
     with st.expander(tr('Technical details'), expanded=False):
-        st.caption(tr('Synthetic fixture metadata; dates are not evidence of a live fetch.'))
+        st.caption(tr('Original GitHub query evidence; dates remain those of the saved snapshot.') if real else tr('Synthetic fixture metadata; dates are not evidence of a live fetch.'))
         st.json(snapshot, expanded=False)
 
 
-def render_role(st: Any, row: dict, role: dict, profile: dict | None = None) -> None:
+def render_role(st: Any, row: dict, role: dict, profile: dict | None = None, *, real_trends: bool = False) -> None:
     """Explain the engine output using templates and its exact calculation trace."""
-    st.caption(tr('O*NET occupation identity: {v0} · Synthetic requirements and trends', v0=row['code']))
+    st.caption(tr('O*NET occupation identity: {code} · Synthetic requirements + GitHub trend snapshots', code=row['code']) if real_trends else tr('O*NET occupation identity: {v0} · Synthetic requirements and trends', v0=row['code']))
     st.caption(tr('Official occupation title (English); source descriptions and identifiers are retained verbatim.'))
     cols = st.columns(3)
     cols[0].metric(tr('Skills coverage'), display_value(display_score(row['skills']['score'])))
@@ -197,7 +203,10 @@ def render_role(st: Any, row: dict, role: dict, profile: dict | None = None) -> 
     if row['moderate'].value is not None:
         p, t = row['P'].value, row['trend']['score'].value
         direction = 'raises' if t > p else 'lowers' if t < p else 'leaves unchanged'
-        st.write(tr('Your skill and knowledge coverage, together with your RIASEC similarity, produce a personal fit of {v0:.2f}. The synthetic technical activity score is {v1:.2f}. Giving that signal more weight {v2} this role’s score in the fast scenario.', v0=p, v1=t, v2=display_text(direction)))
+        if real_trends:
+            st.write(tr('Personal fit P: {personal:.2f}; GitHub activity T: {trend:.2f}. Moderate trend adjustment λ×(T−P): {moderate:+.2f}; Fast: {fast:+.2f}.', personal=p, trend=t, moderate=row['moderate'].value-p, fast=row['fast'].value-p))
+        else:
+            st.write(tr('Your skill and knowledge coverage, together with your RIASEC similarity, produce a personal fit of {v0:.2f}. The synthetic technical activity score is {v1:.2f}. Giving that signal more weight {v2} this role’s score in the fast scenario.', v0=p, v1=t, v2=display_text(direction)))
         st.write(tr('Moderate: **{v0}** (rank {v1}) · Fast: **{v2}** (rank {v3})', v0=display_value(display_score(row['moderate'])), v1=row['moderate_rank'], v2=display_value(display_score(row['fast'])), v3=row['fast_rank']))
         st.caption(tr('Scenario sensitivity · Fast − Moderate: {v0:+.2f} points · Rank movement: {v1:+d} (positive means higher in Fast).', v0=row['score_delta'], v1=row['rank_delta']))
     else:
@@ -209,13 +218,16 @@ def render_role(st: Any, row: dict, role: dict, profile: dict | None = None) -> 
     st.table(table_text([{'Dimension': name, 'Your confirmed interest': user,
                'Synthetic role interest': target}
               for name, user, target in zip(RIASEC, (profile if profile is not None else st.session_state.simulation_profile)['riasec'], role['riasec'])]))
-    st.markdown(tr('#### Trend evidence · synthetic'))
+    st.markdown(tr('#### Trend evidence · GitHub snapshots') if real_trends else tr('#### Trend evidence · synthetic'))
     for topic in row['trend']['topics']:
+        if real_trends and topic['snapshot'].get('data_status') != 'github_api':
+            st.info(tr('No valid GitHub evidence for this topic. Counts and trend score are unavailable.'))
+            continue
         render_topic(st, topic)
     render_sdg_details(st, row['code'])
     st.markdown(tr('#### Source identity'))
     st.markdown(tr('[Official occupation identity]({v0})', v0=role['identity_source_url']))
-    st.caption(tr('The linked page identifies only the official title and code. All requirements, importance, interests and trend counts used in this simulation are synthetic.'))
+    st.caption(tr('The occupation link identifies only the official title and code. Requirements, importance and role interests remain synthetic; GitHub queries above are the trend sources.') if real_trends else tr('The linked page identifies only the official title and code. All requirements, importance, interests and trend counts used in this simulation are synthetic.'))
     with st.expander(tr('Technical details'), expanded=False):
         st.json(role, expanded=False)
         st.json(asdict(row['S_capability']), expanded=False)

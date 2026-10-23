@@ -29,7 +29,7 @@ DIMENSIONS = ('Realistic', 'Investigative', 'Artistic', 'Social', 'Enterprising'
 SKILLS = tuple(f'skill_{i:02}' for i in range(1, 12))
 KNOWLEDGE = tuple(f'knowledge_{i:02}' for i in range(1, 8))
 STEPS = ('Choose your identity', 'Background', 'Skills', 'Knowledge', 'Interests',
-         'Goals & preferences', 'Confirm your profile', 'Synthetic career matches')
+         'Goals & preferences', 'Confirm your profile', 'Career matches')
 BACKGROUND = {
     'Identity': ('Current student', 'Recent graduate'),
     'Current or completed field of study': ('Computing', 'Engineering', 'Natural sciences',
@@ -125,7 +125,7 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
     if step == 0:
         st.header(tr('Let us get to know you'))
     if step != 0:
-        st.caption(tr('The questionnaire does not ask for names, age, gender or contact details. Optional PDF CV processing has a separate consent step. Occupational requirements and trends used for matching remain synthetic.'))
+        st.caption(tr('No name, age, gender or contact details are required. Occupational requirements are synthetic; the results page lets you choose GitHub snapshots or synthetic demo trends.'))
     if draft.get('data_status') == 'synthetic':
         st.warning(tr('SAMPLE PROFILE · Synthetic student answers, including any edits to this example. Not real personal data or a real employment prediction.'))
     if step != 0:
@@ -244,7 +244,7 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
                       for key, value in ((key, draft.get(key)) for key in
                        (*BACKGROUND, 'Optional career goal', *PREFERENCES, 'SDG preferences'))]))
             st.caption(tr('Open text, background, SDGs and learning preferences never add points. Weekly time can initialize the practice plan; it never changes matching scores. Only four-week plans are currently available, regardless of target plan length.'))
-            st.info(tr('This small synthetic pool uses only Critical Thinking, Mathematics and Programming skills, plus Computers and Electronics and Mathematics knowledge. Other answers are retained for review but have no requirement in these fixtures and cannot change current scores. All six interest dimensions enter scoring. Requirements and trend snapshots are fixed synthetic inputs.'))
+            st.info(tr('This pool uses three synthetic skill requirements and two knowledge requirements. Other answers are retained but have no requirements in this pool. All six interest dimensions enter scoring. GitHub trend snapshots can be used after confirmation.'))
             with st.expander(tr('Technical details'), expanded=False):
                 _, roles, trends = load_demo()
                 st.caption(tr('Scoring rules: {v0}. Fixed synthetic catalog and trend snapshot; no live refresh.', v0=SCORING_VERSION))
@@ -261,7 +261,7 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
             st.warning(tr('Review and confirm your profile before calculating matches.'))
         else:
             _, role_file, trend_file = load_demo()
-            st.caption(tr('Your confirmed practice answers + demo_roles.json + demo_trends.json. No official requirements or real GitHub evidence are used. GitHub activity is not hiring demand.'))
+            st.caption(tr('Your confirmed profile + synthetic occupational requirements. Trend evidence and its source are shown below; no official O*NET requirements are substituted.'))
             st.write(tr('Career goal: ') + (draft.get('Optional career goal') or tr('Not provided')))
             current = st.session_state.get('pathway_assessment')
             if current is None or current['profile'] != profile or current['answers'] != draft:
@@ -276,10 +276,23 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
             else:
                 rows = current['rows']
                 role_file, trend_file = current['roles'], current['trends']
-            render_comparison(st, st.session_state.get('pathway_previous'), current, labels)
+            with st.expander(tr('Profile reassessment · fixed synthetic baseline')):
+                render_comparison(st, st.session_state.get('pathway_previous'), current, labels)
             if st.button(tr('Update my profile and reassess'), key='pathway_reassess'):
                 begin_reassessment(st.session_state)
                 st.rerun()
+            if official_loader is not None and client_factory is not None:
+                rows = render_evidence_reassessment(st, current, official_loader, client_factory)
+            st.caption(tr('Moderate = 85% personal fit + 15% trend; Fast = 65% personal fit + 35% trend. These are unvalidated sensitivity assumptions, not probabilities or employment forecasts.'))
+            st.table(table_text([{
+                'Career': row['title'],
+                'Personal fit': row['P'].value if row['P'].value is not None else 'Unavailable',
+                'Trend signal': row['trend']['score'].value if row['trend']['score'].value is not None else 'Unavailable',
+                'Moderate score': row['moderate'].value if row['moderate'].value is not None else 'Unavailable',
+                'Fast score': row['fast'].value if row['fast'].value is not None else 'Unavailable',
+                'Trend impact · Moderate': row['moderate'].value - row['P'].value if row['moderate'].value is not None else 'Unavailable',
+                'Trend impact · Fast': row['fast'].value - row['P'].value if row['fast'].value is not None else 'Unavailable',
+            } for row in rows]))
             for scenario, title in (('moderate', 'Moderate'), ('fast', 'Fast disruption')):
                 st.markdown(tr('### {v0}', v0=display_text(title)))
                 ranked = sorted((row for row in rows if row[scenario+'_rank'] is not None),
@@ -292,10 +305,11 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
             by_code = {role['code']: role for role in role_file['roles']}
             for row in rows:
                 with st.expander(row['title'] + tr(' · Why this match?')):
-                    render_role(st, row, by_code[row['code']], profile=profile)
-            if official_loader is not None and client_factory is not None:
-                render_evidence_reassessment(st, current, official_loader, client_factory)
-            render_learning_plan(st, rows, by_code, labels, draft.get('Weekly learning time'),
+                    render_role(st, row, by_code[row['code']], profile=profile,
+                                real_trends=current.get('recommendation_source') == 'GitHub snapshots')
+            st.caption(tr('Choose a career from the current results below. A career without a complete trend score can still have synthetic skill gaps, but has no complete evidence-based match score.'))
+            st.caption(tr('Plan downloads retain the fixed synthetic comparison baseline and practice tasks; live GitHub rankings are not exported or restored. Evidence provenance remains available above.'))
+            render_learning_plan(st, sorted(rows, key=lambda row: row['code']), by_code, labels, draft.get('Weekly learning time'),
                                  current, st.session_state.get('pathway_previous'))
             with st.expander(tr('Technical details'), expanded=False):
                 st.json(profile, expanded=False)

@@ -90,7 +90,7 @@ class EvidencePageTests(unittest.TestCase):
     """Test explicit refreshes, visible blockers and confirmed career/plan switching."""
 
     def test_refresh_and_confirm_plan_switch(self) -> None:
-        """Only clicks read real caches; changed rankings never silently replace the selected plan."""
+        """Cache reads are offline; changed rankings never silently replace the selected plan."""
         from streamlit.testing.v1 import AppTest
         client = GitHubTrends(opener=Mock(side_effect=AssertionError('Unexpected HTTP')),
                               now=lambda: datetime(2026, 10, 22, 12, tzinfo=timezone.utc))
@@ -103,7 +103,7 @@ class EvidencePageTests(unittest.TestCase):
             page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
             page.button(key='pathway_sample').click().run()
             self.assertFalse(page.exception)
-            factory.assert_not_called()
+            factory.assert_called()
             page.selectbox(key='learning_role').set_value('15-1252.00').run()
             previous_plan = deepcopy(page.session_state['pathway_assessment']['plans']['15-1252.00'])
             for code in ROLE_TOPICS:
@@ -120,3 +120,114 @@ class EvidencePageTests(unittest.TestCase):
             self.assertEqual(current['plans']['15-2051.00']['plan']['role_code'], '15-2051.00')
             self.assertNotEqual(current['plans']['15-2051.00']['plan'], previous_plan['plan'])
             client.opener.assert_not_called()
+
+
+@unittest.skipUnless(importlib.util.find_spec('streamlit'), 'Streamlit not installed')
+class MainTrendPageTests(unittest.TestCase):
+    """Controlled query responses drive the actual main page, not a second scoring path."""
+
+    def page(self, client):
+        from streamlit.testing.v1 import AppTest
+        self.patch_client = patch('src.github_trends.shared_client', return_value=client)
+        self.patch_client.start()
+        self.addCleanup(self.patch_client.stop)
+        self.patch_network = patch('urllib.request.urlopen', side_effect=AssertionError('Uncontrolled HTTP'))
+        self.patch_network.start()
+        self.addCleanup(self.patch_network.stop)
+        page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
+        page.button(key='pathway_sample').click().run()
+        self.assertFalse(page.exception)
+        self.assertEqual(page.radio(key='recommendation_source').value, 'GitHub snapshots')
+        return page
+
+    def test_main_scores_ranks_refresh_confirmation_and_fixed_plan(self):
+        clock = [datetime(2026, 10, 22, 12, tzinfo=timezone.utc)]
+        client = GitHubTrends(now=lambda: clock[0], opener=Mock())
+        for code in ROLE_TOPICS:
+            client.snapshots[client._key(code)] = snapshot(code, 10 if code == '15-2051.00' else 100, 100)
+        page = self.page(client)
+        client.opener.assert_not_called()
+        current = page.session_state['pathway_assessment']
+        profile = deepcopy(current['profile'])
+        old = {r['code']: deepcopy(r) for r in current['recommendation_rows']}
+        self.assertEqual(old['15-2051.00']['moderate_rank'], 3)
+        page.selectbox(key='learning_role').set_value('15-1252.00').run()
+        page.checkbox[0].check().run()
+        plan = deepcopy(current['plans']['15-1252.00'])
+        clock[0] += timedelta(minutes=16)
+        client.opener.side_effect = [response(1000), response(10), response(1000), response(10)]
+        page.selectbox(key='evidence_role').set_value('15-2051.00').run()
+        page.button(key='evidence_refresh').click().run()
+        self.assertFalse(page.exception)
+        current = page.session_state['pathway_assessment']
+        new = {r['code']: r for r in current['recommendation_rows']}
+        self.assertEqual(current['profile'], profile)
+        self.assertEqual(new['15-2051.00']['moderate_rank'], 1)
+        self.assertEqual(new['15-2051.00']['fast_rank'], 1)
+        self.assertAlmostEqual(new['15-2051.00']['moderate'].value - old['15-2051.00']['moderate'].value, 15)
+        self.assertAlmostEqual(new['15-2051.00']['fast'].value - old['15-2051.00']['fast'].value, 35)
+        for code in ROLE_TOPICS:
+            self.assertEqual(old[code]['P'], new[code]['P'])
+            self.assertEqual(old[code]['skills'], new[code]['skills'])
+            self.assertEqual(old[code]['knowledge'], new[code]['knowledge'])
+            if code != '15-2051.00':
+                self.assertEqual(old[code]['moderate'], new[code]['moderate'])
+        main_table = next(t.value for t in page.table if 'Moderate score' in t.value.columns)
+        ds = main_table[main_table['Career'] == 'Data Scientists'].iloc[0]
+        self.assertAlmostEqual(ds['Moderate score'], new['15-2051.00']['moderate'].value)
+        self.assertTrue(any('1. Data Scientists' in m.value for m in page.markdown))
+        self.assertEqual(page.selectbox(key='learning_role').value, '15-1252.00')
+        self.assertEqual(current['plans']['15-1252.00'], plan)
+        self.assertTrue(any('Official ranking blocked' in w.value for w in page.warning))
+        page.button(key='evidence_confirm_switch').click().run()
+        self.assertFalse(page.exception)
+        self.assertEqual(page.selectbox(key='learning_role').value, '15-2051.00')
+        switched = deepcopy(current['plans']['15-2051.00']['plan'])
+        self.assertNotEqual(switched['id'], plan['plan']['id'])
+        page.button(key='evidence_refresh').click().run()
+        self.assertEqual(client.opener.call_count, 4)  # Fresh cache, no extra HTTP.
+        page.radio(key='recommendation_source').set_value('Synthetic demo').run()
+        self.assertFalse(page.exception)
+        self.assertEqual(page.selectbox(key='learning_role').value, '15-2051.00')
+        self.assertEqual(current['plans']['15-2051.00']['plan'], switched)
+        self.assertEqual(current['recommendation_rows'], current['rows'])
+
+    def test_absent_failed_invalid_and_explicit_demo(self):
+        client = GitHubTrends(opener=Mock(side_effect=URLError('controlled offline')))
+        invalid = snapshot('15-2051.00')
+        invalid['topics']['machine-learning']['recent'] = 999  # Query evidence no longer matches.
+        client.snapshots[client._key('15-2051.00')] = invalid
+        page = self.page(client)
+        current = page.session_state['pathway_assessment']
+        self.assertTrue(all(r['moderate'].value is None for r in current['recommendation_rows']))
+        self.assertTrue(any('no valid GitHub snapshot' in w.value for w in page.warning))
+        self.assertTrue(any('Only 0 of 3' in i.value for i in page.info))
+        page.button(key='evidence_refresh').click().run()
+        self.assertFalse(page.exception)
+        self.assertTrue(all(r['trend']['score'].value is None for r in current['recommendation_rows']))
+        self.assertEqual(page.radio(key='recommendation_source').value, 'GitHub snapshots')
+        page.radio(key='recommendation_source').set_value('Synthetic demo').run()
+        self.assertTrue(all(r['moderate'].value is not None for r in current['recommendation_rows']))
+        self.assertTrue(any('invented trend counts' in w.value for w in page.warning))
+        self.assertEqual(client.opener.call_count, 1)
+
+    def test_expired_cache_failed_refresh_retains_source_dates_and_plan(self):
+        client = GitHubTrends(now=lambda: datetime(2026, 10, 23, 12, tzinfo=timezone.utc),
+                              opener=Mock(side_effect=URLError('controlled offline')))
+        for code in ROLE_TOPICS:
+            client.snapshots[client._key(code)] = snapshot(code, 100, 100)
+        page = self.page(client)
+        current = page.session_state['pathway_assessment']
+        old_rows = deepcopy(current['recommendation_rows'])
+        old_snapshots = deepcopy(current['recommendation_snapshots'])
+        self.assertTrue(any('expired snapshot' in w.value for w in page.warning))
+        page.selectbox(key='learning_role').set_value('15-2051.00').run()
+        old_plan = deepcopy(current['plans']['15-2051.00'])
+        page.button(key='evidence_refresh').click().run()
+        self.assertFalse(page.exception)
+        self.assertEqual(current['recommendation_rows'], old_rows)
+        self.assertEqual(current['recommendation_snapshots'], old_snapshots)
+        self.assertEqual(current['plans']['15-2051.00'], old_plan)
+        self.assertTrue(any('Retaining the last successful evidence' in w.value for w in page.warning))
+        self.assertGreaterEqual(sum('Source query:' in m.value for m in page.markdown), 12)
+        self.assertTrue(any('2026-10-22T12:00:00' in c.value for c in page.caption))
