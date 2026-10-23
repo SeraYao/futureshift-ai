@@ -34,8 +34,24 @@ class CatalogTests(unittest.TestCase):
                 with self.subTest(code=code, mutate=mutate), self.assertRaises(ValueError):
                     validate_catalogs(catalogs)
             set_language(code)
-            with self.assertRaises(KeyError):
-                tr('unregistered UI message')
+            from src.i18n import FALLBACK_TEXT
+            with self.assertLogs('src.i18n', level='WARNING'):
+                self.assertEqual(tr('unregistered UI message'), FALLBACK_TEXT[code])
+
+    def test_career_catalog_and_runtime_fallback(self):
+        from src import i18n as translations
+        from src.i18n import CAREER_LABELS, career_name, career_description, FALLBACK_TEXT
+        for language in LANGUAGES:
+            set_language(language)
+            for code, keys in CAREER_LABELS.items():
+                for key in keys:
+                    self.assertIn(key, CATALOGS[language])
+                self.assertEqual(career_name(code), CATALOGS[language][keys[0]])
+                self.assertEqual(career_description(code), CATALOGS[language][keys[1]])
+            self.assertEqual(career_name('external-code', 'Original external title'), 'Original external title')
+            with patch.dict(translations.CATALOGS[language], {'Data Scientists': ''}):
+                with self.assertLogs('src.i18n', level='WARNING'):
+                    self.assertEqual(career_name('15-2051.00'), FALLBACK_TEXT[language])
 
     def test_language_state_always_uses_supported_codes(self):
         from src.i18n import initialize_language
@@ -50,7 +66,8 @@ class CatalogTests(unittest.TestCase):
                                      'ui_language': expected})
 
     def test_every_static_translation_call_is_registered_and_imported(self):
-        helpers = {'tr', 'display_text', 'display_value', 'table_text', 'translated_options', 'translate_error'}
+        helpers = {'tr', 'display_text', 'display_value', 'table_text', 'translated_options', 'translate_error',
+                   'career_name', 'career_description', 'localized_selectbox'}
         for path in [app.ROOT/'app.py', *sorted((app.ROOT/'src').glob('*.py'))]:
             if path.name == 'i18n.py':
                 continue
@@ -116,6 +133,16 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(translate_error('GitHub request failed: RIASEC zero vector'),
                          'GitHub 请求失败：RIASEC zero vector')
 
+    def test_only_authored_sample_goal_is_localized(self):
+        from src.pathway import goal_display, sample_answers
+        original = sample_answers()
+        frozen = deepcopy(original)
+        for language in LANGUAGES:
+            set_language(language)
+            self.assertEqual(goal_display(original), CATALOGS[language][original['Optional career goal']])
+            self.assertEqual(goal_display({'Optional career goal': 'My own English goal'}), 'My own English goal')
+            self.assertEqual(original, frozen)
+
 
 class LanguagePageTests(unittest.TestCase):
     def setUp(self):
@@ -174,8 +201,8 @@ class LanguagePageTests(unittest.TestCase):
                 self.healthy(page)
                 self.assertTrue(any(item.value == self.text(language, 'Career matches')
                                     for item in page.subheader))
-                page.selectbox(key='learning_role').set_value('15-2051.00').run()
-                page.selectbox(key='learning_hours').set_value(8).run()
+                page.selectbox(key='learning_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).set_value('15-2051.00').run()
+                page.selectbox(key='learning_hours' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).set_value(8).run()
                 task = next(box.key for box in page.checkbox if box.key.startswith('learning_check_'))
                 page.checkbox(key=task).check().run()
                 page.run()
@@ -186,7 +213,7 @@ class LanguagePageTests(unittest.TestCase):
                     for key, value in snapshots.items():
                         self.assertEqual(page.session_state[key], value, key)
                     self.assertTrue(page.checkbox(key=task).value)
-                    self.assertEqual(page.selectbox(key='learning_hours').value, 8)
+                    self.assertEqual(page.selectbox(key='learning_hours' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).value, 8)
                 page.button(key='pathway_identity').click().run()
                 page.button(key='pathway_start').click().run()
                 self.healthy(page)
@@ -270,8 +297,8 @@ class LanguagePageTests(unittest.TestCase):
         page = self.page()
         page.button(key='pathway_sample').click().run()
         self.healthy(page)
-        page.selectbox(key='learning_role').set_value('15-2051.00').run()
-        page.selectbox(key='learning_hours').set_value(8).run()
+        page.selectbox(key='learning_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).set_value('15-2051.00').run()
+        page.selectbox(key='learning_hours' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).set_value(8).run()
         key = next(box.key for box in page.checkbox if box.key.startswith('learning_check_'))
         page.checkbox(key=key).check().run()
         page.run()
@@ -286,7 +313,7 @@ class LanguagePageTests(unittest.TestCase):
             self.assertEqual(page.session_state['pathway_assessment'], current)
             self.assertEqual(page.session_state['learning_progress'], progress)
             self.assertTrue(page.checkbox(key=key).value)
-            self.assertEqual(page.selectbox(key='learning_hours').value, 8)
+            self.assertEqual(page.selectbox(key='learning_hours' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).value, 8)
             self.assertTrue(any(item.value == self.text(language, 'Your four-week practice plan') for item in page.subheader))
             self.assertEqual(page.button(key='pathway_reassess').label, self.text(language, 'Update my profile and reassess'))
             self.assertEqual(page.get('download_button')[0].proto.label, self.text(language, 'Download my plan'))
@@ -306,6 +333,39 @@ class LanguagePageTests(unittest.TestCase):
             self.assertTrue(any(item.value == self.text(code, 'What changed since your last assessment?') for item in page.subheader))
         self.assertEqual(export_plan(current, current['plans']['15-2051.00']['plan'],
                                      current['plans']['15-2051.00']['completion'], '2026-10-22T00:00:00+00:00'), baseline_export)
+
+    def test_localized_careers_main_plan_evidence_and_state_invariance(self):
+        from test_evidence_reassessment import snapshot
+        from src.github_trends import ROLE_TOPICS
+        from src.i18n import CAREER_LABELS
+        for code in ROLE_TOPICS:
+            self.client.snapshots[self.client._key(code)] = snapshot(code, 100, 100)
+        page = self.page()
+        page.button(key='pathway_sample').click().run()
+        page.selectbox(key='learning_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).set_value('15-2051.00').run()
+        page.checkbox[0].check().run()
+        frozen = deepcopy(page.session_state['pathway_assessment'])
+        progress = deepcopy(page.session_state['learning_progress'])
+        with patch('src.cv_intake.extract_with_ai', side_effect=AssertionError('No AI on locale change')) as ai:
+            for language in ('en', 'zh', 'ms'):
+                self.switch(page, language)
+                self.healthy(page)
+                self.assertEqual(page.session_state['pathway_assessment'], frozen)
+                self.assertEqual(page.session_state['learning_progress'], progress)
+                self.assertEqual(page.selectbox(key='learning_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).value, '15-2051.00')
+                names = {code: self.text(language, labels[0]) for code, labels in CAREER_LABELS.items()}
+                self.assertEqual(set(page.selectbox(key='learning_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).options), set(names.values()))
+                self.assertEqual(set(page.selectbox(key='evidence_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).options), set(names.values()))
+                table = next(t.value for t in page.table if self.text(language, 'Career') in t.value.columns
+                             and self.text(language, 'Moderate score') in t.value.columns)
+                self.assertEqual(set(table[self.text(language, 'Career')]), set(names.values()))
+                for code, name in names.items():
+                    self.assertTrue(any(name in item.value for item in page.markdown))
+                    self.assertTrue(any(name in item.label for item in page.expander))
+                self.assertTrue(any(self.text(language, CAREER_LABELS['15-2051.00'][1]) == m.value for m in page.markdown))
+                self.assertEqual(len(page.get('download_button')), 2)
+            ai.assert_not_called()
+            self.client.opener.assert_not_called()
 
     def test_removed_intro_elements_are_absent_in_all_public_modes_and_languages(self):
         removed_keys = (

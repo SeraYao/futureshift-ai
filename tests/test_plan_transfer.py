@@ -10,7 +10,7 @@ from unittest.mock import patch
 import app
 from src.learning_plan import build_plan
 from src.pathway import sample_answers, confirmed_profile
-from src.plan_transfer import (export_plan, validate_saved_plan, restore_saved_plan, VERSION)
+from src.plan_transfer import (export_plan, readable_plan, validate_saved_plan, restore_saved_plan, VERSION)
 from src.reassessment import store_assessment, begin_reassessment
 from src.scoring import rank_roles
 
@@ -131,7 +131,7 @@ class PlanTransferUITests(unittest.TestCase):
             self.assertEqual(page.session_state['pathway_step'], 7)
             self.assertEqual(sum(box.value for box in page.checkbox), 1)
             downloads = page.get('download_button')
-            self.assertEqual(len(downloads), 1)
+            self.assertEqual(len(downloads), 2)
             self.assertEqual(downloads[0].proto.label, 'Download my plan')
             page.button(key='pathway_reassess').click().run()
             page.button(key='pathway_next').click().run()
@@ -158,3 +158,22 @@ class PlanTransferUITests(unittest.TestCase):
             self.assertEqual(page.session_state['pathway_draft'], existing)
             self.assertEqual(page.session_state['pathway_assessment'], {'existing': True})
             self.assertFalse(any(button.key == 'restore_plan_confirm' for button in page.button))
+    def test_readable_exports_localize_without_changing_portable_data(self):
+        from src.i18n import set_language, career_name, CATALOGS
+        assessment, plan, completion = fixture()
+        frozen = deepcopy((assessment, plan, completion))
+        baseline = export_plan(assessment, plan, completion, '2026-10-22T00:00:00+00:00')
+        try:
+            for language in ('en', 'zh', 'ms'):
+                set_language(language)
+                text = readable_plan(assessment, plan, completion, app.LABELS)
+                self.assertIn(career_name(plan['role_code']), text)
+                self.assertIn(plan['role_code'], text)
+                self.assertIn(plan['id'], text)
+                self.assertIn(CATALOGS[language]['Write a small program that summarizes an invented numeric list; test empty and unusual inputs.'], text)
+                self.assertIn('- [x]', text)
+                self.assertEqual(export_plan(assessment, plan, completion, '2026-10-22T00:00:00+00:00'), baseline)
+                self.assertEqual((assessment, plan, completion), frozen)
+                validate_saved_plan(baseline.encode(), app.load_demo)
+        finally:
+            set_language('en')

@@ -1,5 +1,5 @@
 """Versioned local plan transfer: allowlisted export and validate-before-confirm restore."""
-from src.i18n import tr, display_text, table_text, translate_error
+from src.i18n import career_name, tr, display_text, display_value, table_text, translate_error
 from copy import deepcopy
 from datetime import datetime, timezone
 import hashlib
@@ -45,6 +45,47 @@ def export_plan(assessment: dict, plan: dict, completion: dict,
                     'data_status': 'synthetic_requirements_and_trends',
                     'results': assessment_summary(assessment['rows'])}}
     return json.dumps(document, ensure_ascii=False, indent=2, allow_nan=False)
+
+
+def readable_plan(assessment: dict, plan: dict, completion: dict, labels: dict) -> str:
+    """Localized, human-readable companion; portable JSON and all IDs stay unchanged."""
+    role = next(role for role in assessment['roles']['roles'] if role['code'] == plan['role_code'])
+    lines = ['# ' + tr('Readable learning plan'), '',
+             '## ' + career_name(role['code'], role['title']),
+             tr('Official source title: {title}', title=role['title']),
+             tr('Career ID: {code} · Plan ID: {plan}', code=role['code'], plan=plan['id']),
+             role['identity_source_url'], '', tr(NOTICE),
+             tr('Four weeks · {hours} hours per week', hours=plan['weekly_hours']), '',
+             tr('Verified learning resources are not connected yet. These are authored practice exercises, not course recommendations. Completion does not change your matching scores or prove skill mastery.'), '',
+             tr('Moderate = 85% personal fit + 15% trend; Fast = 65% personal fit + 35% trend. These are unvalidated sensitivity assumptions, not probabilities or employment forecasts.')]
+    source = assessment.get('recommendation_source', 'Synthetic demo')
+    lines += ['', tr('Ranking basis: {source}', source=display_text(source))]
+    row = next(row for row in assessment.get('recommendation_rows', assessment['rows']) if row['code'] == role['code'])
+    for name, score in (('Personal fit', row['P']), ('Trend signal', row['trend']['score']),
+                        ('Moderate score', row['moderate']), ('Fast score', row['fast'])):
+        lines.append(f"- {display_text(name)}: {score.value:.2f}" if score.value is not None else
+                     f"- {display_text(name)}: {display_value('Unavailable')}")
+    snapshot = assessment.get('recommendation_snapshots', {}).get(role['code'])
+    if snapshot:
+        lines.append(tr('Fetched (UTC): {date}', date=snapshot['fetched_at']))
+        lines.append(tr('Saved snapshot, not a live observation. Repository counts are technical activity, not hiring demand.'))
+        for topic, record in snapshot['topics'].items():
+            for window in ('recent', 'previous'):
+                lines.append(record['results'][window]['source_url'])
+    for week in range(1, 5):
+        tasks = [task for task in plan['tasks'] if task['week'] == week]
+        if not tasks:
+            continue
+        lines += ['', '## ' + tr('Week {v0} · {v1}', v0=week, v1=display_text(tasks[0]['phase']))]
+        for task in tasks:
+            checked = 'x' if completion.get(task['id']) else ' '
+            lines += [f"- [{checked}] " + tr('**{v0} · {v1} · {v2} minutes**',
+                        v0=display_text(labels[task['area']]), v1=display_text(task['group']), v2=task['minutes']),
+                      tr('Task ID: {task} · Area ID: {area}', task=task['id'], area=task['area']),
+                      tr('Action: {v0} Complete {v1} practice rounds. This week: {v2}; retain earlier evidence for comparison.',
+                         v0=display_text(task['action']), v1=task['practice_rounds'], v2=display_text(task['phase'])),
+                      tr('Completion evidence: ') + display_text(task['evidence'])]
+    return '\n\n'.join(lines) + '\n'
 
 
 def _same_types_and_values(actual: Any, expected: Any) -> bool:
@@ -147,7 +188,7 @@ def render_restore(st: Any, load_demo: Callable, labels: dict | None = None, *, 
             st.error(translate_error(tr('Cannot restore this file: ') + str(exc)))
             return
         document = prepared['document']
-        st.write(tr('Career: {v0} · 4 weeks · {v1} hours/week', v0=document['career']['title'], v1=document['weekly_hours']))
+        st.write(tr('Career: {v0} · 4 weeks · {v1} hours/week', v0=career_name(document['career']['code'], document['career']['title']), v1=document['weekly_hours']))
         st.write(tr('Completed tasks: {v0} / {v1}', v0=sum(prepared['completion'].values()), v1=len(prepared['completion'])))
         st.caption(display_text(document['notice']))
         with st.expander(tr('Review restored scoring answers'), expanded=False):

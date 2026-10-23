@@ -173,7 +173,7 @@ class SDGPageTests(unittest.TestCase):
             page.selectbox(key='ui_language').set_value(language).run()
             self.assertEqual(page.session_state['pathway_draft'], draft)
         page.button(key='pathway_sample').click().run()
-        page.selectbox(key='learning_role').set_value('15-2051.00').run()
+        page.selectbox(key='learning_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).set_value('15-2051.00').run()
         key = next(box.key for box in page.checkbox if box.key.startswith('learning_check_'))
         page.checkbox(key=key).check().run()
         page.run()

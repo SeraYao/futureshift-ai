@@ -1,5 +1,5 @@
 """Student questionnaire and session-only confirmation flow; no external data access."""
-from src.i18n import tr, display_text, table_text, translated_options, translate_error
+from src.i18n import career_name, tr, display_text, table_text, translated_options, translate_error
 from src.sdg import render_sdg_preview
 from copy import deepcopy
 from typing import Any, Callable
@@ -89,6 +89,14 @@ def sample_answers() -> dict:
             'SDG preferences': ['4. Quality education']}
 
 
+def goal_display(draft: dict) -> str:
+    """Localize the authored sample narrative, never arbitrary user free text."""
+    goal = draft.get('Optional career goal')
+    if draft.get('data_status') == 'synthetic' and goal == sample_answers()['Optional career goal']:
+        return tr('Fictional example: explore data and software careers.')
+    return goal or tr('Not provided')
+
+
 def switch_profile_workspace(state: Any, target: str) -> None:
     """Keep personal questionnaire drafts/results separate from the editable sample session."""
     if target not in ('manual', 'sample'):
@@ -142,13 +150,15 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
         if kind == 'text':
             st.text_area(display_text(label or name), **common)
         elif kind == 'multi':
-            st.multiselect(display_text(label or name), options, max_selections=3, **common, format_func=translated_options())
+            st.multiselect(display_text(label or name), options, max_selections=3,
+                           placeholder=tr('Select up to three options'), **common, format_func=translated_options())
         elif kind == 'radio':
             st.radio(display_text(label or name), options, index=None, horizontal=True,
                      **common, format_func=translated_options(kwargs.pop('format_func', None)),
                      **kwargs)
         else:
             st.selectbox(display_text(label or name), options, index=None, **common,
+                         placeholder=tr('Select an answer'),
                          format_func=translated_options(kwargs.pop('format_func', None)), **kwargs)
 
     def sample_entry(label: str = 'Try with a sample profile', *, describe: bool = True) -> None:
@@ -181,7 +191,7 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
         sample_entry('Try a virtual example', describe=False)
         if st.button(tr('Restore a saved plan'), key='profile_restore'):
             st.session_state['profile_entry'] = 'restore'
-        st.caption(tr('The questionnaire does not ask for names, age, gender or contact details. Optional PDF CV processing has a separate consent step. Occupational requirements and trends used for matching remain synthetic.'))
+        st.caption(tr('No name, age, gender or contact details are required. Occupational requirements are synthetic; the results page lets you choose GitHub snapshots or synthetic demo trends.'))
         st.caption(tr('The sample is fictional, editable and kept separate from your own questionnaire answers.'))
         if st.session_state.get('profile_entry') == 'cv':
             render_cv_intake(st, labels, levels, expanded=True)
@@ -262,7 +272,7 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
         else:
             _, role_file, trend_file = load_demo()
             st.caption(tr('Your confirmed profile + synthetic occupational requirements. Trend evidence and its source are shown below; no official O*NET requirements are substituted.'))
-            st.write(tr('Career goal: ') + (draft.get('Optional career goal') or tr('Not provided')))
+            st.write(tr('Career goal: ') + goal_display(draft))
             current = st.session_state.get('pathway_assessment')
             if current is None or current['profile'] != profile or current['answers'] != draft:
                 # Pin the synthetic inputs for a profile reassessment.
@@ -285,7 +295,7 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
                 rows = render_evidence_reassessment(st, current, official_loader, client_factory)
             st.caption(tr('Moderate = 85% personal fit + 15% trend; Fast = 65% personal fit + 35% trend. These are unvalidated sensitivity assumptions, not probabilities or employment forecasts.'))
             st.table(table_text([{
-                'Career': row['title'],
+                'Career': career_name(row['code'], row['title']),
                 'Personal fit': row['P'].value if row['P'].value is not None else 'Unavailable',
                 'Trend signal': row['trend']['score'].value if row['trend']['score'].value is not None else 'Unavailable',
                 'Moderate score': row['moderate'].value if row['moderate'].value is not None else 'Unavailable',
@@ -300,11 +310,11 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
                 if not ranked:
                     st.info(tr('No complete rankings available. Review the component reasons below.'))
                 for row in ranked:
-                    st.write(tr('{v0}. {v1} · {v2:.2f} / 100', v0=row[scenario + '_rank'], v1=row['title'], v2=row[scenario].value))
+                    st.write(tr('{v0}. {v1} · {v2:.2f} / 100', v0=row[scenario + '_rank'], v1=career_name(row['code'], row['title']), v2=row[scenario].value))
                     render_sdg_preview(st, row['code'])
             by_code = {role['code']: role for role in role_file['roles']}
             for row in rows:
-                with st.expander(row['title'] + tr(' · Why this match?')):
+                with st.expander(career_name(row['code'], row['title']) + tr(' · Why this match?')):
                     render_role(st, row, by_code[row['code']], profile=profile,
                                 real_trends=current.get('recommendation_source') == 'GitHub snapshots')
             st.caption(tr('Choose a career from the current results below. A career without a complete trend score can still have synthetic skill gaps, but has no complete evidence-based match score.'))

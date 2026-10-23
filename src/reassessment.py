@@ -1,5 +1,5 @@
 """Session snapshots and deterministic before/after explanations; no score calculation."""
-from src.i18n import tr, display_text, table_text, translate_error
+from src.i18n import career_name, tr, display_text, table_text, translate_error, translated_options
 from copy import deepcopy
 from typing import Any
 
@@ -89,9 +89,15 @@ def render_comparison(st: Any, previous: dict | None, current: dict, labels: dic
             effect = 'RIASEC dimension → interest similarity → personal fit.'
         else:
             effect = 'Not scored. Weekly learning time may change the plan; other preferences remain contextual.'
-        st.write(tr('{v0}: {v1} → {v2}. {v3}', v0=display_text(labels.get(key, key)), v1=change['before'], v2=change['after'], v3=display_text(effect)))
+        def answer(value):
+            if key == 'Optional career goal':
+                return value
+            if isinstance(value, list):
+                return ', '.join(translated_options()(item) for item in value)
+            return translated_options()(value) if isinstance(value, str) else value
+        st.write(tr('{v0}: {v1} → {v2}. {v3}', v0=display_text(labels.get(key, key)), v1=answer(change['before']), v2=answer(change['after']), v3=display_text(effect)))
     for result in compare_results(previous['rows'], current['rows']):
-        with st.expander(result['title'] + tr(' · Before / after')):
+        with st.expander(career_name(result['code'], result['title']) + tr(' · Before / after')):
             role = next(role for role in current['roles']['roles'] if role['code'] == result['code'])
             used = [display_text(labels.get(change['field'], change['field'])) for change in changes
                     if change['field'] in role['skills'] or change['field'] in role['knowledge']]

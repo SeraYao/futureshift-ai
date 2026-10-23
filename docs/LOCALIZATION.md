@@ -27,7 +27,7 @@ as a stable key. `src/i18n.py` validates equal key sets, nonempty values and mat
 format placeholders at import and reloads/validates all three files before each page
 render, because Streamlit may keep imported modules cached after locale files change.
 The complete validated catalog replaces the old one atomically; invalid catalogs
-still fail without an English fallback. `tr` raises for unknown keys. Add each new authored
+still fail without an English fallback. `tr` logs missing runtime keys and returns a nonempty localized unavailable-text message; it never displays the raw key. Add each new authored
 message to all three catalogs; do not introduce a locale conditional in a page.
 Indirect labels (questionnaire enums, exercise templates and scales) are also
 checked by tests. All modules calling translation helpers must explicitly import them.
@@ -44,15 +44,31 @@ External exception reasons remain verbatim after the translated wrapper.
 
 ## Original text and data
 
-Official occupation titles, O*NET identifiers and flags, occupation/element codes,
+The three demonstration careers use manually reviewed project translations, keyed by immutable occupation codes: 数据科学家 / Saintis Data, 运筹分析师 / Penganalisis Penyelidikan Operasi, and 软件开发人员 / Pembangun Perisian. These are project display names, not claimed official translations. Original official titles remain available with source information.
+
+O*NET identifiers and flags, occupation/element codes,
 source attribution, source quotations, raw technical responses, formulas, queries,
 URLs, timestamps, numeric scores and raw JSON stay original. Localized explanatory
 captions identify official English titles and explain quality flags. CV evidence,
 redacted input previews and user free text are never automatically translated.
 The CV model prompt and payload, GitHub query construction, scoring functions,
-career datasets and exported plan format/content are unchanged.
+career datasets and machine-readable JSON plan format/content are unchanged. A separate localized Markdown export includes readable names and instructions while retaining stable IDs and source URLs.
+
+The authored virtual-example goal is translated for display only; user-entered goals remain verbatim.
 
 Language changes perform no profile/workspace reset and no consent action. Existing
-widget keys and internal English answer values remain stable. Tests exercise all
+canonical career IDs and internal answer values remain stable. Main-flow selectboxes keep canonical session values separate from locale-specific browser widget keys, because Streamlit serializes formatted option strings. Option formatters also capture the render language. Tests exercise all
 modes and intake steps, checked tasks, sample/manual profiles, reassessment snapshots,
 restore previews and restored progress, with network calls blocked or mocked.
+
+## Verification scope (2026-10-23)
+
+160 regression tests pass. A real isolated Chrome session used the synthetic sample,
+selected Data Scientists, completed one of eight tasks, and switched en → zh → ms.
+The selected code, five-hour budget, ranking values, plan and 1/8 progress persisted.
+Desktop results/rankings/plans and Chinese/Malay 390px plan screenshots were visually
+reviewed; no garbled text or page overflow was observed. Main dropdown options and
+readable/machine export behavior also have programmatic coverage. Other intake,
+CV upload and restore screens have programmatic coverage only in this pass;
+framework-owned upload text and broader visual review remain follow-up work.
+No live AI request or trend refresh was needed or triggered by this localization check.

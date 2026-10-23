@@ -192,7 +192,7 @@ def render_cv_intake(st: Any, labels: dict, levels: tuple, *, expanded: bool = F
                 key = item['field']
                 st.write(display_text(labels[key]) + tr(' · Evidence: ') + item['evidence'])
                 ratings[key] = st.selectbox(tr('Your self-rating · ') + display_text(labels[key]) + ' (' + display_text(group) + ')',
-                    tuple(range(5)), index=None, key='cv_rating_' + key,
+                    tuple(range(5)), index=None, key='cv_rating_' + key, placeholder=tr('Choose your self-rating'),
                     format_func=translated_options(lambda value: f'{value} — {levels[value]}'))
         for index, item in enumerate(review['experience']):
             st.caption(tr('Original experience evidence: ') + item['evidence'])

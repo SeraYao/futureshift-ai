@@ -1,5 +1,5 @@
 """Shared GitHub evidence refresh and main-result ranking; synthetic requirements stay explicit."""
-from src.i18n import tr, display_text, table_text, translated_options, translate_error
+from src.i18n import localized_selectbox, career_name, tr, display_text, table_text, translated_options, translate_error
 from copy import deepcopy
 from typing import Any, Callable
 
@@ -104,11 +104,11 @@ def render_evidence_reassessment(st: Any, assessment: dict, official_loader: Cal
     state = st.session_state.setdefault('pathway_evidence', {})
     client = client_factory()
     load_cached_evidence(state, client)
-    names = {role['code']: role['title'] for role in assessment['roles']['roles']}
+    names = {role['code']: career_name(role['code'], role['title']) for role in assessment['roles']['roles']}
     st.caption(tr('Mapping: {v0}. Refresh ONE occupation at a time: two topics × two 90-day windows, four searches on a complete cache miss. Cache and shared limits still apply; no automatic refresh.', v0=display_text(MAPPING_STATUS)))
     with st.expander(tr('Technical details'), expanded=False):
         st.caption(tr('Anonymous requests: at most 10 per rolling minute, shared in this process. Each uncached successful Refresh sends 4 requests for ONE occupation (2 topics × 2 windows). Fresh cache reuse sends 0; a failure stops early. Successful snapshots are reused for 15 minutes. Server limits may be stricter. A failed refresh retains the last complete successful snapshot, including its original dates.'))
-    code = st.selectbox(tr('Occupation evidence to refresh'), tuple(ROLE_TOPICS),
+    code = localized_selectbox(st, tr('Occupation evidence to refresh'), tuple(ROLE_TOPICS),
                         format_func=translated_options(lambda value: names.get(value, value)), key='evidence_role')
     if st.button(tr('Refresh evidence and reassess'), key='evidence_refresh'):
         before = deepcopy(state.get('snapshots', {}))
@@ -170,7 +170,7 @@ def render_evidence_reassessment(st: Any, assessment: dict, official_loader: Cal
                 for kind in ('score', 'rank'):
                     before = old[scenario].value if kind == 'score' else old[scenario + '_rank']
                     after = row[scenario].value if kind == 'score' else row[scenario + '_rank']
-                    changes.append({'Career': row['title'], 'Measure': scenario.title() + ' ' + kind,
+                    changes.append({'Career': career_name(row['code'], row['title']), 'Measure': scenario.title() + ' ' + kind,
                                     'Previous': before if before is not None else 'Unavailable',
                                     'Current': after if after is not None else 'Unavailable',
                                     'Change': after - before if before is not None and after is not None else 'Unavailable'})
@@ -183,8 +183,8 @@ def render_evidence_reassessment(st: Any, assessment: dict, official_loader: Cal
                 official_row = evidence_ranking(assessment['profile'], [role], snapshots)[0]
                 reasons = tuple(dict.fromkeys((*role.get('data_issues', []), *official_row['moderate'].issues)))
                 if reasons:
-                    st.warning(translate_error(role['title'] + tr(' · Official ranking blocked: ') + '; '.join(reasons)))
-    scenario_label = st.selectbox(tr('Scenario for career-switch suggestion'), ('Moderate', 'Fast disruption'),
+                    st.warning(translate_error(career_name(role['code'], role['title']) + tr(' · Official ranking blocked: ') + '; '.join(reasons)))
+    scenario_label = localized_selectbox(st, tr('Scenario for career-switch suggestion'), ('Moderate', 'Fast disruption'),
                                   key='evidence_scenario', format_func=translated_options())
     scenario = 'moderate' if scenario_label == 'Moderate' else 'fast'
     ranked = [row for row in rows if row[scenario + '_rank'] is not None]

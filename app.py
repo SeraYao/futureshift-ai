@@ -1,5 +1,5 @@
 """Strictly separated synthetic simulation and official O*NET audit. Run: python3 -m streamlit run app.py."""
-from src.i18n import tr, display_text, display_value, table_text, translated_options, translate_error
+from src.i18n import career_description, career_name, tr, display_text, display_value, table_text, translated_options, translate_error
 from copy import deepcopy
 from dataclasses import asdict
 import hashlib
@@ -194,7 +194,10 @@ def render_topic(st: Any, topic: dict) -> None:
 def render_role(st: Any, row: dict, role: dict, profile: dict | None = None, *, real_trends: bool = False) -> None:
     """Explain the engine output using templates and its exact calculation trace."""
     st.caption(tr('O*NET occupation identity: {code} · Synthetic requirements + GitHub trend snapshots', code=row['code']) if real_trends else tr('O*NET occupation identity: {v0} · Synthetic requirements and trends', v0=row['code']))
-    st.caption(tr('Official occupation title (English); source descriptions and identifiers are retained verbatim.'))
+    st.caption(tr('Career display names are project translations. Official source titles, codes and evidence remain original.'))
+    description = career_description(row['code'])
+    if description:
+        st.write(description)
     cols = st.columns(3)
     cols[0].metric(tr('Skills coverage'), display_value(display_score(row['skills']['score'])))
     cols[1].metric(tr('Knowledge coverage'), display_value(display_score(row['knowledge']['score'])))
@@ -226,6 +229,7 @@ def render_role(st: Any, row: dict, role: dict, profile: dict | None = None, *, 
         render_topic(st, topic)
     render_sdg_details(st, row['code'])
     st.markdown(tr('#### Source identity'))
+    st.caption(tr('Official source title: {title}', title=role['title']))
     st.markdown(tr('[Official occupation identity]({v0})', v0=role['identity_source_url']))
     st.caption(tr('The occupation link identifies only the official title and code. Requirements, importance and role interests remain synthetic; GitHub queries above are the trend sources.') if real_trends else tr('The linked page identifies only the official title and code. All requirements, importance, interests and trend counts used in this simulation are synthetic.'))
     with st.expander(tr('Technical details'), expanded=False):
@@ -242,6 +246,7 @@ def main() -> None:
     initialize_language(st.session_state)
 
     st.set_page_config(page_title='FutureShift AI', page_icon='↗', layout='wide')
+    st.set_option('client.toolbarMode', 'minimal')
     st.markdown('<style>\n    .stApp {background: linear-gradient(145deg, #f2f6fb, #fafbff 65%); color: #14283f;}\n    .block-container {max-width: 1240px; padding-top: 2.8rem;}\n    h1, h2, h3 {letter-spacing: -.035em; color: #14283f;}\n    [data-testid="stMetric"] {background: #fff; border: 1px solid #dce5ef;\n      border-radius: 14px; padding: 16px;}\n    [data-testid="stExpander"] {background: #fff; border-radius: 12px;}\n    [data-testid="stForm"] {background: #fff; border-radius: 16px;}\n    .eyebrow {color: #187c76; font-size: .8rem; font-weight: 700;\n      letter-spacing: .14em; text-transform: uppercase;}\n    </style>', unsafe_allow_html=True)
     title_column, language_column = st.columns([5, 2])
     with title_column:
@@ -342,7 +347,7 @@ def render_simulation(st: Any) -> None:
             st.caption(tr('{v0:.0%} personal fit + {v1:.0%} technical activity', v0=1 - weight, v1=weight))
             selected = sorted(eligible, key=lambda r: r[scenario + '_rank'])[:5]
             for row in selected:
-                st.markdown(tr('**{v0:02d} · {v1}**', v0=row[scenario + '_rank'], v1=row['title']))
+                st.markdown(tr('**{v0:02d} · {v1}**', v0=row[scenario + '_rank'], v1=career_name(row['code'], row['title'])))
                 st.progress(row[scenario].value / 100,
                             text=tr('{v0:.2f} / 100 · {v1}', v0=row[scenario].value, v1=row['code']))
                 render_sdg_preview(st, row['code'])
@@ -353,7 +358,7 @@ def render_simulation(st: Any) -> None:
     for row in rows:
         if row['code'] in shown or row['moderate_rank'] is None:
             suffix = 'View details' if row['moderate_rank'] is not None else 'Unavailable · view reasons'
-            with st.expander(tr('{v0} · {v1}', v0=row['title'], v1=display_text(suffix))):
+            with st.expander(tr('{v0} · {v1}', v0=career_name(row['code'], row['title']), v1=display_text(suffix))):
                 render_role(st, row, roles_by_code[row['code']])
     with st.expander(tr('Technical details'), expanded=False):
         st.markdown(tr('#### How scoring works & what remains uncertain'))
@@ -423,7 +428,7 @@ def render_live_trends(st: Any, official: dict, client: GitHubTrends | None = No
         if role is None:
             st.error(translate_error(tr('Approved occupation {v0} is missing from the official extract; no query sent.', v0=code)))
             continue
-        with st.expander(tr('GitHub evidence · {v0} · {v1}', v0=code, v1=role['title'])):
+        with st.expander(tr('GitHub evidence · {v0} · {v1}', v0=code, v1=career_name(role['code'], role['title']))):
             st.caption(tr('Topics: ') + ', '.join(ROLE_TOPICS[code]))
             clicked = st.button(tr('Refresh'), key=f'github_refresh_{code}')
             outcome = active_client.refresh(code) if clicked else active_client.cached(code)
@@ -466,7 +471,7 @@ def render_audit(st: Any) -> None:
     """Render official source evidence only; never read simulation state or calculate ranks."""
     official = load_onet()
     st.info(tr('O*NET® 31.0 data audit · Official occupational requirements only. Not a future employment-demand forecast. No simulation data is loaded.'))
-    st.caption(tr('Official occupation title (English); source descriptions and identifiers are retained verbatim.'))
+    st.caption(tr('Career display names are project translations. Official source titles, codes and evidence remain original.'))
     st.write(official['license']['attribution'])
     st.markdown(tr('[O*NET® 31.0 Database](https://www.onetcenter.org/database.html) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)'))
     st.caption(display_text(official['license']['modifications']))
@@ -486,7 +491,7 @@ def render_audit(st: Any) -> None:
                'Usable RIASEC dimensions': f"{row['components']['riasec']['usable']}/6"}
               for row in audits]))
     for role, audit in zip(official['roles'], audits):
-        with st.expander(tr('{v0} · {v1}', v0=role['code'], v1=role['title'])):
+        with st.expander(tr('{v0} · {v1}', v0=role['code'], v1=career_name(role['code'], role['title']))):
             render_sdg_preview(st, role['code'])
             render_sdg_details(st, role['code'])
             st.markdown(tr('[Official occupation identity]({v0})', v0=role['identity_source_url']))
