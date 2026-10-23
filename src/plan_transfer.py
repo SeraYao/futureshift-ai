@@ -46,6 +46,9 @@ def export_plan(assessment: dict, plan: dict, completion: dict,
                     'source_fingerprint': source_fingerprint(assessment['roles'], assessment['trends']),
                     'data_status': 'official_requirements_personal_fit' if role.get('data_status') == 'official_derived' else 'synthetic_requirements_and_trends',
                     'results': assessment_summary(assessment['rows'])}}
+    from src.learning_plan import resources_for_plan, _RESOURCE_DATA
+    document['learning_resources'] = resources_for_plan(plan)
+    document['learning_resource_catalog_version'] = _RESOURCE_DATA['catalog_version']
     return json.dumps(document, ensure_ascii=False, indent=2, allow_nan=False)
 
 
@@ -58,8 +61,19 @@ def readable_plan(assessment: dict, plan: dict, completion: dict, labels: dict) 
              tr('Career ID: {code} · Plan ID: {plan}', code=role['code'], plan=plan['id']),
              role['identity_source_url'], '', tr(OFFICIAL_NOTICE if role.get('data_status') == 'official_derived' else NOTICE),
              tr('Four weeks · {hours} hours per week', hours=plan['weekly_hours']), '',
-             tr('Verified learning resources are not connected yet. These are authored practice exercises, not course recommendations. Completion does not change your matching scores or prove skill mastery.'), '',
+             tr('Learning resources are matched to stable skill IDs. Language describes the source material, not this interface. Completion does not raise match scores or prove skill mastery.'), '',
              tr('Moderate = 85% personal fit + 15% trend; Fast = 65% personal fit + 35% trend. These are unvalidated sensitivity assumptions, not probabilities or employment forecasts.')]
+    from src.learning_plan import resources_for_plan, STAGE_INSTRUCTIONS
+    resources = resources_for_plan(plan)
+    if resources:
+        lines += ['', '## ' + tr('Verified learning resources')]
+        for resource in resources:
+            lines += ['', f"### [{resource['name']}]({resource['url']})",
+                      tr('Provider: {provider} · Teaching language: {languages}', provider=resource['provider'], languages=', '.join(resource['teaching_languages'])),
+                      tr('Prerequisites: {text}', text=display_text(resource['prerequisites'])),
+                      tr('Cost: {text}', text=display_text(resource['cost'])),
+                      tr('Official duration: {text}', text=display_text(resource['duration_basis'])),
+                      tr('Resource ID: {id} · Verified: {date} · Mapped skills: {skills}', id=resource['id'], date=resource['verified_on'], skills=', '.join(display_text(labels.get(key, key)) for key in resource['skill_ids']))]
     source = assessment.get('recommendation_source', 'Official cross-domain careers' if role.get('data_status') == 'official_derived' else 'Synthetic demo')
     lines += ['', tr('Ranking basis: {source}', source=display_text(source))]
     row = next(row for row in assessment.get('recommendation_rows', assessment['rows']) if row['code'] == role['code'])
@@ -86,7 +100,14 @@ def readable_plan(assessment: dict, plan: dict, completion: dict, labels: dict) 
                       tr('Task ID: {task} · Area ID: {area}', task=task['id'], area=task['area']),
                       tr('Action: {v0} Complete {v1} practice rounds. This week: {v2}; retain earlier evidence for comparison.',
                          v0=display_text(task['action']), v1=task['practice_rounds'], v2=display_text(task['phase'])),
+                      tr('This week: {step}', step=tr(STAGE_INSTRUCTIONS[task['step_id']], area=display_text(labels[task['area']]))),
                       tr('Completion evidence: ') + display_text(task['evidence'])]
+            if task.get('resource_id'):
+                resource = next(item for item in resources if item['id'] == task['resource_id'])
+                lines.append(tr('Resource: [{name}]({url}) · {provider}', name=resource['name'], url=resource['url'], provider=resource['provider']))
+            else:
+                lines.append(tr('No suitable verified resource is currently mapped to this skill; use the authored task and note this resource gap.'))
+            lines.append(tr('This week’s estimated allocation: {source} min source study + {practice} min project practice = {total} min from your weekly budget. These are project estimates, separate from the provider’s total course duration.', source=task['resource_study_minutes'], practice=task['project_minutes'], total=task['minutes']))
     return '\n\n'.join(lines) + '\n'
 
 
@@ -114,7 +135,7 @@ def _unique_fields(pairs: list[tuple]) -> dict:
 def validate_saved_plan(raw: bytes, load_demo: Callable) -> dict:
     """Validate everything offline and rebuild scores/tasks before changing any session state."""
     from src.pathway import confirmed_profile
-    from src.learning_plan import build_plan
+    from src.learning_plan import build_plan, build_legacy_plan
     try:
         if not isinstance(raw, bytes) or len(raw) > MAX_BYTES:
             raise ValueError('Expected a JSON file no larger than 256 KB')
@@ -142,7 +163,9 @@ def validate_saved_plan(raw: bytes, load_demo: Callable) -> dict:
         else:
             rows = rank_roles(profile, roles['roles'], trends['topics'])
         row = next(row for row in rows if row['code'] == code)
-        plan = build_plan(row, role, document['weekly_hours'])
+        legacy = 'learning_resources' not in document and document.get('plan', {}).get('version') == 'practice-v1'
+        plan = build_legacy_plan(row, role, document['weekly_hours']) if legacy else build_plan(
+            row, role, document['weekly_hours'], document['answers'].get('Preferred learning language'))
         if not plan['tasks']:
             raise ValueError('This profile has no usable plan tasks')
         completion = document['completion']
@@ -150,8 +173,16 @@ def validate_saved_plan(raw: bytes, load_demo: Callable) -> dict:
             raise ValueError('Task completion states must be boolean')
         assessment = {'profile': profile, 'answers': document['answers'], 'roles': roles, 'trends': trends, 'rows': rows}
         expected = json.loads(export_plan(assessment, plan, completion, timestamp))
+        if legacy:
+            expected.pop('learning_resources')
+            expected.pop('learning_resource_catalog_version')
         if not _same_types_and_values(document, expected):
             raise ValueError('Missing, unexpected or invalid fields, or incompatible scoring/data/plan version')
+        if legacy:
+            upgraded = build_plan(row, role, document['weekly_hours'],
+                                  document['answers'].get('Preferred learning language'))
+            completion = {task['id']: True for task in upgraded['tasks'] if completion.get(task['id']) is True}
+            plan = upgraded
         return deepcopy({'document': document, 'assessment': assessment, 'plan': plan, 'completion': completion})
     except (KeyError, TypeError, UnicodeError, OverflowError, RecursionError) as exc:
         raise ValueError('Invalid plan file: missing required fields or incorrect field types') from exc

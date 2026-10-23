@@ -1,0 +1,169 @@
+{
+  "catalog_version": "verified-resources-2026-10-23-v1",
+  "verified_on": "2026-10-23",
+  "resources": [
+    {
+      "id": "mit-ocw-15-053",
+      "name": "Optimization Methods in Management Science",
+      "provider": "MIT OpenCourseWare",
+      "url": "https://ocw.mit.edu/courses/15-053-optimization-methods-in-management-science-spring-2013/pages/syllabus/",
+      "skill_ids": [
+        "skill_01",
+        "skill_02",
+        "skill_03",
+        "skill_07",
+        "skill_09",
+        "knowledge_02",
+        "knowledge_07"
+      ],
+      "teaching_languages": [
+        "en"
+      ],
+      "prerequisites": "No formal prerequisites (MIT syllabus); basic algebra is useful for the exercises.",
+      "cost": "Free course materials online; optional textbook is not required. No certificate price stated.",
+      "duration_basis": "MIT lists 1.5 hours per lecture session and 1.5-hour recitations; no total learner completion duration is stated. This is a full university course, not a four-week completion estimate.",
+      "official_duration_minutes": null,
+      "verified_on": "2026-10-23"
+    },
+    {
+      "id": "ms-learn-python-data",
+      "name": "Explore and analyze data with Python",
+      "provider": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/training/modules/explore-analyze-data-with-python/",
+      "skill_ids": [
+        "skill_04"
+      ],
+      "teaching_languages": [
+        "en"
+      ],
+      "prerequisites": "Basic mathematics, some Python programming experience, and familiarity with Jupyter notebooks.",
+      "cost": "Free online module; no paid certificate is specified on this module page.",
+      "duration_basis": "Microsoft lists 1 hour for the module.",
+      "official_duration_minutes": 60,
+      "verified_on": "2026-10-23"
+    },
+    {
+      "id": "ms-learn-cybersecurity-basics",
+      "name": "Describe basic cybersecurity threats, attacks, and mitigations",
+      "provider": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/training/modules/describe-basic-cybersecurity-threats-attacks-mitigations/",
+      "skill_ids": [
+        "skill_02",
+        "knowledge_01"
+      ],
+      "teaching_languages": [
+        "en"
+      ],
+      "prerequisites": "No prerequisite stated on the module listing; introductory level.",
+      "cost": "Free online module; no paid certificate is specified on this module page.",
+      "duration_basis": "Microsoft lists 30 minutes in its training catalog.",
+      "official_duration_minutes": 30,
+      "verified_on": "2026-10-23",
+      "role_codes": [
+        "15-1212.00"
+      ]
+    },
+    {
+      "id": "openlearn-climate-sustainability",
+      "name": "Climate change: transitions to sustainability",
+      "provider": "The Open University (OpenLearn)",
+      "url": "https://www.open.edu/openlearn/nature-environment/environmental-studies/climate-change-transitions-sustainability/content-section-0?intro=1",
+      "skill_ids": [
+        "skill_05"
+      ],
+      "teaching_languages": [
+        "en"
+      ],
+      "prerequisites": "Level 2 / intermediate; no formal prerequisite stated.",
+      "cost": "Free course. OpenLearn states a free statement of participation on completion; no paid certificate required for access.",
+      "duration_basis": "OpenLearn lists 5 hours study for the full course.",
+      "official_duration_minutes": 300,
+      "verified_on": "2026-10-23"
+    },
+    {
+      "id": "epa-water-learning",
+      "name": "Watershed Academy and water education resources",
+      "provider": "U.S. Environmental Protection Agency (EPA)",
+      "url": "https://www.epa.gov/students/lesson-plans-teacher-guides-and-online-environmental-resources-educators-water",
+      "skill_ids": [
+        "knowledge_03"
+      ],
+      "teaching_languages": [
+        "en"
+      ],
+      "prerequisites": "Varies by linked material; the page includes school-level activities and self-paced Watershed Academy modules.",
+      "cost": "EPA materials are publicly available at no cost; linked third-party materials may have separate terms.",
+      "duration_basis": "No single duration is stated for this collection; project reading/practice time is an estimate, not EPA course time.",
+      "official_duration_minutes": null,
+      "verified_on": "2026-10-23"
+    },
+    {
+      "id": "openstax-physics",
+      "name": "College Physics 2e",
+      "provider": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/college-physics-2e/pages/preface",
+      "skill_ids": [
+        "knowledge_04"
+      ],
+      "teaching_languages": [
+        "en"
+      ],
+      "prerequisites": "Introductory college physics textbook; select sections appropriate to the task.",
+      "cost": "Free online and PDF textbook; low-cost print option. Optional OpenStax Assignable starts at US$15 per student per semester and is not required.",
+      "duration_basis": "No learner completion duration stated; scheduled reading/practice time is a project estimate.",
+      "official_duration_minutes": null,
+      "verified_on": "2026-10-23"
+    },
+    {
+      "id": "openstax-chemistry",
+      "name": "Chemistry 2e",
+      "provider": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/chemistry-2e/pages/preface",
+      "skill_ids": [
+        "knowledge_05"
+      ],
+      "teaching_languages": [
+        "en"
+      ],
+      "prerequisites": "Introductory general chemistry textbook; select sections appropriate to the task.",
+      "cost": "Free online and PDF textbook; low-cost print option. Optional courseware is separate and not required.",
+      "duration_basis": "No learner completion duration stated; scheduled reading/practice time is a project estimate.",
+      "official_duration_minutes": null,
+      "verified_on": "2026-10-23"
+    },
+    {
+      "id": "openstax-biology",
+      "name": "Biology 2e",
+      "provider": "OpenStax, Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/preface",
+      "skill_ids": [
+        "knowledge_06"
+      ],
+      "teaching_languages": [
+        "en"
+      ],
+      "prerequisites": "Introductory biology textbook for science majors; select sections appropriate to the task.",
+      "cost": "Free online and PDF textbook; low-cost print option. Optional courseware is separate and not required.",
+      "duration_basis": "Designed for a two-semester course; no learner completion duration stated. Scheduled reading/practice time is a project estimate.",
+      "official_duration_minutes": null,
+      "verified_on": "2026-10-23"
+    },
+    {
+      "id": "purdue-owl-writing",
+      "name": "Purdue Online Writing Lab (OWL)",
+      "provider": "Purdue University",
+      "url": "https://owl.purdue.edu/owl",
+      "skill_ids": [
+        "skill_10"
+      ],
+      "teaching_languages": [
+        "en"
+      ],
+      "prerequisites": "No prerequisite stated; select the relevant writing guide.",
+      "cost": "Free writing resources. No course certificate is offered or required.",
+      "duration_basis": "No fixed duration stated; reading and writing practice time is a project estimate.",
+      "official_duration_minutes": null,
+      "verified_on": "2026-10-23"
+    }
+  ]
+}

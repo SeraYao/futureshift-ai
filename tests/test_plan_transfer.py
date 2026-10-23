@@ -48,6 +48,10 @@ class PlanTransferTests(unittest.TestCase):
         self.assertEqual(document['duration_weeks'], 4)
         self.assertEqual(document['weekly_hours'], 5)
         self.assertEqual(sum(document['completion'].values()), 1)
+        self.assertTrue(document['learning_resource_catalog_version'])
+        self.assertTrue(document['learning_resources'])
+        self.assertTrue(all('url' in resource and 'verified_on' in resource
+                            for resource in document['learning_resources']))
         self.assertEqual(len(document['answers']), 31)  # Thirty scored items plus the synthetic label.
         self.assertEqual(document['profile']['data_status'], 'synthetic')
         self.assertEqual(document['career']['code'], plan['role_code'])
@@ -108,6 +112,23 @@ class PlanTransferTests(unittest.TestCase):
         for raw in (b'bad json', b'[]', b'\xff', b' ' * 256001):
             with self.assertRaises(ValueError):
                 validate_saved_plan(raw, app.load_demo)
+
+    def test_legacy_v1_plan_restores_into_resource_catalog_without_losing_progress(self) -> None:
+        """Prior validated exports remain importable and matching task checks are migrated."""
+        from src.learning_plan import build_legacy_plan
+        assessment, _, _ = fixture()
+        role = assessment['roles']['roles'][0]
+        row = next(item for item in assessment['rows'] if item['code'] == role['code'])
+        old_plan = build_legacy_plan(row, role, 5)
+        self.assertTrue(old_plan['tasks'])
+        checked_id = old_plan['tasks'][0]['id']
+        old_document = json.loads(export_plan(assessment, old_plan, {checked_id: True},
+                                              '2026-10-22T00:00:00+00:00'))
+        old_document.pop('learning_resources')
+        old_document.pop('learning_resource_catalog_version')
+        prepared = validate_saved_plan(encoded(old_document), app.load_demo)
+        self.assertEqual(prepared['plan']['version'], 'practice-v2')
+        self.assertTrue(prepared['completion'].get(checked_id))
 
 
 @unittest.skipUnless(importlib.util.find_spec('streamlit'), 'Streamlit not installed')
@@ -172,6 +193,11 @@ class PlanTransferUITests(unittest.TestCase):
                 self.assertIn(plan['id'], text)
                 self.assertIn(CATALOGS[language]['Write a small program that summarizes an invented numeric list; test empty and unusual inputs.'], text)
                 self.assertIn('- [x]', text)
+                self.assertIn(CATALOGS[language]['Verified learning resources'], text)
+                self.assertIn(CATALOGS[language]['This week: {step}'].split('{step}')[0].strip(), text)
+                for resource in json.loads(baseline)['learning_resources']:
+                    self.assertIn(resource['url'], text)
+                    self.assertIn(resource['name'], text)
                 self.assertEqual(export_plan(assessment, plan, completion, '2026-10-22T00:00:00+00:00'), baseline)
                 self.assertEqual((assessment, plan, completion), frozen)
                 validate_saved_plan(baseline.encode(), app.load_demo)
