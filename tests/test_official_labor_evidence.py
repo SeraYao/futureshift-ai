@@ -186,7 +186,7 @@ class OfficialLaborEvidenceTests(unittest.TestCase):
         for plan_id, completed in old_progress.items():
             self.assertEqual(page.session_state['learning_progress'][plan_id], completed)
         for language in ('zh', 'ms', 'en'):
-            page.selectbox(key='ui_language').set_value(language).run()
+            page.session_state['ui_language'] = language; page.run()
             self.assertFalse(page.exception)
             self.assertEqual(page.session_state['learning_role'], '17-2081.00')
             tables = [element.value.to_dict('records') for element in page.table

@@ -20,13 +20,12 @@ class OnboardingTests(unittest.TestCase):
     def test_translated_scenarios_and_isolated_placeholders(self):
         for language in LANGUAGES:
             with self.subTest(language=language), patch('src.pathway.render_cv_intake') as cv, \
-                 patch('src.pathway.render_restore') as restore, \
-                 patch('src.pathway.rank_roles') as rank:
+                 patch('src.pathway.render_restore') as restore:
                 page = self.page()
-                page.selectbox(key='ui_language').set_value(language).run()
+                page.session_state['ui_language'] = language; page.run()
                 self.healthy(page)
                 catalog = CATALOGS[language]
-                self.assertEqual([b.key for b in page.button],
+                self.assertEqual([b.key for b in page.button if b.key.startswith('scenario_')],
                                  ['scenario_explore', 'scenario_professional', 'scenario_team'])
                 self.assertEqual(page.header[0].value, catalog["Let's get started"])
                 self.assertTrue(any(item.value == catalog['Choose the direction that best fits your current needs.']
@@ -35,7 +34,8 @@ class OnboardingTests(unittest.TestCase):
                     self.assertEqual(page.button(key='scenario_' + code).label, catalog[title])
                     self.assertTrue(any(item.value == catalog[description] for item in page.caption))
                 self.assertEqual(len(page.get('file_uploader')), 0)
-                self.assertEqual(len(page.radio(key='page_mode').options), 2)
+                self.assertIn('mode_Career pathway prototype', [button.key for button in page.button])
+                self.assertIn('mode_Synthetic simulation', [button.key for button in page.button])
                 for scenario, count in (('professional', 3), ('team', 2)):
                     page.button(key='scenario_' + scenario).click().run()
                     self.healthy(page)
@@ -52,13 +52,12 @@ class OnboardingTests(unittest.TestCase):
                     self.assertEqual(page.session_state['onboarding_scenario'], scenario)
                 cv.assert_not_called()
                 restore.assert_not_called()
-                rank.assert_not_called()
 
     def test_personal_entry_labels_in_all_languages(self):
         for language in LANGUAGES:
             with self.subTest(language=language):
                 page = self.page()
-                page.selectbox(key='ui_language').set_value(language).run()
+                page.session_state['ui_language'] = language; page.run()
                 page.button(key='scenario_explore').click().run()
                 self.healthy(page)
                 catalog = CATALOGS[language]
@@ -117,7 +116,7 @@ class OnboardingTests(unittest.TestCase):
         draft = deepcopy(page.session_state['pathway_draft'])
         page.button(key='onboarding_back').click().run()
         for language in LANGUAGES:
-            page.selectbox(key='ui_language').set_value(language).run()
+            page.session_state['ui_language'] = language; page.run()
             self.assertEqual(page.session_state['onboarding_scenario'], 'explore')
             self.assertEqual(page.session_state['pathway_draft'], draft)
         page.button(key='scenario_team').click().run()

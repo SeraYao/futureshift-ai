@@ -87,10 +87,10 @@ class VisitorPresentationTests(unittest.TestCase):
              patch('src.github_trends.shared_client',return_value=client), \
              patch('urllib.request.urlopen',side_effect=AssertionError('Real HTTP forbidden')):
             page=open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run(timeout=30))
-            page.radio(key='page_mode').set_value('Synthetic simulation').run(timeout=30)
+            page.button(key='mode_Synthetic simulation').click().run(timeout=30)
             self.assertFalse(page.exception)
             page.checkbox(key='simulation_confirm').check()
-            page.button[0].click().run(timeout=30)
+            next(button for button in page.button if 'Confirm profile & calculate matches' in button.label).click().run(timeout=30)
             self.assertFalse(page.exception)
             simulation=self.check_disclosures(page)
             self.assertEqual(len(page.get('progress')),3)

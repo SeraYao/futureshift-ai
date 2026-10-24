@@ -1,15 +1,11 @@
 """Student questionnaire and session-only confirmation flow; no external data access."""
 from src.i18n import career_name, tr, display_text, table_text, translated_options, translate_error
-from src.sdg import render_sdg_result_card
 from copy import deepcopy
 from typing import Any, Callable
 
 from src.cv_intake import render_cv_intake, render_cv_context, clear_cv_review
-from src.evidence_reassessment import render_evidence_reassessment
-from src.learning_plan import render_learning_plan
 from src.plan_transfer import render_restore
-from src.reassessment import begin_reassessment, store_assessment, render_comparison
-from src.scoring import SCORING_VERSION, normalize_0_4, rank_roles
+from src.scoring import normalize_0_4
 
 INTERESTS = (
     ('R1', 'I enjoy building a small working object.'),
@@ -124,8 +120,8 @@ def save_answer(state: Any, name: str) -> None:
 
 def render_pathway(st: Any, labels: dict, levels: tuple,
                    load_demo: Callable, render_role: Callable,
-                   official_loader: Callable | None = None, client_factory: Callable | None = None) -> None:
-    """Guide a student through intake, explicit confirmation and synthetic matches."""
+                   official_loader: Callable | None = None) -> None:
+    """Guide a student through intake and the official occupation catalog."""
     st.session_state.setdefault('pathway_step', 0)
     st.session_state.setdefault('pathway_draft', {})
     step = st.session_state.pathway_step
@@ -133,12 +129,12 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
     if step == 0:
         st.header(tr('Let us get to know you'))
     if step != 0:
-        st.caption(tr('No name or contact details are required. Official cross-domain careers and a separately labelled synthetic demo are available after confirmation.'))
+        st.caption(tr('No name or contact details are required. This pathway uses the fixed official career pool. The synthetic trend demo is a separate entry and does not share this profile or plan.'))
     if draft.get('data_status') == 'synthetic':
         st.warning(tr('SAMPLE PROFILE · Synthetic student answers, including any edits to this example. Not real personal data or a real employment prediction.'))
     if step != 0:
         st.progress(step / 7, text=tr('Step {v0} of 8 · {v1}', v0=step + 1, v1=display_text(STEPS[step])))
-        st.subheader(display_text(STEPS[step]))
+        st.subheader(tr('Matched to your profile') if step == 7 else display_text(STEPS[step]))
 
     def field(name: str, options: tuple | None = None, label: str | None = None,
               kind: str = 'select', **kwargs: Any) -> None:
@@ -174,7 +170,7 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
 
     if step == 1:
         render_cv_intake(st, labels, levels)
-        render_restore(st, load_demo, labels)
+        render_restore(st, load_demo, labels, official_only=True)
     elif step != 0:
         clear_cv_review(st.session_state)
     if step in (1, 6):
@@ -191,12 +187,12 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
         sample_entry('Try a virtual example', describe=False)
         if st.button(tr('Restore a saved plan'), key='profile_restore'):
             st.session_state['profile_entry'] = 'restore'
-        st.caption(tr('No name or contact details are required. Official cross-domain careers and a separately labelled synthetic demo are available after confirmation.'))
+        st.caption(tr('No name or contact details are required. This pathway uses the fixed official career pool. The synthetic trend demo is a separate entry and does not share this profile or plan.'))
         st.caption(tr('The sample is fictional, editable and kept separate from your own questionnaire answers.'))
         if st.session_state.get('profile_entry') == 'cv':
             render_cv_intake(st, labels, levels, expanded=True)
         elif st.session_state.get('profile_entry') == 'restore':
-            render_restore(st, load_demo, labels, expanded=True)
+            render_restore(st, load_demo, labels, expanded=True, official_only=True)
         return
     if step == 1:
         st.info(tr('Fill in your profile below, or skip the questionnaire using a complete synthetic sample.'))
@@ -254,13 +250,10 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
                       for key, value in ((key, draft.get(key)) for key in
                        (*BACKGROUND, 'Optional career goal', *PREFERENCES, 'SDG preferences'))]))
             st.caption(tr('Open text, background, SDGs and learning preferences never add points. Weekly time can initialize the practice plan; it never changes matching scores. Only four-week plans are currently available, regardless of target plan length.'))
-            st.info(tr('This pool uses three synthetic skill requirements and two knowledge requirements. Other answers are retained but have no requirements in this pool. All six interest dimensions enter scoring. GitHub trend snapshots can be used after confirmation.'))
+            st.caption(tr('The confirmed profile will be matched to the fixed official occupation pool. Trend demonstrations use a separate fictional profile and do not affect these results.'))
             with st.expander(tr('Technical details'), expanded=False):
-                _, roles, trends = load_demo()
-                st.caption(tr('Scoring rules: {v0}. Fixed synthetic catalog and trend snapshot; no live refresh.', v0=SCORING_VERSION))
-                st.json({'occupations': [{'code': role['code'], 'title': role['title'],
-                         'topics': role['topics']} for role in roles['roles']],
-                         'trend_snapshot': trends, 'confirmed_candidate': profile}, expanded=False)
+                st.caption(tr('This page uses the confirmed questionnaire profile and the fixed official career catalog. No synthetic career requirements or trend counts are loaded here.'))
+                st.json(profile, expanded=False)
             if st.button(tr('Confirm profile & view matches'), key='pathway_confirm'):
                 st.session_state.pathway_confirmed = deepcopy(profile)
                 st.session_state.pathway_step = 7
@@ -269,75 +262,11 @@ def render_pathway(st: Any, labels: dict, levels: tuple,
         profile = st.session_state.get('pathway_confirmed')
         if profile is None:
             st.warning(tr('Review and confirm your profile before calculating matches.'))
+        elif official_loader is None:
+            st.error(tr('The official career catalog is unavailable. Synthetic demo results are not substituted into this pathway.'))
         else:
-            st.session_state.setdefault('career_catalog_mode', 'Official cross-domain careers' if not st.session_state.get('pathway_assessment') or st.session_state['pathway_assessment']['roles'].get('data_status') == 'official_derived' else 'Synthetic demo')
-            basis = st.radio(tr('Career catalog'), ('Official cross-domain careers', 'Synthetic demo'),
-                             key='career_catalog_mode', format_func=translated_options())
-            if basis == 'Official cross-domain careers' and official_loader is not None:
-                from src.career_pool import render_official
-                render_official(st, profile, draft, official_loader(), labels, render_role, client_factory)
-            else:
-                _, role_file, trend_file = load_demo()
-                st.caption(tr('Your confirmed profile + synthetic occupational requirements. Trend evidence and its source are shown below; no official O*NET requirements are substituted.'))
-                st.write(tr('Career goal: ') + goal_display(draft))
-                current = st.session_state.get('pathway_assessment')
-                if current and current['roles'].get('data_status') == 'official_derived':
-                    st.info(tr('Official career and plan retained. Confirm before opening the separate synthetic demo.'))
-                    if not st.button(tr('Confirm synthetic demo'), key='confirm_demo_catalog'):
-                        return
-                    st.session_state['archived_official_assessment'] = deepcopy(current)
-                    st.session_state.pop('pathway_assessment', None)
-                    st.session_state.pop('pathway_previous', None)
-                    for key in list(st.session_state):
-                        if key.startswith(('learning_role', 'learning_hours')):
-                            del st.session_state[key]
-                    current = None
-                if current is None or current['profile'] != profile or current['answers'] != draft:
-                    # Pin the synthetic inputs for a profile reassessment.
-                    if current is not None:
-                        role_file, trend_file = current['roles'], current['trends']
-                    rows = rank_roles(profile, role_file['roles'], trend_file['topics'])
-                    old_time = current['answers'].get('Weekly learning time') if current else None
-                    current = store_assessment(st.session_state, profile, draft, rows, role_file, trend_file)
-                    if old_time != draft.get('Weekly learning time'):
-                        st.session_state.pop('learning_hours', None)
-                else:
-                    rows = current['rows']
-                    role_file, trend_file = current['roles'], current['trends']
-                with st.expander(tr('Profile reassessment · fixed synthetic baseline')):
-                    render_comparison(st, st.session_state.get('pathway_previous'), current, labels)
-                if st.button(tr('Update my profile and reassess'), key='pathway_reassess'):
-                    begin_reassessment(st.session_state)
-                    st.rerun()
-                if official_loader is not None and client_factory is not None:
-                    rows = render_evidence_reassessment(st, current, official_loader, client_factory)
-                st.markdown('#### ' + tr('Matched to your profile'))
-                st.caption(tr('This catalog uses synthetic occupational requirements and the existing 85% personal-fit + 15% trend formula. Trend values are labeled by their evidence source; they are not career-outlook probabilities or employment forecasts.'))
-                ranked = sorted(rows, key=lambda row: (row['moderate_rank'] is None,
-                                                       row['moderate_rank'] or 0, row['code']))
-                st.table(table_text([{
-                    'Career': career_name(row['code'], row['title']),
-                    'Personal fit': row['P'].value if row['P'].value is not None else 'Unavailable',
-                    'Trend signal': row['trend']['score'].value if row['trend']['score'].value is not None else 'Unavailable',
-                    'Matched to your profile': row['moderate'].value if row['moderate'].value is not None else 'Unavailable',
-                    'Rank': row['moderate_rank'] if row['moderate_rank'] is not None else 'Unavailable',
-                } for row in ranked]))
-                available = [row for row in ranked if row['moderate_rank'] is not None]
-                if not available:
-                    st.info(tr('No complete rankings available. Review the component reasons below.'))
-                for row in available:
-                    render_sdg_result_card(st, row['code'], row['title'])
-                by_code = {role['code']: role for role in role_file['roles']}
-                for row in rows:
-                    with st.expander(career_name(row['code'], row['title']) + tr(' · Why this match?')):
-                        render_role(st, row, by_code[row['code']], profile=profile,
-                                    real_trends=current.get('recommendation_source') == 'GitHub snapshots')
-                st.caption(tr('Choose a career from the current results below. A career without a complete trend score can still have synthetic skill gaps, but has no complete evidence-based match score.'))
-                st.caption(tr('Plan downloads retain the fixed synthetic comparison baseline and practice tasks; live GitHub rankings are not exported or restored. Evidence provenance remains available above.'))
-                render_learning_plan(st, sorted(rows, key=lambda row: row['code']), by_code, labels, draft.get('Weekly learning time'),
-                                     current, st.session_state.get('pathway_previous'))
-                with st.expander(tr('Technical details'), expanded=False):
-                    st.json(profile, expanded=False)
+            from src.career_pool import render_official
+            render_official(st, profile, draft, official_loader(), labels, render_role)
     if st.button(tr('Return to identity selection'), key='pathway_identity'):
         st.session_state.pathway_step = 0
         st.rerun()

@@ -74,7 +74,9 @@ class CoverageTests(unittest.TestCase):
         page.button(key='scenario_explore').click().run()
         page.button(key='pathway_sample').click().run()
         self.assertFalse(page.exception)
-        self.assertEqual(page.radio(key='career_catalog_mode').value,'Official cross-domain careers')
+        self.assertEqual(page.session_state['page_mode'], 'Career pathway prototype')
+        self.assertFalse(any(widget.key == 'career_catalog_mode' for widget in page.radio))
+        self.assertTrue(any('fixed local recommendation pool' in item.value for item in page.caption))
         coverage_rows = page.table[0].value.to_dict('records')
         self.assertEqual(len(coverage_rows), 6)
         security = next(row for row in coverage_rows if row['Career'] == 'Information Security Analysts')
@@ -89,33 +91,27 @@ class CoverageTests(unittest.TestCase):
         progress=deepcopy(page.session_state['learning_progress'])
         with patch('urllib.request.OpenerDirector.open',side_effect=AssertionError('unexpected network')):
             for language in ('zh','ms','en'):
-                page.selectbox(key='ui_language').set_value(language).run()
+                page.session_state['ui_language'] = language; page.run()
                 self.assertFalse(page.exception)
                 self.assertEqual(page.session_state['pathway_assessment'],saved)
                 self.assertEqual(page.session_state['learning_progress'],progress)
                 self.assertEqual(page.session_state['learning_role'],'17-2081.00')
 
-    def test_switching_catalogs_requires_confirmation_and_keeps_old_progress(self):
+    def test_synthetic_demo_is_a_top_level_separate_entry(self):
         from streamlit.testing.v1 import AppTest
         page=AppTest.from_file(str(ROOT/'app.py')).run()
-        page.button(key='scenario_explore').click().run()
-        page.button(key='pathway_sample').click().run()
-        page.selectbox(key='learning_role').set_value('17-2081.00').run()
-        next(b for b in page.checkbox if b.key.startswith('learning_check_')).check().run()
-        old=deepcopy(page.session_state['pathway_assessment']);profile=deepcopy(page.session_state['pathway_confirmed'])
-        progress=deepcopy(page.session_state['learning_progress'])
-        page.radio(key='career_catalog_mode').set_value('Synthetic demo').run()
-        self.assertEqual(page.session_state['pathway_assessment'],old)
-        page.button(key='confirm_demo_catalog').click().run()
+        self.assertEqual(page.session_state['page_mode'], 'Career pathway prototype')
+        for language, labels in (('en', ('Official career recommendations', 'Independent synthetic trend demo')),
+                                 ('zh', ('官方职业推荐', '独立合成趋势演示')),
+                                 ('ms', ('Cadangan kerjaya rasmi', 'Demo trend sintetik berasingan'))):
+            page.session_state['ui_language'] = language
+            page.run()
+            self.assertEqual(page.button(key='mode_Career pathway prototype').label, labels[0])
+            self.assertEqual(page.button(key='mode_Synthetic simulation').label, labels[1])
+        page.session_state['ui_language'] = 'en'
+        page.run()
+        page.button(key='mode_Synthetic simulation').click().run()
         self.assertFalse(page.exception)
-        self.assertEqual(page.session_state['archived_official_assessment'],old)
-        for plan_id, completed in progress.items():
-            self.assertEqual(page.session_state['learning_progress'][plan_id],completed)
-        self.assertEqual(page.session_state['pathway_confirmed'],profile)
-        page.selectbox(key='learning_role').set_value('15-2051.00').run()
-        page.radio(key='career_catalog_mode').set_value('Official cross-domain careers').run()
-        page.button(key='confirm_official_catalog').click().run()
-        self.assertFalse(page.exception)
-        for plan_id, completed in progress.items():
-            self.assertEqual(page.session_state['learning_progress'][plan_id],completed)
-        self.assertEqual(page.session_state['pathway_confirmed'],profile)
+        self.assertTrue(any('independent demo' in item.value for item in page.info))
+        self.assertNotIn('pathway_assessment', page.session_state)
+        self.assertFalse(any('learning_role' == widget.key for widget in page.selectbox))

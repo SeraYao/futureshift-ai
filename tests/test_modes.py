@@ -136,24 +136,24 @@ class StreamlitModeTests(unittest.TestCase):
         self.addCleanup(client_patch.stop)
         page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run(timeout=30))
         self.assertFalse(page.exception)
-        self.assertEqual(page.radio(key='page_mode').options,
-                         ['Career pathway prototype', 'Synthetic simulation'])
+        self.assertIn('mode_Career pathway prototype', [button.key for button in page.button])
+        self.assertIn('mode_Synthetic simulation', [button.key for button in page.button])
         self.assertFalse(any('O*NET data audit' in item.value for item in page.info))
         # An old bookmarked session cannot restore the removed mode.
         page = AppTest.from_file(str(app.ROOT/'app.py'))
         page.session_state['page_mode'] = 'O*NET data audit'
         page.run(timeout=30)
         self.assertFalse(page.exception)
-        self.assertEqual(page.radio(key='page_mode').value, 'Career pathway prototype')
-        page.radio(key='page_mode').set_value('Synthetic simulation').run(timeout=30)
+        self.assertEqual(page.session_state['page_mode'], 'Career pathway prototype')
+        page.button(key='mode_Synthetic simulation').click().run(timeout=30)
         self.assertFalse(page.exception)
         page.checkbox(key='simulation_confirm').check()
-        page.button[0].click().run(timeout=30)
+        next(button for button in page.button if 'Confirm profile & calculate matches' in button.label).click().run(timeout=30)
         self.assertFalse(page.exception)
         before = [bar.value for bar in page.get('progress')]
         self.assertEqual(len(before), 3)
         page.number_input(key='simulation_recent_synthetic-data-science').set_value(2000)
-        page.button[0].click().run(timeout=30)
+        next(button for button in page.button if 'Confirm profile & calculate matches' in button.label).click().run(timeout=30)
         self.assertFalse(page.exception)
         self.assertNotEqual(before, [bar.value for bar in page.get('progress')])
         # Track actual file access while confirmed simulation state still exists.

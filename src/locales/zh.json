@@ -934,5 +934,15 @@
   "Official target definition: ": "官方具体目标：",
   "Application scenario: ": "应用场景：",
   "SDG links for learning-plan skills": "学习计划技能的 SDG 关联",
-  "The career directory is a fixed local snapshot. Profile matching is computed from the bundled occupation data; external evidence snapshots are separate. SDG links below are local, human-reviewed interpretations and do not affect scores.": "职业目录是固定的本地快照。画像匹配依据随应用提供的职业数据计算；外部证据快照另行保存。下方 SDG 关联是本地人工核验的场景分析，不影响评分。"
+  "The career directory is a fixed local snapshot. Profile matching is computed from the bundled occupation data; external evidence snapshots are separate. SDG links below are local, human-reviewed interpretations and do not affect scores.": "职业目录是固定的本地快照。画像匹配依据随应用提供的职业数据计算；外部证据快照另行保存。下方 SDG 关联是本地人工核验的场景分析，不影响评分。",
+  "Official career recommendations": "官方职业推荐",
+  "No name or contact details are required. This pathway uses the fixed official career pool. The synthetic trend demo is a separate entry and does not share this profile or plan.": "无需姓名或联系方式。此流程使用固定的官方职业目录。合成趋势演示有独立入口，不与此画像或计划共享状态。",
+  "The confirmed profile will be matched to the fixed official occupation pool. Trend demonstrations use a separate fictional profile and do not affect these results.": "确认后的画像将与固定官方职业目录匹配。趋势演示使用独立的虚构画像，不影响这些结果。",
+  "This page uses the confirmed questionnaire profile and the fixed official career catalog. No synthetic career requirements or trend counts are loaded here.": "此页面使用已确认的问卷画像和固定官方职业目录，不会加载合成职业要求或趋势计数。",
+  "Independent synthetic trend demo": "独立合成趋势演示",
+  "The fixed local recommendation pool contains six quality-eligible occupations from the bundled O*NET 31.0 snapshot. It is not the full job market and does not crawl for new careers.": "当前推荐范围是随应用提供的 O*NET 31.0 快照中经过筛选、数据质量合格的六个职业。它是固定的本地目录，不代表全部职业，也不会实时爬取新增职业。",
+  "The official career catalog is unavailable. Synthetic demo results are not substituted into this pathway.": "官方职业目录当前不可用；此流程不会用合成演示结果替代。",
+  "A previous in-pathway demo result was archived. The official workflow now uses only the official career catalog.": "此前保存在主流程中的演示结果已归档。官方流程现在只使用官方职业目录。",
+  "This synthetic demo plan belongs to the separate demonstration and cannot be restored into the official career pathway.": "此合成演示计划属于独立演示，不能恢复到官方职业流程中。",
+  "This is an independent demo with its own fictional profile, synthetic requirements and synthetic trend inputs. It does not use or change your official profile, career selection or learning plan.": "这是独立演示，使用自己的虚构画像、合成职业要求和合成趋势输入，不会读取或更改您的官方画像、职业选择或学习计划。"
 }

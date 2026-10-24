@@ -168,7 +168,7 @@ class LanguagePageTests(unittest.TestCase):
             self.assertFalse(page.error)
 
     def switch(self, page, language, allow_error=False):
-        page.selectbox(key='ui_language').set_value(language).run()
+        page.session_state['ui_language'] = language; page.run()
         self.healthy(page, allow_error)
         self.assertEqual(page.session_state['ui_language'], language)
         self.assertEqual(page.selectbox(key='ui_language').value, language)
@@ -183,7 +183,7 @@ class LanguagePageTests(unittest.TestCase):
             with self.subTest(language=language):
                 page = self.page()
                 self.switch(page, language)
-                page.radio(key='page_mode').set_value('Career pathway prototype').run()
+                page.button(key='mode_Career pathway prototype').click().run()
                 self.healthy(page)
                 self.assertTrue(any(item.value == self.text(language, 'Let us get to know you')
                                     for item in page.header))
@@ -199,9 +199,9 @@ class LanguagePageTests(unittest.TestCase):
                 self.switch(page, language)
                 page.button(key='pathway_sample').click().run()
                 self.healthy(page)
-                self.assertTrue(any(item.value == self.text(language, 'Career matches')
+                self.assertTrue(any(item.value == self.text(language, 'Matched to your profile')
                                     for item in page.subheader))
-                page.selectbox(key='learning_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).set_value('15-2051.00').run()
+                page.selectbox(key='learning_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).set_value('17-2081.00').run()
                 page.selectbox(key='learning_hours' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).set_value(8).run()
                 task = next(box.key for box in page.checkbox if box.key.startswith('learning_check_'))
                 page.checkbox(key=task).check().run()
@@ -297,7 +297,7 @@ class LanguagePageTests(unittest.TestCase):
         page = self.page()
         page.button(key='pathway_sample').click().run()
         self.healthy(page)
-        page.selectbox(key='learning_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).set_value('15-2051.00').run()
+        page.selectbox(key='learning_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).set_value('17-2081.00').run()
         page.selectbox(key='learning_hours' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).set_value(8).run()
         key = next(box.key for box in page.checkbox if box.key.startswith('learning_check_'))
         page.checkbox(key=key).check().run()
@@ -305,8 +305,8 @@ class LanguagePageTests(unittest.TestCase):
         profile = deepcopy(page.session_state['pathway_confirmed'])
         current = deepcopy(page.session_state['pathway_assessment'])
         progress = deepcopy(page.session_state['learning_progress'])
-        baseline_export = export_plan(current, current['plans']['15-2051.00']['plan'],
-                                      current['plans']['15-2051.00']['completion'], '2026-10-22T00:00:00+00:00')
+        baseline_export = export_plan(current, current['plans']['17-2081.00']['plan'],
+                                      current['plans']['17-2081.00']['completion'], '2026-10-22T00:00:00+00:00')
         for language in ('zh', 'ms', 'en'):
             self.switch(page, language)
             self.assertEqual(page.session_state['pathway_confirmed'], profile)
@@ -317,7 +317,8 @@ class LanguagePageTests(unittest.TestCase):
             self.assertTrue(any(item.value == self.text(language, 'Your four-week practice plan') for item in page.subheader))
             self.assertEqual(page.button(key='pathway_reassess').label, self.text(language, 'Update my profile and reassess'))
             self.assertEqual(page.get('download_button')[0].proto.label, self.text(language, 'Download my plan'))
-            self.assertTrue(any(self.text(language, PRACTICE['skill_04'][0]) in item.value for item in page.markdown))
+            first_action = current['plans']['17-2081.00']['plan']['tasks'][0]['action']
+            self.assertTrue(any(self.text(language, first_action) in item.value for item in page.markdown))
         page.button(key='pathway_reassess').click().run()
         page.session_state['pathway_draft']['skill_04'] = 4
         page.session_state['pathway_step'] = 6
@@ -330,50 +331,35 @@ class LanguagePageTests(unittest.TestCase):
             self.switch(page, code)
             self.assertEqual(page.session_state['pathway_previous'], previous)
             self.assertEqual(page.session_state['pathway_assessment'], reassessed)
-            self.assertTrue(any(item.value == self.text(code, 'What changed since your last assessment?') for item in page.subheader))
-        self.assertEqual(export_plan(current, current['plans']['15-2051.00']['plan'],
-                                     current['plans']['15-2051.00']['completion'], '2026-10-22T00:00:00+00:00'), baseline_export)
+            self.assertEqual(page.session_state['pathway_previous'], previous)
+            self.assertEqual(page.session_state['pathway_assessment'], reassessed)
+        self.assertEqual(export_plan(current, current['plans']['17-2081.00']['plan'],
+                                     current['plans']['17-2081.00']['completion'], '2026-10-22T00:00:00+00:00'), baseline_export)
 
-    def test_localized_careers_main_plan_evidence_and_state_invariance(self):
-        from test_evidence_reassessment import snapshot
-        from src.github_trends import ROLE_TOPICS
+    def test_official_pool_names_plan_and_state_are_localized(self):
         from src.i18n import CAREER_LABELS
-        for code in ROLE_TOPICS:
-            self.client.snapshots[self.client._key(code)] = snapshot(code, 100, 100)
         page = self.page()
         page.button(key='pathway_sample').click().run()
-        page.selectbox(key='learning_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).set_value('15-2051.00').run()
+        self.healthy(page)
+        page.selectbox(key='learning_role').set_value('17-2081.00').run()
         page.checkbox[0].check().run()
         frozen = deepcopy(page.session_state['pathway_assessment'])
         progress = deepcopy(page.session_state['learning_progress'])
-        with patch('src.cv_intake.extract_with_ai', side_effect=AssertionError('No AI on locale change')) as ai:
+        official_codes = {role['code'] for role in app.load_onet()['roles']
+                          if role['code'] in {row['code'] for row in frozen['rows'] if row['personal_rank']}}
+        with patch('src.cv_intake.extract_with_ai', side_effect=AssertionError('No AI on locale change')):
             for language in ('en', 'zh', 'ms'):
                 self.switch(page, language)
                 self.healthy(page)
                 self.assertEqual(page.session_state['pathway_assessment'], frozen)
                 self.assertEqual(page.session_state['learning_progress'], progress)
-                self.assertEqual(page.selectbox(key='learning_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).value, '15-2051.00')
-                names = {code: self.text(language, CAREER_LABELS[code][0]) for code in ('15-2051.00', '15-2031.00', '15-1252.00')}
-                self.assertEqual(set(page.selectbox(key='learning_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).options), set(names.values()))
-                self.assertEqual(set(page.selectbox(key='evidence_role' + ('' if page.session_state['ui_language'] == 'en' else '__' + page.session_state['ui_language'])).options), set(names.values()))
-                table = next(t.value for t in page.table if self.text(language, 'Career') in t.value.columns
-                             and self.text(language, 'Matched to your profile') in t.value.columns)
-                self.assertEqual(set(table[self.text(language, 'Career')]), set(names.values()))
-                self.assertTrue(any(self.text(language, 'Matched to your profile') in item.value
-                                    for item in page.markdown))
-                fast_labels = {'en': ('Fast disruption', 'Fast score', 'Fast rank'),
-                               'zh': ('快速冲击', '快速情景', '快速得分', '快速排名'),
-                               'ms': ('Gangguan pantas', 'Skor pantas', 'Kedudukan pantas')}[language]
-                visible = '\n'.join(item.value for kind in ('markdown', 'subheader', 'caption', 'info', 'warning')
-                                    for item in page.get(kind))
-                for label in fast_labels:
-                    self.assertNotIn(label, visible)
-                for code, name in names.items():
-                    self.assertTrue(any(name in item.label for item in page.expander))
-                self.assertTrue(any(self.text(language, CAREER_LABELS['15-2051.00'][1]) == m.value for m in page.markdown))
-                self.assertEqual(len(page.get('download_button')), 2)
-            ai.assert_not_called()
-            self.client.opener.assert_not_called()
+                options = page.selectbox(key='learning_role' + ('' if language == 'en' else '__' + language)).options
+                expected = {self.text(language, CAREER_LABELS[code][0]) for code in official_codes}
+                self.assertEqual(set(options), expected)
+                self.assertEqual(len([item for item in page.markdown if 'data-sdg-result=' in item.value]), 6)
+                visible = '\n'.join(item.value for item in page.caption)
+                self.assertIn({'en': 'fixed local recommendation pool', 'zh': '当前推荐范围', 'ms': 'Kumpulan cadangan tetap'}[language], visible)
+                self.assertFalse(any(button.key == 'evidence_refresh' for button in page.button))
 
     def test_removed_intro_elements_are_absent_in_all_public_modes_and_languages(self):
         removed_keys = (
@@ -397,30 +383,31 @@ class LanguagePageTests(unittest.TestCase):
             with self.subTest(language=code):
                 page = self.page()
                 self.switch(page, code)
-                page.radio(key='page_mode').set_value('Career pathway prototype').run()
+                page.button(key='mode_Career pathway prototype').click().run()
                 assert_absent(page)
                 page.button(key='pathway_sample').click().run()
                 assert_absent(page)
                 self.assertTrue(page.session_state['pathway_assessment'])
-                page.radio(key='page_mode').set_value('Synthetic simulation').run()
+                page.button(key='mode_Synthetic simulation').click().run()
                 assert_absent(page)
                 if 'simulation_profile' not in page.session_state:
                     page.checkbox(key='simulation_confirm').check()
-                    page.button[0].click().run()
+                    next(button for button in page.button if CATALOGS[code]['Confirm profile & calculate matches'] in button.label).click().run()
                 assert_absent(page)
                 self.assertEqual(len(page.get('progress')), 3)
 
     def test_simulation_and_audit_all_languages_without_requests(self):
         page = self.page()
-        page.radio(key='page_mode').set_value('Synthetic simulation').run()
+        page.button(key='mode_Synthetic simulation').click().run()
         page.checkbox(key='simulation_confirm').check()
-        page.button[0].click().run()
+        next(button for button in page.button if CATALOGS['en']['Confirm profile & calculate matches'] in button.label).click().run()
         self.healthy(page)
         profile = deepcopy(page.session_state['simulation_profile'])
         trends = deepcopy(page.session_state['simulation_trends'])
         for code in ('zh', 'ms', 'en'):
             self.switch(page, code)
-            self.assertEqual(len(page.radio(key='page_mode').options), 2)
+            self.assertIn('mode_Career pathway prototype', [button.key for button in page.button])
+            self.assertIn('mode_Synthetic simulation', [button.key for button in page.button])
             self.assertFalse(any('O*NET' in item.value for item in page.info))
             self.assertEqual(page.session_state['simulation_profile'], profile)
             self.assertEqual(page.session_state['simulation_trends'], trends)
@@ -439,35 +426,28 @@ class LanguagePageTests(unittest.TestCase):
             self.assertEqual(len(audit.dataframe), 30)
             self.assertEqual(audit.button(key='github_refresh_15-2051.00').label, self.text(code, 'Refresh'))
             self.assertEqual(len(audit.table[0].value), 10)
-            page.radio(key='page_mode').set_value('Synthetic simulation').run()
+            page.button(key='mode_Synthetic simulation').click().run()
 
-    def test_successful_github_evidence_is_stable_in_all_languages(self):
-        from test_github_trends import response
-        self.client.opener = Mock(side_effect=[response(23), response(19), response(7), response(5)])
-        page = self.page()
-        page.button(key='pathway_sample').click().run()
-        page.button(key='evidence_refresh').click().run()
-        self.healthy(page)
-        evidence = deepcopy(page.session_state['pathway_evidence'])
-        self.assertEqual(self.client.opener.call_count, 4)
-        for code in ('zh', 'ms', 'en'):
-            self.switch(page, code)
-            self.assertEqual(page.session_state['pathway_evidence'], evidence)
-            self.assertEqual(self.client.opener.call_count, 4)
-            self.assertTrue(any(self.text(code, 'Trend evidence for your recommendations') == item.value
-                                for item in page.subheader))
-            from streamlit.testing.v1 import AppTest
-            audit = AppTest.from_file(str(app.ROOT/'scripts/onet_audit.py')).run()
-            self.switch(audit, code)
-            self.healthy(audit)
-            count_column = self.text(code, 'Repository count')
-            counts = [int(value) for table in audit.table if count_column in table.value
-                      for value in table.value[count_column]]
-            self.assertEqual(counts, [19, 23, 5, 7])
-            page.radio(key='page_mode').set_value('Career pathway prototype').run()
+    def test_official_results_do_not_load_synthetic_github_trends(self):
+        from streamlit.testing.v1 import AppTest
+        with patch('urllib.request.urlopen', side_effect=AssertionError('No external request')):
+            page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+            page.button(key='scenario_explore').click().run()
+            page.button(key='pathway_sample').click().run()
             self.healthy(page)
+            self.assertEqual(len([item for item in page.markdown if 'data-sdg-result=' in item.value]), 6)
+            self.assertNotIn('pathway_evidence', page.session_state)
+            self.assertFalse(any(button.key == 'evidence_refresh' for button in page.button))
+            self.assertTrue(all(row['trend']['score'].value is None
+                                for row in page.session_state['pathway_assessment']['rows']))
+            snapshot = deepcopy(page.session_state['pathway_assessment'])
+            for code in ('zh', 'ms', 'en'):
+                self.switch(page, code)
+                self.assertEqual(page.session_state['pathway_assessment'], snapshot)
+                self.assertEqual(len([item for item in page.markdown if 'data-sdg-result=' in item.value]), 6)
+                self.assertFalse(any(button.key == 'evidence_refresh' for button in page.button))
 
-    def test_restore_preview_progress_and_state_survive_language_changes(self):
+    def test_synthetic_plan_restore_is_blocked_from_official_pathway(self):
         from test_plan_transfer import fixture
         assessment, plan, completion = fixture()
         upload = BytesIO(export_plan(assessment, plan, completion).encode())
@@ -476,20 +456,14 @@ class LanguagePageTests(unittest.TestCase):
         with patch('streamlit.file_uploader', side_effect=uploader):
             page = self.page()
             page.button(key='profile_restore').click().run()
-            for code in ('zh', 'ms', 'en'):
-                self.switch(page, code)
-                self.assertNotIn('pathway_confirmed', page.session_state)
-                self.assertEqual(page.button(key='restore_plan_confirm').label, self.text(code, 'Confirm restore and open my plan'))
-            page.button(key='restore_plan_confirm').click().run()
-            self.healthy(page)
-            current = deepcopy(page.session_state['pathway_assessment'])
-            restore_state = deepcopy(page.session_state['saved_before_restore'])
-            for code in ('zh', 'ms', 'en'):
-                self.switch(page, code)
-                self.assertTrue(page.session_state['pathway_restored'])
-                self.assertEqual(page.session_state['saved_before_restore'], restore_state)
-                self.assertEqual(page.session_state['pathway_assessment'], current)
-                self.assertEqual(sum(box.value for box in page.checkbox), 1)
+            self.healthy(page, allow_error=True)
+            self.assertFalse(any(button.key == 'restore_plan_confirm' for button in page.button))
+            self.assertTrue(any('separate demonstration' in error.value.lower()
+                                or '独立演示' in error.value
+                                or 'demonstrasi berasingan' in error.value.lower()
+                                for error in page.error))
+            self.assertNotIn('pathway_assessment', page.session_state)
+            self.assertNotIn('learning_progress', page.session_state)
 
     def test_invalid_restore_errors_are_localized(self):
         def uploader(*args, **kwargs):

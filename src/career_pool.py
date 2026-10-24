@@ -78,19 +78,22 @@ def render_official(st, profile, draft, dataset, labels, render_role, client_fac
     eligible = [r for r in rows if r['personal_rank'] is not None]
     current = st.session_state.get('pathway_assessment')
     if current and current['roles'].get('data_status') != 'official_derived':
-        st.info(tr('Your previous demo career and plan are retained. Confirm before starting official career matching; your profile is unchanged.'))
-        if not st.button(tr('Confirm official career matching'), key='confirm_official_catalog'):
-            return
         st.session_state['archived_demo_assessment'] = deepcopy(current)
+        if 'learning_progress' in st.session_state:
+            st.session_state['archived_demo_progress'] = deepcopy(st.session_state['learning_progress'])
         st.session_state.pop('pathway_assessment', None)
         st.session_state.pop('pathway_previous', None)
         for key in list(st.session_state):
-            if key.startswith(('learning_role', 'learning_hours')):
+            if key.startswith('learning_'):
                 del st.session_state[key]
+        st.session_state['demo_state_archived_notice'] = True
         current = None
+    if st.session_state.pop('demo_state_archived_notice', False):
+        st.info(tr('A previous in-pathway demo result was archived. The official workflow now uses only the official career catalog.'))
     if current is None or current['profile'] != profile or current['answers'] != draft:
         current = store_assessment(st.session_state, profile, draft, rows, dataset, {'topics': {}})
     st.caption(tr('Official O*NET 31.0 requirements. Cross-domain order uses personal fit only: 70% capability + 30% interest; capability is 75% skills + 25% knowledge.'))
+    st.caption(tr('The fixed local recommendation pool contains six quality-eligible occupations from the bundled O*NET 31.0 snapshot. It is not the full job market and does not crawl for new careers.'))
     st.warning(tr('Limited questionnaire coverage: 11 skills, 7 knowledge areas and RIASEC. Unasked abilities, credentials, experience requirements and other knowledge are not scored or treated as zero. These are exploration suggestions, not qualification assessments.'))
     st.caption(tr('Official expert knowledge ratings may omit optional precision statistics. Blank flags are preserved as unavailable precision, never relabelled as N; explicit suppression and relevance blocks remain enforced.'))
     st.warning(tr('Some official matches use partial questionnaire coverage. Coverage is shown per career; scores with different omitted dimensions are exploratory and not fully comparable. Not Relevant areas are excluded from that career denominator, never treated as zero.'))

@@ -11,6 +11,7 @@ from src.pathway import (INTERESTS, SKILLS, KNOWLEDGE, confirmed_profile,
 from src.scoring import rank_roles
 from src.sdg import CAREER_IDS
 from src.official_labor_evidence import CAREERS as OFFICIAL_CAREERS
+from src.career_pool import official_ranking
 
 
 def answers() -> dict:
@@ -96,7 +97,7 @@ class GuidedUITests(unittest.TestCase):
         with patch('urllib.request.urlopen', side_effect=AssertionError('No real HTTP')):
             page = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run(timeout=30))
             self.assertFalse(page.exception)
-            self.assertEqual(page.radio(key='page_mode').value, 'Career pathway prototype')
+            self.assertEqual(page.session_state['page_mode'], 'Career pathway prototype')
             planned = [button for button in page.button if 'Planned' in button.label]
             self.assertEqual(len(planned), 0)
             self.assertTrue(all(button.disabled for button in planned))
@@ -111,8 +112,8 @@ class GuidedUITests(unittest.TestCase):
             page.button(key='pathway_next').click().run()
             self.assertEqual(page.radio(key='pathway_skill_01').value, 3)
             # Switching modes removes widgets but must preserve the durable questionnaire draft.
-            page.radio(key='page_mode').set_value('Synthetic simulation').run()
-            page.radio(key='page_mode').set_value('Career pathway prototype').run()
+            page.button(key='mode_Synthetic simulation').click().run()
+            page.button(key='mode_Career pathway prototype').click().run()
             self.assertEqual(page.radio(key='pathway_skill_01').value, 3)
             page.session_state['pathway_step'] = 5
             page.run()
@@ -128,20 +129,19 @@ class GuidedUITests(unittest.TestCase):
             self.assertFalse(page.exception)
             self.assertNotIn('pathway_confirmed', page.session_state)
             expected = confirmed_profile(draft)
-            with patch('src.pathway.rank_roles', wraps=rank_roles) as engine:
+            with patch('src.career_pool.official_ranking', wraps=official_ranking) as engine:
                 page.button(key='pathway_confirm').click().run()
                 self.assertFalse(page.exception)
                 engine.assert_called_once()
                 self.assertEqual(engine.call_args.args[0], expected)
-                self.assertEqual(engine.call_args.args[1], app.load_demo()[1]['roles'])
-                self.assertEqual(engine.call_args.args[2], app.load_demo()[2]['topics'])
+                self.assertEqual(engine.call_args.args[1], app.load_onet())
             for disclosure in page.expander:
                 if disclosure.label == 'Technical details':
                     self.assertFalse(disclosure.proto.expanded)
             self.assertEqual(page.session_state['pathway_confirmed'], expected)
             self.assertFalse(any('Prototype simulation — not a labour-market prediction' in warning.value
                                  for warning in page.warning))
-            self.assertEqual(len([e for e in page.expander if 'Why this match?' in e.label]), 3)
+            self.assertEqual(len([e for e in page.expander if 'Why this match?' in e.label]), 6)
             page.button(key='pathway_back').click().run()
             page.button(key='pathway_back').click().run()
             page.button(key='pathway_back').click().run()
@@ -171,7 +171,7 @@ class GuidedUITests(unittest.TestCase):
                     page.radio(key='pathway_' + key).set_value(value).run()
                     expected[key] = value
                 for language in ('zh', 'ms', 'en'):
-                    page.selectbox(key='ui_language').set_value(language).run()
+                    page.session_state['ui_language'] = language; page.run()
                     self.assertFalse(page.exception)
                     for key in keys:
                         self.assertEqual(page.radio(key='pathway_' + key).value, expected[key])
@@ -206,14 +206,14 @@ class GuidedUITests(unittest.TestCase):
         page.session_state['pathway_step'] = 5
         page.run()
         for language in ('en', 'zh', 'ms'):
-            page.selectbox(key='ui_language').set_value(language).run()
+            page.session_state['ui_language'] = language; page.run()
             page.button(key='pathway_next').click().run()
             self.assertEqual(page.session_state['pathway_step'], 5)
             message = CATALOGS[language]['{count} required questions remain unanswered.'].format(count=30)
             self.assertTrue(any(x.value == message for x in page.error))
             self.assertNotIn('pathway_confirmed', page.session_state)
 
-    def test_single_profile_match_in_official_and_synthetic_modes_preserves_plan_state(self):
+    def test_official_and_synthetic_modes_keep_state_separate_across_languages(self):
         from streamlit.testing.v1 import AppTest
 
         def visible(page):
@@ -226,85 +226,54 @@ class GuidedUITests(unittest.TestCase):
                     parts.extend(table.value.astype(str).to_numpy().ravel().tolist())
             return '\n'.join(parts)
 
-        def assert_no_fast_results(page):
-            text = visible(page)
-            removed = ('Fast disruption', 'Fast score', 'Fast rank', 'Fast:', 'Fast =',
-                       '快速冲击', '快速情景', '快速得分', '快速排名', '趋势影响 · 快速',
-                       'Gangguan pantas', 'Skor pantas', 'Kedudukan pantas', 'Pantas:')
-            for label in removed:
-                self.assertNotIn(label, text)
-            self.assertFalse(any(widget.key == 'evidence_scenario' for widget in page.selectbox))
-
-        self.assertTrue(set(OFFICIAL_CAREERS).issubset(CAREER_IDS))
         with patch('urllib.request.urlopen', side_effect=AssertionError('No network')):
-            # The guided pathway defaults to official careers.
-            official = AppTest.from_file(str(app.ROOT/'app.py')).run()
-            official.button(key='scenario_explore').click().run()
-            official.button(key='pathway_sample').click().run()
-            self.assertFalse(official.exception)
-            self.assertEqual(official.radio(key='career_catalog_mode').value,
-                             'Official cross-domain careers')
-            official_sdg = '\n'.join(item.value for item in official.markdown
-                                      if 'data-sdg-result=' in item.value)
-            self.assertEqual({code for code in OFFICIAL_CAREERS if code in official_sdg},
-                             set(OFFICIAL_CAREERS))
-            assert_no_fast_results(official)
-            official.selectbox(key='learning_role').set_value(
-                official.selectbox(key='learning_role').options[0]).run()
-            role = official.selectbox(key='learning_role').value
-            progress_box = next(box for box in official.checkbox
-                                if box.key.startswith('learning_check_'))
-            progress_box.check().run()
-            saved_progress = deepcopy(official.session_state['learning_progress'])
-            official.run()
-            self.assertEqual(official.session_state['learning_role'], role)
-            self.assertEqual(official.session_state['learning_progress'], saved_progress)
-            self.assertEqual(sum('data-sdg-result=' in item.value for item in official.markdown), 6)
-            assert_no_fast_results(official)
-            official.selectbox(key='ui_language').set_value('zh').run()
-            self.assertEqual(official.session_state['learning_role'], role)
-            self.assertEqual(official.session_state['learning_progress'], saved_progress)
-            assert_no_fast_results(official)
+            page = AppTest.from_file(str(app.ROOT/'app.py')).run()
+            self.assertEqual(page.session_state['page_mode'], 'Career pathway prototype')
+            page.button(key='scenario_explore').click().run()
+            page.button(key='pathway_sample').click().run()
+            self.assertFalse(page.exception)
+            self.assertFalse(any(widget.key == 'career_catalog_mode' for widget in page.radio))
+            self.assertIn('fixed local recommendation pool', visible(page))
+            official_cards = '\n'.join(item.value for item in page.markdown if 'data-sdg-result=' in item.value)
+            self.assertEqual(sum('data-sdg-result=' in item.value for item in page.markdown), 6)
+            self.assertNotIn('15-2051.00', official_cards)
+            display_role = page.selectbox(key='learning_role').options[0]
+            page.selectbox(key='learning_role').set_value(display_role).run()
+            role = page.session_state['learning_role']
+            checkbox = next(box for box in page.checkbox if box.key.startswith('learning_check_'))
+            checkbox.check().run()
+            official_assessment = deepcopy(page.session_state['pathway_assessment'])
+            official_progress = deepcopy(page.session_state['learning_progress'])
 
-            # The same result presentation is used in the synthetic career catalog.
-            from ui_helpers import open_personal_profile
-            synthetic = open_personal_profile(AppTest.from_file(str(app.ROOT/'app.py')).run())
-            synthetic.button(key='pathway_sample').click().run()
-            self.assertFalse(synthetic.exception)
-            self.assertEqual(synthetic.radio(key='career_catalog_mode').value, 'Synthetic demo')
-            self.assertIn('Matched to your profile', visible(synthetic))
-            synthetic_sdg = '\n'.join(item.value for item in synthetic.markdown
-                                       if 'data-sdg-result=' in item.value)
-            for code in ('15-2051.00', '15-2031.00', '15-1252.00'):
-                self.assertIn(code, synthetic_sdg)
-            assert_no_fast_results(synthetic)
-            synthetic.selectbox(key='learning_role').set_value(
-                synthetic.selectbox(key='learning_role').options[0]).run()
-            role = synthetic.selectbox(key='learning_role').value
-            progress_box = next(box for box in synthetic.checkbox
-                                if box.key.startswith('learning_check_'))
-            progress_box.check().run()
-            saved_progress = deepcopy(synthetic.session_state['learning_progress'])
-            synthetic.run()
-            self.assertEqual(synthetic.session_state['learning_role'], role)
-            self.assertEqual(synthetic.session_state['learning_progress'], saved_progress)
-            assert_no_fast_results(synthetic)
+            # The explicitly labeled demo has its own profile and never renders the official plan/cards.
+            page.button(key='mode_Synthetic simulation').click().run()
+            self.assertFalse(page.exception)
+            self.assertTrue(any('independent demo' in item.value for item in page.info))
+            self.assertNotIn('data-sdg-result=', visible(page))
+            self.assertNotIn('Official O*NET 31.0 requirements', visible(page))
+            self.assertEqual(page.session_state['pathway_assessment'], official_assessment)
+            self.assertEqual(page.session_state['learning_progress'], official_progress)
+            page.checkbox(key='simulation_confirm').check()
+            submit = next(button for button in page.button if 'Confirm profile & calculate matches' in button.label)
+            submit.click().run()
+            self.assertFalse(page.exception)
+            demo_text = visible(page)
+            self.assertIn('Matched to your profile', demo_text)
+            self.assertNotIn('Information Security Analysts', demo_text)
+            self.assertEqual(page.session_state['pathway_assessment'], official_assessment)
+            self.assertEqual(page.session_state['learning_progress'], official_progress)
+
+            # Returning restores the same official selection/progress; language changes do not recalculate it.
+            page.button(key='mode_Career pathway prototype').click().run()
+            self.assertEqual(page.session_state['learning_role'], role)
+            self.assertEqual(page.session_state['learning_progress'], official_progress)
+            self.assertEqual(sum('data-sdg-result=' in item.value for item in page.markdown), 6)
             for language, title in (('en', 'Matched to your profile'),
                                     ('zh', '基于您的画像为您匹配'),
                                     ('ms', 'Padanan berdasarkan profil anda')):
-                synthetic.selectbox(key='ui_language').set_value(language).run()
-                self.assertEqual(synthetic.session_state['learning_role'], role)
-                self.assertEqual(synthetic.session_state['learning_progress'], saved_progress)
-                self.assertIn(title, visible(synthetic))
-                self.assertEqual(sum('data-sdg-result=' in item.value
-                                     for item in synthetic.markdown),3)
-                assert_no_fast_results(synthetic)
-
-            # The standalone synthetic demonstration also has one ranked result.
-            demo = AppTest.from_file(str(app.ROOT/'app.py')).run()
-            demo.radio(key='page_mode').set_value('Synthetic simulation').run()
-            demo.checkbox(key='simulation_confirm').check()
-            demo.button[0].click().run()
-            self.assertFalse(demo.exception)
-            self.assertTrue(any(item.value == 'Matched to your profile' for item in demo.subheader))
-            assert_no_fast_results(demo)
+                page.session_state['ui_language'] = language; page.run()
+                self.assertFalse(page.exception)
+                self.assertEqual(page.session_state['pathway_assessment'], official_assessment)
+                self.assertEqual(page.session_state['learning_role'], role)
+                self.assertEqual(page.session_state['learning_progress'], official_progress)
+                self.assertIn({'en': 'fixed local recommendation pool', 'zh': '当前推荐范围', 'ms': 'Kumpulan cadangan tetap'}[language], visible(page))

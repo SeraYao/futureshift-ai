@@ -265,17 +265,29 @@ def main() -> None:
     st.markdown(tr('### Navigate change. Shape your future.'))
     st.write(tr('Explore how your capabilities and interests connect to different career pathways.'))
     public_modes = ('Career pathway prototype', 'Synthetic simulation')
+    mode_labels = {
+        'Career pathway prototype': 'Official career recommendations',
+        'Synthetic simulation': 'Independent synthetic trend demo',
+    }
     # Recover sessions saved before the internal audit was removed from navigation.
     if st.session_state.get('page_mode') not in public_modes:
         st.session_state['page_mode'] = public_modes[0]
-    mode = st.radio(tr('Mode'), public_modes,
-                    horizontal=True, key='page_mode', format_func=translated_options())
+    st.markdown('#### ' + tr('Mode'))
+    mode_columns = st.columns(2)
+    for column, option in zip(mode_columns, public_modes):
+        if column.button(tr(mode_labels[option]), key='mode_' + option,
+                         type='primary' if st.session_state['page_mode'] == option else 'secondary',
+                         use_container_width=True):
+            st.session_state['page_mode'] = option
+            st.rerun()
+    mode = st.session_state['page_mode']
+    st.session_state.pop('career_catalog_mode', None)
     if mode != 'Career pathway prototype':
         from src.cv_intake import clear_cv_review
         clear_cv_review(st.session_state)
     try:
         if mode == 'Career pathway prototype' and render_onboarding(st):
-            render_pathway(st, LABELS, LEVELS, load_demo, render_role, load_onet, get_trend_client)
+            render_pathway(st, LABELS, LEVELS, load_demo, render_role, load_onet)
         elif mode == 'Synthetic simulation':
             render_simulation(st)
     except (OSError, ValueError, KeyError, TypeError) as exc:
@@ -287,6 +299,7 @@ def render_simulation(st: Any) -> None:
     original, role_file, trend_file = load_demo()
     roles = role_file['roles']
     st.warning(tr('所有画像、职业要求和趋势数值均为合成演示数据，不能代表真实劳动力市场。'))
+    st.info(tr('This is an independent demo with its own fictional profile, synthetic requirements and synthetic trend inputs. It does not use or change your official profile, career selection or learning plan.'))
     st.caption(tr('SYNTHETIC SIMULATION · All profile, requirement and trend values are invented for demonstration. Edit them to explore the workflow; these are not real labour-market predictions.'))
     with st.expander(tr('Technical details'), expanded=False):
         st.caption(tr('Sources: demo_profile.json, demo_roles.json and demo_trends.json only.'))

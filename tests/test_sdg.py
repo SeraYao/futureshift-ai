@@ -123,7 +123,7 @@ class SDGPageTests(unittest.TestCase):
         self.assertFalse(any('SDG AI is not configured' in e.value for e in page.info))
         self.assertFalse(any('Generate SDG analysis' in b.label for b in page.button))
         for language in LANGUAGES:
-            page.selectbox(key='ui_language').set_value(language).run()
+            page.session_state['ui_language'] = language; page.run()
             self.assertFalse(page.exception)
             visible='\n'.join(str(item.value) for kind in ('markdown','text','caption')
                                for item in page.get(kind))
@@ -138,9 +138,9 @@ class SDGPageTests(unittest.TestCase):
     def test_synthetic_trend_demo_uses_stable_ids_and_local_sdg_mappings(self):
         from streamlit.testing.v1 import AppTest
         page=AppTest.from_file(str(app.ROOT/'app.py')).run()
-        page.radio(key='page_mode').set_value('Synthetic simulation').run()
+        page.button(key='mode_Synthetic simulation').click().run()
         page.checkbox(key='simulation_confirm').check()
-        page.button[0].click().run()
+        next(button for button in page.button if 'Confirm profile & calculate matches' in button.label).click().run()
         self.assertFalse(page.exception)
         previews='\n'.join(x.value for x in page.markdown if 'data-sdg-result=' in x.value)
         for code in ('15-2051.00','15-2031.00','15-1252.00'):
@@ -151,7 +151,7 @@ class SDGPageTests(unittest.TestCase):
         self.assertIn('7.3',all_text)
         self.assertNotIn('No reviewed SDG mapping available',all_text)
         for language in LANGUAGES:
-            page.selectbox(key='ui_language').set_value(language).run()
+            page.session_state['ui_language'] = language; page.run()
             self.assertFalse(page.exception)
             localized='\n'.join(str(item.value) for kind in ('markdown','text','caption')
                                  for item in page.get(kind))
@@ -161,10 +161,11 @@ class SDGPageTests(unittest.TestCase):
             mapping=associations('15-2051.00')[0]
             self.assertIn(mapping['contribution'][language],localized)
 
-    def test_synthetic_career_catalog_places_all_three_mappings_by_results(self):
-        page=self.page();page.button(key='pathway_sample').click().run()
+    def test_synthetic_demo_places_all_three_mappings_by_results(self):
+        page=self.page();page.button(key='mode_Synthetic simulation').click().run()
+        page.checkbox(key='simulation_confirm').check()
+        next(button for button in page.button if 'Confirm profile & calculate matches' in button.label).click().run()
         self.assertFalse(page.exception)
-        self.assertEqual(page.radio(key='career_catalog_mode').value,'Synthetic demo')
         cards='\n'.join(x.value for x in page.markdown if 'data-sdg-result=' in x.value)
         for code in ('15-2051.00','15-2031.00','15-1252.00'):
             self.assertIn(code,cards)
@@ -175,7 +176,7 @@ class SDGPageTests(unittest.TestCase):
         page=AppTest.from_file(str(app.ROOT/'scripts/onet_audit.py')).run()
         self.assertFalse(page.exception)
         for language in LANGUAGES:
-            page.selectbox(key='ui_language').set_value(language).run()
+            page.session_state['ui_language'] = language; page.run()
             self.assertFalse(page.exception)
             self.assertTrue(any(CATALOGS[language]['Reviewed SDG associations'] in x.value for x in page.markdown))
             for code in CAREER_IDS:

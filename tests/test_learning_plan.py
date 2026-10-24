@@ -153,7 +153,7 @@ class PlanUITests(unittest.TestCase):
             page.run()
             self.assertFalse(page.exception)
             self.assertFalse(page.checkbox)
-            page.selectbox(key='learning_role').set_value('15-2051.00').run()
+            page.selectbox(key='learning_role').set_value('17-2081.00').run()
             self.assertFalse(page.exception)
             self.assertEqual(page.selectbox(key='learning_hours').value, 5)
             count = len(page.checkbox)
@@ -162,16 +162,16 @@ class PlanUITests(unittest.TestCase):
             key = page.checkbox[0].key
             page.checkbox(key=key).check().run()
             self.assertTrue(any(f'1 / {count} tasks completed' in p.proto.text for p in page.get('progress')))
-            page.selectbox(key='learning_role').set_value('15-1252.00').run()
+            page.selectbox(key='learning_role').set_value('13-1199.05').run()
             self.assertFalse(any(box.value for box in page.checkbox))
-            page.selectbox(key='learning_role').set_value('15-2051.00').run()
+            page.selectbox(key='learning_role').set_value('17-2081.00').run()
             self.assertTrue(page.checkbox(key=key).value)
             page.selectbox(key='learning_hours').set_value(3).run()
             self.assertEqual(len(page.checkbox), 4)
             self.assertFalse(any(box.value for box in page.checkbox))
             self.assertEqual(scores, [item.value for item in page.markdown if '/ 100' in item.value])
             self.assertFalse(page.exception)
-            saved_plan = page.session_state['pathway_assessment']['plans']['15-2051.00']['plan']
+            saved_plan = page.session_state['pathway_assessment']['plans']['17-2081.00']['plan']
             self.assertTrue(all(task['area'] in app.LABELS for task in saved_plan['tasks']))
             self.assertTrue(all(task['step_id'] in (1, 2, 3, 4) for task in saved_plan['tasks']))
             # Coverage already meets all synthetic requirements: no task widgets are fabricated.
@@ -200,7 +200,7 @@ class PlanUITests(unittest.TestCase):
             box.check().run()
             self.assertEqual(sum(page.session_state['learning_progress'][plan_id].values()), 1)
             for language in ('zh', 'ms', 'en'):
-                page.selectbox(key='ui_language').set_value(language).run()
+                page.session_state['ui_language'] = language; page.run()
                 self.assertFalse(page.exception)
                 self.assertEqual(page.session_state['learning_role'], '17-2081.00')
                 self.assertEqual(page.session_state['pathway_assessment']['plans']['17-2081.00']['plan']['id'], plan_id)

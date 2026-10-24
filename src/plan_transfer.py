@@ -214,7 +214,6 @@ def restore_saved_plan(state: Any, prepared: dict) -> None:
     current['plans'][plan['role_code']] = {'plan': plan, 'completion': deepcopy(prepared['completion'])}
     state['pathway_draft'] = answers
     state['pathway_confirmed'] = deepcopy(assessment['profile'])
-    state['career_catalog_mode'] = 'Official cross-domain careers' if assessment['roles'].get('data_status') == 'official_derived' else 'Synthetic demo'
     state['pathway_step'] = 7
     state['learning_role'] = plan['role_code']
     state['learning_hours'] = plan['weekly_hours']
@@ -222,7 +221,8 @@ def restore_saved_plan(state: Any, prepared: dict) -> None:
     state['pathway_restored'] = True
 
 
-def render_restore(st: Any, load_demo: Callable, labels: dict | None = None, *, expanded: bool = False) -> None:
+def render_restore(st: Any, load_demo: Callable, labels: dict | None = None, *, expanded: bool = False,
+                   official_only: bool = False) -> None:
     """Validate an upload, show a readable preview, then ask for restore confirmation."""
     with st.expander(tr('Restore a saved plan'), expanded=expanded):
         st.caption(tr('Upload your local FutureShift JSON file. Nothing changes until you confirm. Free text, background details and live GitHub evidence are not restored.'))
@@ -235,6 +235,9 @@ def render_restore(st: Any, load_demo: Callable, labels: dict | None = None, *, 
             st.error(translate_error(tr('Cannot restore this file: ') + str(exc)))
             return
         document = prepared['document']
+        if official_only and prepared['assessment']['roles'].get('data_status') != 'official_derived':
+            st.error(tr('This synthetic demo plan belongs to the separate demonstration and cannot be restored into the official career pathway.'))
+            return
         st.write(tr('Career: {v0} · 4 weeks · {v1} hours/week', v0=career_name(document['career']['code'], document['career']['title']), v1=document['weekly_hours']))
         st.write(tr('Completed tasks: {v0} / {v1}', v0=sum(prepared['completion'].values()), v1=len(prepared['completion'])))
         st.caption(display_text(document['notice']))
