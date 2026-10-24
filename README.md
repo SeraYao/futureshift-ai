@@ -1,10 +1,83 @@
-# futureshift-ai
-AI-powered future workforce intelligence and personalised reskilling platform for SDC Hackathon 2026.
+# FutureShift AI
+### Navigate Change. Shape Your Future.
 
-## Run on Replit
+**Team:** Fishtail  
+**Competition:** SDC Hackathon 2026  
+**Domain:** A
 
-Import this GitHub repository into Replit and run the app. `.replit` starts Streamlit on `0.0.0.0:8501` and maps the web port. The pinned packages require Python 3.11 or newer; Replit should use a compatible Python runtime and install `requirements.txt`.
+## Project Overview
 
-The questionnaire, official career recommendations, local SDG mappings, and learning plans work without AI credentials. Optional CV extraction requires these Replit Secrets: `AI_BASE_URL`, `AI_MODEL`, and `AI_API_KEY`. `AI_TIMEOUT_SECONDS` is optional and measured in seconds (default 300; accepted range 1–3600). Never commit Secrets or place them in source files.
+FutureShift AI is an AI-assisted career exploration and personalised reskilling platform designed to help students and early-career individuals navigate changes in the future workforce.
 
-Deployment steps, privacy boundaries, and current limitations are in [submission/README.md](submission/README.md).
+The platform combines user profiling, career recommendations, skill-gap exploration, Sustainable Development Goals (SDGs) mapping, and personalised learning plans.
+
+It is designed as a decision-support prototype rather than a recruitment prediction or professional qualification system.
+
+## Live Demo
+
+https://futureshift-ai.replit.app
+
+## Key Features
+
+- Personalised user profiling through an interactive questionnaire.
+- Career recommendations based on a predefined occupational dataset.
+- Skill-gap exploration and career development guidance.
+- SDG-related career exploration.
+- Personalised learning plans.
+- Optional AI-assisted CV information extraction.
+
+## Technology Stack
+
+- Python
+- Streamlit
+- GitHub
+- Replit
+- Optional AI API integration
+
+## How to Run
+
+1. Clone this repository.
+2. Install Python 3.11 or newer.
+3. Install dependencies:
+
+   pip install -r requirements.txt
+
+4. Start the application:
+
+   python3 -m streamlit run app.py
+
+5. Open the local Streamlit URL.
+
+## Project Structure
+
+- `app.py` — Main application entry point.
+- `src/` — Core application modules.
+- `docs/` — Technical documentation.
+- `tests/` — Automated tests.
+- `submission/` — Hackathon submission materials.
+- `requirements.txt` — Python dependencies.
+- `.replit` — Replit runtime and deployment configuration.
+
+## Replit and RunPod
+
+### Replit
+
+Replit was used to configure, run, test, and publish the Streamlit application.
+
+The application is publicly accessible through the live demo URL above.
+
+### RunPod
+
+The project includes an optional AI-assisted CV extraction workflow designed to communicate with a configurable external AI endpoint.
+
+The core questionnaire, career recommendations, SDG mapping, and learning plans do not require AI credentials.
+
+RunPod integration and deployment details are documented separately where applicable. This README does not claim that a RunPod deployment has been completed or verified.
+
+## Submission Materials
+
+Supporting project documentation is available in the `submission/` directory.
+
+## License
+
+Apache License 2.0.
