@@ -1,30 +1,13 @@
-### RunPod
+Resource	Links
 
-RunPod Serverless was used to deploy and invoke the
-Qwen/Qwen3-8B large language model through an
-OpenAI-compatible API endpoint.
+GitHub Repository	https://github.com/SeraYao/futureshift-ai
 
-The integration supports AI-assisted CV information
-extraction, allowing users to extract relevant career
-and skill information from uploaded resumes.
+Replit Project	https://replit.com/@yao18268483040/futureshift-ai
 
-The RunPod API was successfully invoked and tested
-using synthetic CV data.
+Live Demo	https://futureshift-ai.replit.app
 
-The application includes configurable API timeouts
-to accommodate serverless GPU cold starts.
+RunPod Endpoint	https://api.runpod.ai/v2/k7sai0ksjge4nx
 
-For privacy and security, API credentials are stored
-as environment variables rather than committed
-to the public GitHub repository.
+Slide Deck	https://github.com/SeraYao/futureshift-ai/blob/main/submission/Fishtail_FutureShift_Pitch_Deck.pptx
 
-The core career recommendation system remains
-functional without the optional AI extraction service.
-
-### Pitch Video
-
-[Watch our SDC Hackathon 2026 Preliminary Pitch](https://youtu.be/uMv5HbiqTIE)
-
-### Pitch Deck
-
-[View FutureShift AI Pitch Deck](submission/Fishtail_FutureShift_Pitch_Deck.pptx)
+Demo Video	https://youtu.be/uMv5HbiqTIE
