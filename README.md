@@ -20,3 +20,7 @@ to the public GitHub repository.
 
 The core career recommendation system remains
 functional without the optional AI extraction service.
+
+### Pitch Video
+
+[Watch our SDC Hackathon 2026 Preliminary Pitch](https://youtu.be/uMv5HbiqTIE)
